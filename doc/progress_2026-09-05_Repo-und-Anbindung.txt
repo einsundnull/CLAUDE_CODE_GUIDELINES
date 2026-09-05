@@ -283,6 +283,80 @@ Push-New-Guidelines.sh ...... Testlauf mit Antwort "n": nennt das Zielrepo,
 Steckbriefe ................. 0 Rest-Luecken in German und myLangSite
 
 
+==============================================================================
+DRITTE RUNDE, gleicher Tag — Repo geleert und frisch gepusht
+==============================================================================
+Antworten des Users: 1. Ringmenue = LANGLAEUFER. 2. Graph spaeter, erst alle
+offenen Punkte. 3. "Leere das Repository und Pushe erneut, um ein frisches
+Repo zu haben. Es liegt zu viel Altlast im Repo."
+
+
+WAS IM REMOTE LAG — DIE ALTLAST WAR ERKLAERBAR
+-----------------------------------------------
+Der Remote enthielt 21 Dateien: den kompletten alten Ordner "New Project"
+(GUIDELINES_v1_ES5.md, GUIDELINES_v2.md, GUIDELINES_v2_addendum.md,
+SESSION_PROTOCOL.md, START_PROMPT.txt, "Lies Mich ...", TEMPLATE_CLAUDE.md,
+TEMPLATE_PROJECT_GUIDELINES.md, WEITERMACHEN_PROMPT_TEMPLATE.txt,
+Graphify_How_To_Use.txt, desktop.ini, ein progress vom 2026-06-25 und
+supplements/ mit fuenf weiteren Dateien).
+
+DAS IST GENAU DER SCHADEN, VOR DEM DER FUND DER ZWEITEN RUNDE GEWARNT HAT:
+das alte Push-New-Guidelines.sh pusht den Ordner, in dem es liegt, und es
+zeigte bereits auf dieses Repo. Es ist also mindestens einmal gelaufen. Der
+Weiterleiter, der in Runde zwei daraus wurde, verhindert die Wiederholung.
+
+SICHERHEITSPRUEFUNG VOR DEM LOESCHEN: jede der 21 Remote-Dateien wurde gegen
+C:\Users\pc\Desktop\HTML Snippets\New Project geprueft. ALLE 21 liegen dort
+weiter. (Eine schien zu fehlen — "User Guide fuer Guidelines.txt" — das war
+nur Gits Oktal-Schreibweise fuer das "ü" im Dateinamen; die Datei ist da.)
+Es geht also nichts verloren, nur die falsche Ablage verschwindet.
+
+
+DURCHGEFUEHRT
+-------------
+1. Push-New-Guidelines.sh aus dem REPO entfernt (git rm + Datei geloescht).
+   Es war dorthin kopiert worden. Im Repo war sein eigener Text falsch: er
+   sagt "Dieser Ordner hier (New Project)". Ausserdem waeren zwei
+   Push-Einstiege nebeneinander ein Drift-Fall. Die richtige Fassung liegt
+   unveraendert in New Project.
+2. Frische Historie ueber einen Orphan-Branch:
+   git checkout --orphan fresh -> git add -A -> git commit ->
+   git branch -D main -> git branch -m main
+   Ergebnis: EIN Commit, keine Vorgeschichte, nur die 11 richtigen Dateien.
+   Die Commit-Nachricht haelt fest, was vorher im Remote lag und wohin es
+   gehoert — damit die Loeschung nachvollziehbar bleibt.
+3. git push --force -u origin main
+   df619d5 -> e2763f4 (forced update)
+
+GEGENPROBE NACH DEM PUSH:
+  Remote-Inhalt ..... exakt die 11 Dateien, keine Altlast mehr
+  Remote-Historie ... genau ein Commit (e2763f4)
+  lokal == remote ... identisch
+  Arbeitsbaum ....... sauber
+
+Der Push wurde diesmal von mir ausgefuehrt, nicht vom User — auf dessen
+ausdrueckliche Anweisung ("Pushe erneut"). Die stehende Regel bleibt
+ansonsten: Git und Deploy fuehrt der User aus.
+
+
+RINGMENUE: LETZTES STECKBRIEF-FELD GESCHLOSSEN
+-----------------------------------------------
+Lebensdauer = LANGLAEUFER. Damit sind UNIVERSAL §1, §2 und §13 dort
+verbindlich statt optional. Was das konkret ausloest, steht im Feld selbst
+(Graphify beim Herausloesen der Basis-Schicht, eigener Bestaetigungs-Baustein
+ab dem dritten Ja/Nein-Dialog, Ressourcenzahlen werden gemessen).
+TODO 7 in der Ringmenue-WEITERMACHEN_PROMPT.txt auf ERLEDIGT gesetzt.
+
+ALLE VIER STECKBRIEFE HABEN JETZT NULL OFFENE FELDER.
+
+
+NICHT GEMACHT, WEIL VOM USER ZURUECKGESTELLT
+---------------------------------------------
+Die beiden veralteten Wissensgraphen (German 2026-07-31, myLangSite
+2026-06-24) werden NICHT neu gebaut. Der User: erst alle offenen Punkte,
+dann der Graph.
+
+
 RUNTIME-VERIFY FUER DEN USER
 ----------------------------
 A1  Repo auf GitHub anlegen (leer, ohne README), dann
