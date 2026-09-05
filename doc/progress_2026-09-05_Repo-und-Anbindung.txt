@@ -357,6 +357,72 @@ Die beiden veralteten Wissensgraphen (German 2026-07-31, myLangSite
 dann der Graph.
 
 
+==============================================================================
+VIERTE RUNDE, gleicher Tag — Warte-Zeile am Ende jedes Skripts
+==============================================================================
+Prompt des Users: "Erstelle in den allgemeinen Guidelines, dass Bashes von mir
+per Enter oder ESC geschlossen werden, damit ich ihren Inhalt auch lesen und
+auswerten kann."
+
+
+DIE REGEL
+---------
+universal/Prompt_Handling.txt, neuer Abschnitt
+"EIN SKRIPT SCHLIESST SICH NICHT SELBST" (steht vor "WIE DU FRAGST").
+Dazu je ein Verweis-Punkt in §16 beider UNIVERSAL-Dateien — der WORTLAUT
+steht nur an einer Stelle, damit nichts driftet.
+
+Kern: Ein Skript, das sein Fenster sofort schliesst, hat seine Ausgabe
+genauso gut nicht geschrieben. Der User kann sie nicht lesen und nicht
+auswerten. Schlimmer noch: es sieht aus, als sei etwas geprueft worden.
+
+
+DREI DINGE, DIE DIE REGEL AUSDRUECKLICH FESTLEGT
+-------------------------------------------------
+1. EIN Tastendruck, keine Eingabe mit Bestaetigung.
+   read -n 1 -s -r    -> Enter, ESC und jede andere Taste schliessen.
+   NICHT read -p      -> das verlangt Enter und ignoriert ESC. Genau das
+                         stand vorher im Weiterleiter-Skript.
+2. Die Warte-Zeile steht am Ende AUCH IM FEHLERFALL. Gerade dann. Und sie
+   aendert den Exit-Code nicht.
+3. Sie entfaellt, wenn die Eingabe kein Terminal ist ( [ -t 0 ] ).
+   OHNE DIESE AUSNAHME WAERE DIE REGEL EIN BUG: jeder Aufruf aus einer Pipe,
+   aus einem anderen Skript oder aus einer Automatisierung wuerde fuer immer
+   haengen, und niemand saehe warum.
+
+
+UMGESETZT
+---------
+bin/_wait.sh                NEU. Funktion wait_for_key mit der Terminal-
+                            Ausnahme und der Erklaerung, warum es sie gibt.
+bin/push.sh                 laedt _wait.sh, "trap wait_for_key EXIT"
+bin/new-project.sh          dito
+bin/check-projects.sh       dito
+  -> trap statt Aufruf am Ende, weil alle drei mehrere Ausgaenge haben.
+     Ein Aufruf nur am Ende haette bei jedem "exit 1" gefehlt - also genau
+     in den Faellen, in denen der User die Ausgabe am dringendsten braucht.
+
+Push-New-Guidelines.sh (New Project)
+  Die zwei alten "read -p ... Enter zum Beenden" ersetzt. Am ERFOLGSWEG
+  wartet es jetzt bewusst NICHT mehr selbst: bin/push.sh wartet schon.
+  Zwei Warte-Zeilen hintereinander lesen sich wie ein haengendes Skript.
+
+EIN BAUSTEIN STATT DREIMAL FUENF ZEILEN: das ist UNIVERSAL §2, und der
+Ausloeser (zweites Auftreten) war mit drei Skripten laengst erreicht.
+
+
+PRUEFUNGEN
+----------
+bash -n ..................... alle vier Skripte syntaktisch ok
+ESC-Test .................... read -n 1 -s -r liest genau 1 Byte, Code 27
+Enter-Test .................. liefert leeren String, kehrt zurueck
+Beliebige Taste ............. liefert das Zeichen, kehrt zurueck
+Kein-Terminal-Test .......... check-projects.sh und new-project.sh mit
+                              Eingabe von /dev/null und 15s Timeout:
+                              Exit 0 bzw. 1, KEIN Timeout (124). Die
+                              Ausnahme greift also.
+
+
 RUNTIME-VERIFY FUER DEN USER
 ----------------------------
 A1  Repo auf GitHub anlegen (leer, ohne README), dann

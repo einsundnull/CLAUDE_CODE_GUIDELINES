@@ -90,6 +90,44 @@ Bei jeder neuen Implementation werden die konkreten Tasten oder Klicks
 genannt, mit denen man sie anzeigen und testen kann.
 
 
+EIN SKRIPT SCHLIESST SICH NICHT SELBST
+======================================
+Jedes Skript, das der User selbst startet (.sh, .bat, .ps1), endet mit einer
+Warte-Zeile. Es schliesst sich NICHT von allein.
+
+  "Fertig. Enter oder ESC zum Schliessen."
+
+DER GRUND, DAMIT DIE REGEL NICHT FUER SCHOENHEIT GEHALTEN WIRD: ein Skript,
+das sein Fenster sofort schliesst, hat seine Ausgabe genauso gut nicht
+geschrieben. Der User kann sie nicht lesen und nicht auswerten. Genau die
+Zeile, die er braucht - die Fehlermeldung, die hochgeladenen Dateien, die
+gemessene Zahl - ist die, die er nie sieht. Eine unlesbare Ausgabe ist
+schlimmer als keine, weil sie den Eindruck erweckt, es sei etwas geprueft
+worden.
+
+DIE FORM:
+  - Es wird auf EINEN Tastendruck gewartet, nicht auf eine Eingabe mit
+    Bestaetigung. Enter, ESC und jede andere Taste schliessen.
+    In bash:  read -n 1 -s -r
+    Kein "read -p" ohne -n 1 - das verlangt Enter und ignoriert ESC.
+  - Die Warte-Zeile steht am ENDE, nach der letzten Ausgabe, und zwar auch
+    dann, wenn das Skript mit einem Fehler endet. Gerade dann.
+  - Der Exit-Code bleibt erhalten. Die Warte-Zeile aendert ihn nicht.
+
+DIE AUSNAHME, DIE MITGEBAUT WIRD:
+  Ist die Eingabe kein Terminal (Pipe, CI, Aufruf aus einem anderen Skript),
+  wird NICHT gewartet. Sonst haengt der Aufruf fuer immer, und niemand sieht,
+  warum. In bash ist das genau eine Bedingung:  [ -t 0 ]
+  Ein Skript, das diese Ausnahme nicht hat, ist in dem Moment kaputt, in dem
+  es zum ersten Mal automatisiert aufgerufen wird.
+
+WO DIE FUNKTION LIEGT:
+  Ab dem ZWEITEN Skript in einem Projekt bekommt die Warte-Zeile einen
+  eigenen Baustein, der von allen Skripten geladen wird - nicht dreimal
+  dieselben fuenf Zeilen. In diesem Repo ist das  bin/_wait.sh  mit der
+  Funktion  wait_for_key.
+
+
 WIE DU FRAGST (gilt in jeder Sitzung, nicht nur beim Projektstart)
 ==================================================================
 - Höchstens 4 Fragen pro Runde. Lieber mehrere Runden.

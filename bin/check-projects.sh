@@ -18,6 +18,11 @@ set -u
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LIST="$REPO/PROJECTS.txt"
 
+# Warte-Zeile am Ende, egal ueber welchen Ausgang das Skript endet.
+# Regel: universal/Prompt_Handling.txt, "EIN SKRIPT SCHLIESST SICH NICHT SELBST"
+. "$REPO/bin/_wait.sh"
+trap wait_for_key EXIT
+
 if [ ! -f "$LIST" ]; then
   echo "FEHLER: $LIST fehlt."
   exit 1

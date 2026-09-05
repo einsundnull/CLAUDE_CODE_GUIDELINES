@@ -363,6 +363,19 @@ Der verbindliche Wortlaut steht in `Prompt_Handling.txt`, Abschnitte
 - Keine Paragraphen-Nummern in der Frage selbst.
 - Bei jeder neuen Implementation werden die konkreten Tasten oder Klicks
   genannt, mit denen man sie anzeigen und testen kann.
+- **Ein Skript, das der User startet, schließt sich nicht selbst.** Jede
+  `.sh`/`.bat`/`.ps1`, die er selbst aufruft, endet mit einer Warte-Zeile auf
+  **einen** Tastendruck — Enter, ESC oder jede andere Taste (`read -n 1 -s -r`,
+  **nicht** `read -p`, das Enter verlangt und ESC ignoriert). Sonst schließt
+  sich das Fenster, bevor er die Ausgabe lesen kann; eine Ausgabe, die niemand
+  liest, ist so gut wie nicht geschrieben — und sie erweckt den Eindruck, es
+  sei etwas geprüft worden. Die Warte-Zeile steht am Ende **auch im
+  Fehlerfall**, lässt den Exit-Code unverändert und entfällt, wenn die Eingabe
+  kein Terminal ist (`[ -t 0 ]`) — sonst hängt jeder automatisierte Aufruf.
+  Ab dem **zweiten** Skript bekommt sie einen eigenen Baustein (§2), nicht
+  dreimal dieselben fünf Zeilen. Wortlaut und Referenz-Umsetzung:
+  `Prompt_Handling.txt`, Abschnitt „EIN SKRIPT SCHLIESST SICH NICHT SELBST",
+  und `bin/_wait.sh` im Guidelines-Repo.
 
 ---
 

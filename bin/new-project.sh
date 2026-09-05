@@ -21,6 +21,11 @@ set -u
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPO_WIN='C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES'
 
+# Warte-Zeile am Ende, egal ueber welchen Ausgang das Skript endet.
+# Regel: universal/Prompt_Handling.txt, "EIN SKRIPT SCHLIESST SICH NICHT SELBST"
+. "$REPO/bin/_wait.sh"
+trap wait_for_key EXIT
+
 TARGET="${1:-}"
 LANG_KIND="${2:-}"
 

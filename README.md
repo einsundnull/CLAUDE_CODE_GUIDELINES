@@ -44,6 +44,12 @@ bin/
   push.sh                        schreibt Änderungen in dieses Repo (commit + push)
   new-project.sh                 richtet ein NEUES Projekt nach diesem Modell ein
   check-projects.sh              prüft, ob alle Projekte richtig angebunden sind
+  _wait.sh                       die Warte-Zeile am Ende jedes Skripts
+                                 (`wait_for_key`) — Enter, ESC oder jede andere
+                                 Taste schließt. Wird von allen dreien geladen,
+                                 damit die fünf Zeilen nicht dreimal dastehen.
+                                 Regel: Prompt_Handling.txt, „EIN SKRIPT
+                                 SCHLIESST SICH NICHT SELBST"
 START_TEMPLATE.txt               der Block, der oben in jede Projekt-Startdatei kommt
 PROJECTS.txt                     welches Projekt welche Sprache liest und wo es liegt
 ```

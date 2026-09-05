@@ -12,6 +12,12 @@
 set -u
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Warte-Zeile am Ende, egal ueber welchen Ausgang das Skript endet.
+# Regel: universal/Prompt_Handling.txt, "EIN SKRIPT SCHLIESST SICH NICHT SELBST"
+. "$REPO/bin/_wait.sh"
+trap wait_for_key EXIT
+
 cd "$REPO" || { echo "FEHLER: Repo-Ordner nicht gefunden."; exit 1; }
 
 if [ ! -d .git ]; then

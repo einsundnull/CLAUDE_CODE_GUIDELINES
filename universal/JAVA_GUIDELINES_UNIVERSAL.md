@@ -483,6 +483,19 @@ dann wird auf einer **Annahme** weitergebaut. Das ist ein Fehlerrisiko.
 - **Auch der übrige Text wird kürzer:** das Wichtigste zuerst; Herleitung und
   Messprotokoll gehören in die `progress`-Datei, in der Antwort steht das
   Ergebnis und wo der Beleg liegt.
+- **Ein Skript, das der User startet, schließt sich nicht selbst.** Jede
+  `.sh`/`.bat`/`.ps1`, die er selbst aufruft, endet mit einer Warte-Zeile auf
+  **einen** Tastendruck — Enter, ESC oder jede andere Taste (`read -n 1 -s -r`,
+  **nicht** `read -p`, das Enter verlangt und ESC ignoriert). Sonst schließt
+  sich das Fenster, bevor er die Ausgabe lesen kann; eine Ausgabe, die niemand
+  liest, ist so gut wie nicht geschrieben — und sie erweckt den Eindruck, es
+  sei etwas geprüft worden. Die Warte-Zeile steht am Ende **auch im
+  Fehlerfall**, lässt den Exit-Code unverändert und entfällt, wenn die Eingabe
+  kein Terminal ist (`[ -t 0 ]`) — sonst hängt jeder automatisierte Aufruf.
+  Ab dem **zweiten** Skript bekommt sie einen eigenen Baustein (§2), nicht
+  dreimal dieselben fünf Zeilen. Wortlaut und Referenz-Umsetzung:
+  `Prompt_Handling.txt`, Abschnitt „EIN SKRIPT SCHLIESST SICH NICHT SELBST“,
+  und `bin/_wait.sh` im Guidelines-Repo.
 
 > **Diese Regel widerspricht der Gewohnheit ausführlicher Akten, und der
 > Widerspruch wird zugunsten des Users aufgelöst.** Die Dokumente bleiben
