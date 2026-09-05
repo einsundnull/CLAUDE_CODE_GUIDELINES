@@ -62,8 +62,10 @@ Zusammenfassung, Vorschlägen und tatsächlicher Lösung.
 WO DIE DATEIEN LIEGEN (häufigster Fehler: sie landen irgendwo)
 ==============================================================
 PD.txt und progress_*.txt gehören in das doc/-Verzeichnis des Projekts.
-Im Projekt-Root liegen die Ankerdateien: CLAUDE.md, die UNIVERSAL-Guidelines,
-WEITERMACHEN_PROMPT.txt und diese Datei. Die namentliche, gezählte Liste der
+Im Projekt-Root liegen die Ankerdateien: CLAUDE.md und WEITERMACHEN_PROMPT.txt.
+Die UNIVERSAL-Guidelines und diese Datei liegen seit dem 2026-09-05 NICHT mehr
+im Projekt, sondern nur noch im Repo CLAUDE_CODE_GUIDELINES unter universal/;
+eine Kopie im Projekt wäre eine zweite Wahrheit. Die namentliche, gezählte Liste der
 offenen Aufgaben steht in der WEITERMACHEN_PROMPT.txt und wird dort gepflegt —
 hier wird sie bewusst NICHT ein zweites Mal geführt (zwei Listen driften).
 Kein progress_* im Home-Verzeichnis.
