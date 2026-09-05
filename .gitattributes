@@ -1,0 +1,16 @@
+# Shell-Skripte MUESSEN LF-Zeilenenden behalten.
+#
+# Grund: Auf diesem Rechner steht core.autocrlf auf true. Ohne diese Datei
+# bekommt ein frischer Klon die .sh-Dateien mit CRLF - und bash bricht dann
+# mit "bad interpreter: /usr/bin/env bash^M" oder "$'\r': command not found"
+# ab. Das faellt hier nicht auf, weil die Dateien lokal schon LF haben; es
+# faellt beim ersten Klon auf einem anderen Rechner auf, oder nach einem
+# frischen Checkout.
+*.sh text eol=lf
+
+# Textdateien: im Repo LF, im Arbeitsverzeichnis darf Windows CRLF haben.
+*.md   text
+*.txt  text
+
+# Sicherheitsnetz: alles andere erkennt Git selbst.
+* text=auto
