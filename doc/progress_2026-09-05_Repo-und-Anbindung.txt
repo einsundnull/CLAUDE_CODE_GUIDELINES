@@ -1,0 +1,298 @@
+progress_2026-09-05_Repo-und-Anbindung.txt
+==========================================
+Kategorie: [ST] — klar umrissen, keine PD noetig
+Stand:     2026-09-05
+
+
+PROMPT DES USERS (sinngemaess)
+------------------------------
+"Ich werde ein Git Repository fuer die allgemeinen Prompts und Guidelines
+erstellen: CLAUDE_CODE_GUIDELINES, https://github.com/einsundnull/
+CLAUDE_CODE_GUIDELINES.git. Ich brauche einen Bash, der in dieses Repo
+schreibt. Ausserdem musst du die 'Start nicht loeschen.txt' Dateien in German
+und myLangSite ueberpruefen. Wenn ich ein neues Projekt starte, muessen immer
+die allgemeinen Guidelines geladen werden. Die existierenden Projekte muessen
+in ihren Startprompts die Aenderung bekommen, dass sie ab jetzt die
+allgemeinen Guidelines aus dem Universalfolder laden. Ich glaube, dass die
+universellen Guidelines in GameLoop2 aktueller sind als in dem dafuer
+vorgesehenen Ordner. Ueberpruefe es. Ziel: Alle aktuellen und zukuenftigen
+Projekte laden EINE Quelle der Wahrheit und ihre spezifischen Guidelines aus
+ihrem eigenen doc-Directory."
+
+
+DIE PRUEFUNG: WAR GAMELOOP2 AKTUELLER? — JA, UND ZWAR DEUTLICH
+---------------------------------------------------------------
+Gemessen am 2026-09-05 ueber die Aenderungsdaten:
+
+  GameLoop2\JAVA_GUIDELINES_UNIVERSAL.md ......... 2026-09-04   27.725 B
+  GameLoop2\Prompt_Handling.txt .................. 2026-09-04   13.132 B
+  New Project\GUIDELINES_v2.md ................... 2026-06-25   35.033 B
+  New Project\SESSION_PROTOCOL.md ................ 2026-06-25    6.180 B
+
+Der vorgesehene Ordner war also rund ZEHN WOCHEN im Rueckstand. Der Grund ist
+strukturell, nicht nachlaessig: gepflegt wird dort, wo gearbeitet wird. Ein
+Ordner, in den man extra hineingehen muss, veraltet.
+
+DER BEFUND, DER SCHLIMMER IST ALS DER RUECKSTAND — DREIFACHE DRIFT:
+
+  GUIDELINES_v2.md, drei Fassungen, gleicher Name, anderer Inhalt:
+    German\Guidelines\ .......... 2026-07-31   55.936 B
+    New Project\ ................ 2026-06-25   35.033 B
+    myLangSite\Guidelines\ ...... 2026-06-21   29.938 B
+
+  UNIVERSAL_GUIDELINES.md, drei Fassungen:
+    myLangSite\Guidelines\ ...... 2026-06-15   20.144 B
+    myLangSite\ (Root!) ......... 2026-04-19    8.609 B
+    German\Guidelines\ .......... 2026-07-26    2.062 B  (nur noch Verweis-Stub)
+
+  Prompt_Handling.txt, drei Fassungen:
+    GameLoop2\ .................. 2026-09-04   13.132 B
+    myLangSite\Guidelines\ ...... 2026-06-25    6.518 B
+    German\Guidelines\ .......... 2026-07-26    5.010 B
+
+Keine dieser Dateien war von aussen als veraltet erkennbar. Zwei davon
+standen in den Startprompts als Pflichtlektuere. Das heisst: German und
+myLangSite lasen seit Wochen bei jedem Start eine ueberholte Fassung, ohne
+dass es auffiel.
+
+ZWEITER BEFUND — DIE STARTDATEIEN SIND KEINE STARTPROMPTS MEHR.
+"Start nicht loeschen.txt" ist in allen drei Projekten zu einem Notizzettel
+geworden: oben ein paar Zeilen Lesereihenfolge, darunter alte Gespraeche,
+Zwischenstaende, To-dos und in GameLoop2 sogar ein eingefuegter Java-Stacktrace.
+German 7.441 B, myLangSite 7.050 B — davon sind je unter 10 % der eigentliche
+Startprompt. Die Lesereihenfolge geht darin unter.
+
+
+LOESUNG
+-------
+Das Repo CLAUDE_CODE_GUIDELINES ist ab jetzt die EINE Quelle. Projekte
+KOPIEREN nichts mehr, sie LESEN ueber den absoluten Pfad. Damit kann die
+Drift technisch nicht wieder entstehen: es gibt nur eine Datei.
+
+Das ist eine Kehrtwende gegenueber dem Modell von heute Vormittag (Kopie je
+Projekt mit QUELLE/STAND-Kopf). Begruendung: die Kopie war nur noetig, damit
+die Regeln beim Git-Push des Projekts mitgehen. Mit einem eigenen Repo ist
+das erledigt — die Regeln haben ihren eigenen Push. Der Grund fuer die Kopie
+ist weggefallen, also faellt die Kopie weg.
+
+
+ANGELEGT: C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\
+-------------------------------------------------------
+  README.md                        Modell, Verzeichnis, Herkunftstabelle
+  START_TEMPLATE.txt               der Block fuer bestehende Projekte
+  PROJECTS.txt                     welches Projekt WEB/JAVA liest, wo es liegt,
+                                   und welche Projekte bewusst abweichende
+                                   Orte haben (mit Begruendung)
+  universal/JAVA_GUIDELINES_UNIVERSAL.md   aus GameLoop2, Inhalt unveraendert
+  universal/WEB_GUIDELINES_UNIVERSAL.md    neu, §0-§16 + Steckbrief §14
+  universal/Prompt_Handling.txt            aus GameLoop2, entjavaisiert
+  templates/Task_TEMPLATE.txt      Kopiervorlage fuer eine PD
+  bin/push.sh                      schreibt ins Repo: zeigt Diff, fragt nach,
+                                   committet, pusht. Kein force, kein Loeschen.
+  bin/new-project.sh               richtet ein NEUES Projekt ein: doc/,
+                                   CLAUDE.md, doc/GUIDELINES.md, START.txt,
+                                   WEITERMACHEN_PROMPT.txt. Ueberschreibt nie.
+  bin/check-projects.sh            prueft alle Projekte aus PROJECTS.txt
+
+git init + remote origin sind gesetzt, Branch main. NICHT gepusht — das Repo
+auf GitHub muss der User erst anlegen, und Git fuehrt ohnehin der User aus.
+
+
+GEAENDERT IN DEN PROJEKTEN
+--------------------------
+German
+  Guidelines\Start nicht loeschen.txt   Kopfblock ersetzt. Die Notizen
+        darunter sind unangetastet, jetzt hinter einer Trennlinie
+        "Ab hier: Notizen. Kein Teil der Lesereihenfolge."
+        Die abgeloesten Dateien sind namentlich als abgeloest markiert.
+  Guidelines\GUIDELINES.md              NEU: Steckbrief + §20-§22.
+        §20 ist das Verzeichnis der neun projekteigenen Standards
+        (EXERCISE_*, GRAMMAR_TABLE_*, VERSION_AND_CHANGELOG_* ...) — die
+        bleiben unveraendert gueltig, sie stehen jetzt nur an einer Stelle
+        aufgelistet. §21 Umlaute. §22 was von GUIDELINES_v2 noch gilt.
+
+myLangSite
+  Guidelines\Start nicht loeschen.txt   dito. Zusaetzlich stehen die zwei
+        Pflichtlektuere-Dateien vor Kalenderaenderungen jetzt IM Startblock.
+  doc\GUIDELINES.md                     NEU: Steckbrief + §20-§25.
+        §20 Zeitzonenfalle app_recurring/app_slots, §21 die drei
+        Datums-Zonen und _resolveCell als einzige Konversionsstelle,
+        §22 Mockup-Pflicht, §23 die zwei Speichern-Button-IDs,
+        §24 GCal-Waisen-Aufraeumer, §25 Dokumentverzeichnis + die vier
+        benannten Altlasten.
+
+GameLoop2 (nicht ausdruecklich bestellt, aber vom Ziel "alle Projekte" erfasst)
+  Start Nicht Loeschen.txt              Kopfblock auf das Repo umgestellt.
+        §56 bleibt ausdruecklich gueltig; der Lesezugriff auf universal\ ist
+        als einzige Ausnahme benannt.
+  JAVA_GUIDELINES_UNIVERSAL.md          VERALTET-Kopf eingefuegt
+  Prompt_Handling.txt                   VERALTET-Kopf eingefuegt
+        Beide bleiben liegen und behalten ihren Namen. Das verletzt §9
+        ("eine veraltete Datei behaelt nie ihren Originalnamen") BEWUSST:
+        ein Rename macht alle bestehenden Zitate still falsch. Der Kopf
+        loest dasselbe Problem, ohne den Schaden. Als Frage an den User.
+
+Ringmenue
+  Die heute Vormittag angelegten Kopien WEB_GUIDELINES_UNIVERSAL.md und
+  Prompt_Handling.txt wurden GELOESCHT. CLAUDE.md, WEITERMACHEN_PROMPT.txt
+  und doc\GUIDELINES.md zeigen jetzt auf das Repo.
+
+New Project (Desktop\HTML Snippets)
+  Der heute Vormittag angelegte Ordner prompts\ wurde GELOESCHT — er ist
+  durch das Repo abgeloest und waere sonst eine vierte Fassung geworden.
+  Die aelteren Dateien im Repo-Root (GUIDELINES_v2.md, SESSION_PROTOCOL.md,
+  START_PROMPT.txt, "Lies Mich ...") sind NICHT angefasst.
+
+
+GEFUNDENE UND BEHOBENE FEHLER
+-----------------------------
+- check-projects.sh benutzte "grep -r --max-depth 2". Das ist eine
+  ripgrep-Option; GNU grep kennt sie nicht und scheiterte still. Ergebnis:
+  der erste Lauf meldete ALLE VIER Projekte als "nicht angebunden", obwohl
+  alle vier korrekt angebunden waren. Ersetzt durch find + grep -l.
+  Das ist genau der Fehlertyp, vor dem UNIVERSAL §13 warnt: ein Werkzeug,
+  das falsch misst, ist schlimmer als keins.
+- check-projects.sh kannte nur doc/ und src/main/doc/ als Ort fuer die
+  Projekt-Guidelines. German liegt in Guidelines/ und wurde als "FEHLT"
+  gemeldet. Dritter Ort ergaenzt.
+- check-projects.sh unterschied nicht zwischen einer alten Kopie MIT
+  VERALTET-Kopf und einer ohne. Jetzt: [entschaerft] vs. [OFFEN].
+- Beim Umstellen der Ringmenue-GUIDELINES.md hat "sed" den Ersetzungstext
+  mit Backslash-Pfaden zerstoert: \U wurde als GNU-sed-Steuerzeichen
+  gelesen, der Pfad kam als "C:SERSPCDOCUMENTS..." heraus und die
+  Umlaut-Bytes wurden ungueltig. Repariert. LEHRE: Windows-Pfade nie durch
+  sed schicken.
+
+
+PRUEFUNGEN
+----------
+bash -n ..................... alle drei Skripte syntaktisch ok
+check-projects.sh ........... laeuft, meldet alle 4 Projekte angebunden,
+                              listet die 7 offenen Altkopien namentlich
+new-project.sh .............. Testlauf in einem leeren Ordner: legt die vier
+                              Dateien an, mit eingesetztem Pfad; zweiter Lauf
+                              ueberschreibt nichts ("uebersprungen")
+push.sh ..................... Testlauf mit Antwort "n": zeigt Repo, Remote,
+                              die zu ladenden Dateien, bricht sauber ab
+UTF-8 ....................... Ringmenue\doc\GUIDELINES.md nach der
+                              sed-Reparatur byteweise als UTF-8 verifiziert
+
+NICHT geprueft: der echte Push. Das GitHub-Repo existiert noch nicht, und
+Git fuehrt der User aus.
+
+
+==============================================================================
+ZWEITE RUNDE, gleicher Tag — Antworten des Users auf die drei Fragen
+==============================================================================
+Antworten: 1. "Einen Verweis anlegen, der aussagt, dass der Kopf veraltet ist
+und den neuen Kopf verwenden, wenn du es empfiehlst."  2. "Vollstaendig
+updaten."  3. "jetzt."  Plus: Repo-URL bestaetigt, und "Der Bash in
+C:\Users\pc\Desktop\HTML Snippets\New Project pusht in dieses Repository".
+
+
+BEFUND ZUERST — DAS PUSH-SKRIPT WAR GEFAEHRLICH
+------------------------------------------------
+Push-New-Guidelines.sh in "New Project" zeigte bereits auf
+CLAUDE_CODE_GUIDELINES.git — aber es pusht DEN ORDNER, IN DEM ES LIEGT.
+Das haette bedeutet:
+  - Zwei nicht verwandte lokale Ordner pushen in dasselbe Remote.
+    Jeder Push kollidiert.
+  - Bei Kollision bot das Skript "FORCE PUSH" an. Das haette den echten
+    Repo-Inhalt geloescht und durch die ALTE Generation ersetzt.
+  - Es machte "git remote remove origin" — also auch am falschen Repo.
+Das Skript ist jetzt ein WEITERLEITER auf CLAUDE_CODE_GUIDELINES/bin/push.sh.
+Die Force-Push-Option ist weg. Der Kopf der Datei begruendet, warum.
+
+
+VERWEIS-MUSTER (Antwort auf Frage 1, angewandt auf alle sieben Dateien)
+------------------------------------------------------------------------
+Empfehlung, die der User uebernommen hat: NICHT umbenennen, NICHT loeschen.
+  1. Voller alter Inhalt -> VERALTET_2026-09-05_<Name> daneben.
+  2. Originalname bleibt, enthaelt nur noch einen Verweis: wohin die geltende
+     Fassung gezogen ist, wo der alte Inhalt liegt, und warum.
+Begruendung: ein Rename macht alle bestehenden Zitate still falsch; ein
+Loeschen laesst sie ins Leere laufen. Der Verweis meldet sich beim Oeffnen.
+
+VERWEIS GESETZT (7):
+  GameLoop2\JAVA_GUIDELINES_UNIVERSAL.md
+  GameLoop2\Prompt_Handling.txt
+  German\Guidelines\Prompt_Handling.txt
+  German\Guidelines\UNIVERSAL_GUIDELINES.md
+  myLangSite\Guidelines\Prompt_Handling.txt
+  myLangSite\Guidelines\UNIVERSAL_GUIDELINES.md
+  myLangSite\UNIVERSAL_GUIDELINES.md          (Root, die aelteste der drei)
+
+NUR KOPFBLOCK, KEIN VERWEIS-ERSATZ (2):
+  German\Guidelines\GUIDELINES_v2.md     (56 KB, Stand 2026-07-31)
+  myLangSite\Guidelines\GUIDELINES_v2.md (30 KB, Stand 2026-06-21)
+  BEGRUENDUNG, WARUM HIER ABGEWICHEN WURDE: diese beiden enthalten
+  projekteigene Regeln, Layout-Vorgaben und Ausnahmen, die NIRGENDWO SONST
+  stehen. Sie durch einen Verweis zu ersetzen haette echte Regeln vernichtet.
+  "Vollstaendig updaten" heisst nicht "alles gleich behandeln".
+
+AUSSERDEM: New Project\README.txt behauptete weiter, "Source of Truth #1" zu
+sein. Das war die irrefuehrendste Datei im ganzen Bestand — sie stand oben in
+einem Ordner, den man beim Projektstart liest. Kopfblock gesetzt, alter Text
+darunter erhalten.
+
+
+STECKBRIEFE VOLLSTAENDIG (Antwort auf Frage 3)
+-----------------------------------------------
+German: 9 Felder erhoben und eingetragen. Bemerkenswert:
+  - Netz-Abhaengigkeiten = KEINE. In 77 HTML-Seiten keine einzige fremde
+    https-Ressource. Als Zusage formuliert, nicht als Beobachtung.
+  - God-Datei js\i18n.js mit 2.206 Zeilen.
+  - localStorage-Schluessel folgen NICHT dem Muster aus UNIVERSAL §6.
+    Als Altlast benannt; Umbenennen waere [C] und wuerde jede gespeicherte
+    Einstellung im Browser des Users verwerfen.
+  - Graph ist vom 2026-07-31 und damit aelter als der Code.
+
+myLangSite: 9 Felder erhoben und eingetragen. Bemerkenswert:
+  - hosting.public = "." — der Projekt-Root IST das Auslieferungsverzeichnis.
+  - God-Datei js\messages-overlay.js mit 4.714 Zeilen.
+  - currentUserId und displayName liegen im localStorage. Das sind
+    Nutzerdaten, kein Bedienkomfort — auf einem geteilten Geraet sieht der
+    naechste Nutzer sie. Als Altlast benannt.
+  - Graph ist vom 2026-06-24, rund zweieinhalb Monate alt.
+  - KEIN Pruefstand bei einem Produktivsystem mit Zahlungen. Als groesste
+    offene Luecke des Steckbriefs benannt.
+
+Beide Steckbriefe haben jetzt NULL Felder mit "noch nicht erhoben".
+Offen bleibt EIN Feld im Ringmenue: "Lebensdauer" — das ist eine Frage an den
+User, keine Erhebung. Sie steht seit der ersten Runde und ist unbeantwortet.
+
+
+ZWEITER FEHLER IN check-projects.sh
+------------------------------------
+Nach dem Archivieren meldete das Skript die Archivdatei
+VERALTET_2026-09-05_JAVA_GUIDELINES_UNIVERSAL.md als "[Verweis]" statt als
+"[Archiv]" — sie traegt ja den alten Inhalt samt dessen Kopfzeilen.
+Ursache: der Inhalt wurde vor dem Dateinamen geprueft. Reihenfolge gedreht.
+Neue Kennzeichnung: [Archiv] / [Verweis] / [teilweise] / [OFFEN].
+
+
+PRUEFUNGEN DER ZWEITEN RUNDE
+-----------------------------
+check-projects.sh ........... alle vier Projekte angebunden, keine [OFFEN]-
+                              Zeile mehr; 7 [Verweis], 2 [teilweise], Archive
+                              als [Archiv]
+Push-New-Guidelines.sh ...... Testlauf mit Antwort "n": nennt das Zielrepo,
+                              warnt ausdruecklich, dass NICHT der eigene
+                              Ordner gepusht wird, reicht an bin/push.sh
+                              weiter, bricht sauber ab
+Steckbriefe ................. 0 Rest-Luecken in German und myLangSite
+
+
+RUNTIME-VERIFY FUER DEN USER
+----------------------------
+A1  Repo auf GitHub anlegen (leer, ohne README), dann
+    bash bin/push.sh "Erstbefuellung"
+    Erwartung: Diff-Liste, Rueckfrage, Push geht durch.
+A2  bash bin/check-projects.sh
+    Erwartung: "Alle gelisteten Projekte sind angebunden."
+A3  Neue Sitzung in German. Den Inhalt von
+    Guidelines\Start nicht loeschen.txt als ersten Prompt einfuegen.
+    Erwartung: es werden die zwei Dateien aus dem Repo gelesen, dann
+    Guidelines\GUIDELINES.md abschnittsweise — nicht mehr GUIDELINES_v2.md
+    als Regelquelle.
+A4  Dasselbe in myLangSite.

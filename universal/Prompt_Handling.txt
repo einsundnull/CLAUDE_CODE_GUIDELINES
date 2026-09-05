@@ -1,0 +1,256 @@
+==============================================================================
+Prompt_Handling.txt — projektneutral
+==============================================================================
+QUELLE: CLAUDE_CODE_GUIDELINES/universal/Prompt_Handling.txt  (DIES IST DIE QUELLE)
+STAND:  2026-09-05
+Herkunft: herausgelöst aus GameLoop2\Prompt_Handling.txt (Stand 2026-09-04)
+          durch Entfernen aller Java- und GameLoop2-spezifischen Stellen.
+          Was dort projektspezifisch war, steht jetzt als <Platzhalter> da und
+          wird von der jeweiligen doc/GUIDELINES.md besetzt.
+==============================================================================
+
+Prompts werden in zwei Kategorien unterschieden:
+
+- Der Prompt gehört zu einer größeren Aufgabe, die in mehrere kleinere
+  Aufgaben zerlegt wird ........................................... [BT]
+- Der Prompt betrifft eine kleinere Aufgabe ohne Zerlegung ......... [ST]
+
+
+[BT] GRÖSSERE AUFGABEN
+======================
+Vor jeder Ausführung einer größeren Aufgabe:
+
+Aufgaben bekommen alle eine ID: Task_<DateTime>_<NameDerAufgabe>.txt,
+im Folgenden als PD.txt bezeichnet.
+-> Aufteilen der Aufgabe in Schritte. Die Schritte heißen [m/n].
+---> Jeder Schritt bekommt eine Risikoklasse:
+     [A] größtes ROI
+     [B] 100 % sicher
+     [C] größeres Risiko
+
+Unnötige Schritte nicht ausführen. Diese Schritte als unnötig markieren und
+begründen, warum sie unnötig sind. Unnötige Schritte sind alle Schritte, die
+keinen Mehrwert bringen. Zum Beispiel das Ändern einer bereits gut
+funktionierenden System-Architektur, nur damit sie den Guidelines entspricht,
+obwohl der Aufwand das nicht rechtfertigt und/oder das Risiko besteht, die
+Codebase zu zerstören. Frage, falls du es noch nicht weißt, ob das Einbinden
+einer DB/API geplant ist und welcher, und passe deine Empfehlungen für die
+Architektur entsprechend an.
+
+----> Du gibst immer eine Empfehlung heraus, welches Modell welchen Schritt
+ausführen sollte, und ob es 100 % sicher ist, dieses Modell zu verwenden
+(zum Beispiel neigt HAIKU dazu, Aufgaben zu vermasseln). Aufgaben können auch
+so gegliedert werden, dass mit den Haiku-Schritten begonnen wird und danach
+mit "/clear" und dem WEITERMACHEN_PROMPT.txt mit einem anderen Modell wieder
+aufgesetzt wird, um Token zu sparen. Baue diese Überlegung in die Planung ein.
+
+-----> Es wird immer eine Empfehlung herausgegeben, welcher Schritt als
+nächster ausgeführt werden soll und warum. Du sagst auch, ob es sich lohnt,
+"/clear" zu benutzen und über den WEITERMACHEN_PROMPT.txt neu einzusteigen,
+um Token zu sparen, ohne dass Kontext verloren geht.
+
+------> Nach Abschluss jedes Schrittes wird in der PD.txt angegeben, welche
+Schritte erledigt sind.
+
+
+[ST] KLEINERE AUFGABEN
+======================
+Keine PD.txt, aber trotzdem eine progress_<DateTime>_<Name>.txt mit Prompt,
+Zusammenfassung, Vorschlägen und tatsächlicher Lösung.
+
+
+WO DIE DATEIEN LIEGEN (häufigster Fehler: sie landen irgendwo)
+==============================================================
+PD.txt und progress_*.txt gehören in das doc/-Verzeichnis des Projekts.
+Im Projekt-Root liegen die Ankerdateien: CLAUDE.md, die UNIVERSAL-Guidelines,
+WEITERMACHEN_PROMPT.txt und diese Datei. Die namentliche, gezählte Liste der
+offenen Aufgaben steht in der WEITERMACHEN_PROMPT.txt und wird dort gepflegt —
+hier wird sie bewusst NICHT ein zweites Mal geführt (zwei Listen driften).
+Kein progress_* im Home-Verzeichnis.
+
+
+TABU: DER ARBEITSBEREICH ENDET AM PROJEKTORDNER
+===============================================
+<Projektordner> ist die Grenze. Nicht darüber hinaus lesen, suchen, auflisten
+oder ändern — auch nicht "nur zum Vergleichen", auch nicht in einem
+"<Projekt> - Kopie (n)". Keine rekursive Suche ohne Pfadanker im Projekt.
+Ausnahme: die in der doc/GUIDELINES.md namentlich genannten Quell-Pfade
+(zum Beispiel dieser prompts/-Ordner). Führt eine Aufgabe wirklich hinaus,
+wird das vorher gesagt und begründet.
+
+
+RUNTIME-VERIFY GEHÖRT DEM USER
+==============================
+Was nur zur Laufzeit sichtbar ist, wird NICHT als "funktioniert" behauptet,
+sondern als benannte Checkliste (A1, A2, A3 …) in der progress-Datei
+hinterlassen — Taste/Klick, erwartete Beobachtung. "Build grün" ist kein
+Verify, und "noch nicht gebaut" ist eine messbare Aussage, die gemessen wird,
+bevor sie in eine Verify-Liste kommt.
+Bei jeder neuen Implementation werden die konkreten Tasten oder Klicks
+genannt, mit denen man sie anzeigen und testen kann.
+
+
+WIE DU FRAGST (gilt in jeder Sitzung, nicht nur beim Projektstart)
+==================================================================
+- Höchstens 4 Fragen pro Runde. Lieber mehrere Runden.
+- Einfache Sprache. Ein Fachwort wird im Halbsatz miterklärt.
+- Wo du Optionen anbietest, ist die LETZTE immer:
+  "Etwas anderes — ich schreibe es hin". Immer. Auch wenn du sicher bist,
+  dass deine Optionen vollständig sind; sie sind es oft nicht.
+- Bei jeder Frage steht, was ohne Antwort passiert: entweder
+  "Default: X, später änderbar" oder "ohne Antwort geht es nicht weiter".
+- Du fragst NICHT nach, was im Code, in der Projektdatei oder im doc/ steht.
+  Das liest du selbst. Gefragt wird nur nach Absichten, Grenzen, Plänen.
+
+
+#############################
+DAS FORMAT FÜR FRAGEN UND ANWEISUNGEN (BESTELLT VOM USER AM 2026-09-04)
+#############################
+ANLASS, DAMIT NIEMAND DIE REGEL FÜR GESCHMACK HÄLT: der User sagte wörtlich
+"Die Ausgaben und vor allem die Sätze und ihre Formulierungen sind für mich
+oft unverständlich und in dem vielen Text oft nicht zu finden." Eine Frage,
+die er nicht findet, ist eine Frage, die er nicht beantwortet — und dann baue
+ich auf einer Annahme weiter. DAS IST KEIN STILPROBLEM, ES IST EIN
+FEHLERRISIKO.
+
+REGEL 1 — FRAGEN WERDEN VERSTÄNDLICH FORMULIERT.
+  - EIN Gedanke pro Satz. Kein Nebensatz im Nebensatz.
+  - Kurze Sätze. Wenn ein Satz über zwei Zeilen geht, wird er geteilt.
+  - Keine Fachbegriffe ohne Erklärung.
+  - Keine Paragraphen-Nummern IN der Frage. Sie gehören in den Bericht, nicht
+    in die Frage. Der User soll entscheiden, nicht nachschlagen.
+  - Die Frage steht ALLEIN. Kein Befund, keine Messung, keine Begründung im
+    selben Block — das steht davor oder in der progress-Datei.
+
+REGEL 2 — FRAGEN UND ANWEISUNGEN BEKOMMEN EINEN EIGENEN, SICHTBAREN BLOCK.
+  Er wird EXAKT so gebaut (Trennlinien über die volle Breite, damit der Block
+  im Fließtext sofort ins Auge fällt):
+
+Question:
+──────────────────────────────────────────────────────────────────────────
+1. This is the easy readable and easy understandable text of the Question.
+   This is the easy readable and easy understandable text of the Question.
+──────────────────────────────────────────────────────────────────────────
+2. This is the easy readable and easy understandable text of the Question.
+   This is the easy readable and easy understandable text of the Question.
+──────────────────────────────────────────────────────────────────────────
+
+Instruction:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. This is the easy readable and easy understandable text of the Instruction
+   Do this
+   Do that
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2. This is the easy readable and easy understandable text of the Instruction
+   Do this
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  DIE BAUTEILE:
+  - "Question:" für alles, was der User BEANTWORTEN soll.
+    Trennlinie ist "─" (U+2500).
+  - "Instruction:" für alles, was der User TUN soll (Tasten, Klicks, Befehle,
+    Abnahme-Schritte). Trennlinie ist "~".
+  - Durchnummeriert: 1. 2. 3. Jede Nummer ist EINE Sache.
+  - Folgezeilen sind um 3 Zeichen eingerückt und stehen unter dem Text,
+    nicht unter der Nummer.
+  - Zwischen zwei Nummern steht eine Trennlinie. Über der ersten und unter
+    der letzten auch.
+  - Eine Anweisung sagt, WAS zu tun ist — je Zeile ein Schritt.
+
+REGEL 3 — WO DIESE BLÖCKE STEHEN.
+  - Am ENDE der Ausgabe, direkt vor dem Abschluss-Block. Dort sucht der User
+    sie.
+  - NIE mitten im Fließtext.
+  - Gibt es nichts zu fragen und nichts zu tun, entfällt der Block. Ein
+    leerer "Question:"-Block auf Vorrat ist Lärm.
+
+REGEL 4 — AUCH DER RESTLICHE TEXT WIRD KÜRZER.
+  - Das WICHTIGSTE steht ZUERST. Was der User tun soll und was kaputt war,
+    steht vor der Herleitung.
+  - Herleitung, Messprotokoll und Beleg gehören in die progress-Datei, nicht
+    in die Antwort. In der Antwort steht das ERGEBNIS und wo der Beleg liegt.
+  - Keine Wiederholung. Was im Bericht steht, wird nicht noch einmal erzählt.
+
+
+DER ABSCHLUSS-BLOCK
+===================
+Die letzten Zeilen jeder Ausgabe sind immer:
+
+# PD.txt aktualisiert (ja/nein)
+# progress.txt aktualisiert (ja/nein)
+# WEITERMACHEN_PROMPT.txt aktualisiert (ja/nein)
+# WEITERMACHEN_PROMPT.txt bereinigt und alter archiviert (ja/nein)
+# Die Aufgabe <ID> wurde vollständig abgeschlossen (ja/nein)
+# Nächster Schritt: [n/m] bzw. nächstes TODO: <Aufgabe>
+# "/clear" Befehl und WEITERMACHEN_PROMPT.txt empfohlen (ja/nein)
+# Bewusst NICHT gemacht: <Liste + Grund; auch verworfene eigene Empfehlungen>
+
+Die letzte Zeile ist die wichtigste. Was ausgelassen, verworfen oder bewusst
+anders entschieden wurde, wird namentlich genannt — auch eine eigene
+Empfehlung, die der User verworfen hat, und der Grund dafür.
+
+
+AUFBAU EINER PD.txt
+===================
+Task_<DateTime>_<Name>.txt
+{
+  <Initialer Prompt>
+  <Rückfragen und Antworten>
+  Kategorie: [BT] / [ST]
+  Anzahl der Schritte: n
+  <Beschreibung der Schritte, je mit [A]/[B]/[C]>
+  [UNNÖTIG] <Schritt> — Begründung
+  <Modell-Empfehlung je Schritt>
+  DB/API: <relevant / nicht relevant + Grund>
+  Fortschritt:
+  [1/n] offen | begonnen | abgeschlossen
+  …
+}
+
+
+ZWISCHENSCHRITTE
+================
+Tritt während der Arbeit ein Problem zutage, das vorher nicht sichtbar war,
+und der User will es bearbeitet haben, wird es als Zwischenschritt eingefügt:
+[n+i/m] -> Problem tritt auf [n+i.j/m] -> gelöst, weiter mit [n+i+1/m]
+
+
+ARCHIVIERUNG
+============
+Wenn die WEITERMACHEN_PROMPT.txt zu sehr mit abgeschlossenen Aufgaben gefüllt
+ist (Auslöser: etwa 50 KB), wird sie mit <DATUM>-Suffix archiviert und eine
+bereinigte Fassung angelegt, die nur noch offene TODOs und Aufgaben enthält.
+Eine veraltete Datei behält NIE ihren Originalnamen.
+
+In der WEITERMACHEN_PROMPT.txt steht immer, in welcher PD.txt wir gerade sind.
+Nach jedem Schritt [n/m] und nach Abschluss jeder Aufgabe wird angegeben, ob
+und unter welchem Namen PD.txt und WEITERMACHEN_PROMPT.txt gespeichert wurden.
+
+
+WIE DIE LESEREIHENFOLGE GELESEN WIRD (nicht nur WAS)
+====================================================
+Die Pflichtdateien sind zusammen groß. Sie werden deshalb NICHT am Stück
+gelesen:
+- Die projektspezifische doc/GUIDELINES.md wird ABSCHNITTSWEISE über ihre
+  "## §"-Überschriften angesteuert: erst die Überschriftenliste holen
+  (grep -n "^## §" …), dann nur die einschlägigen Paragraphen lesen, plus
+  IMMER den Projekt-Steckbrief. Wer sie ganz liest, verbraucht den Kontext,
+  den die Aufgabe selbst braucht.
+- Die UNIVERSAL-Guidelines und diese Datei werden ganz gelesen, solange sie
+  unter etwa 30 KB bleiben.
+- Die WEITERMACHEN_PROMPT.txt wird ganz gelesen, solange sie bereinigt ist.
+Diese Regel KÜRZT die Guidelines nicht — sie regelt nur den Zugriff.
+
+
+VERBINDLICHKEIT
+===============
+Das Einhalten der Architektur- und Style-Guidelines ist verpflichtend, solange
+sie die Funktionalität der App nicht einschränken. Sollte eine Abweichung
+nötig sein, wird der User VOR Beginn der Aufgabe darüber informiert und die
+Abweichung begründet.
+
+Du informierst immer, wenn alle Schritte einer Aufgabe vollständig
+abgeschlossen sind. Du gibst eine Empfehlung heraus, welche Schritte zur
+Überprüfung und Verbesserung der Codebase als nächstes sinnvoll sind, ohne
+überzuoptimieren.
+==============================================================================

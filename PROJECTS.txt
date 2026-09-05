@@ -1,0 +1,22 @@
+# PROJECTS.txt — welches Projekt liest welche allgemeinen Regeln
+# Format:  Name | WEB oder JAVA | absoluter Windows-Pfad
+# Wird von bin/check-projects.sh gelesen. Zeilen mit # sind Kommentar.
+#
+# Stand: 2026-09-05
+
+GameLoop2  | JAVA | C:\Users\pc\eclipse-workspace\GameLoop2
+German     | WEB  | C:\Users\pc\Documents\Phoenix Code\German
+myLangSite | WEB  | C:\Users\pc\Documents\Phoenix Code\myLangSite
+Ringmenue  | WEB  | C:\Users\pc\Documents\Phoenix Code\German\Related Projekts\Ringmenü
+
+# ABWEICHENDE ORTE (bewusst so, nicht aufraeumen):
+#   GameLoop2  -> Projekt-Guidelines liegen in src\main\doc\GUIDELINES.md,
+#                 nicht in doc\. Grund: rund 490 Zitate der Form doc/<datei>
+#                 im Produktivcode. Ein Umzug macht sie alle still falsch
+#                 (UNIVERSAL §0, unnoetiger Schritt Nr. 2).
+#   German     -> hat historisch Guidelines\ statt doc\. Die projekteigenen
+#                 Standards (EXERCISE_*, GRAMMAR_TABLE_*, VERB_DATA_*,
+#                 VERSION_AND_CHANGELOG_*) bleiben dort, bis ein eigener
+#                 Umzugs-Task sie nach doc\ holt.
+#   Ringmenue  -> liegt INNERHALB des German-Repos, ist aber ein eigenes
+#                 Projekt mit eigenem doc\ und eigenem Steckbrief.

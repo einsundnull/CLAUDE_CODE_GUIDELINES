@@ -1,0 +1,55 @@
+==============================================================================
+START-BLOCK — kommt in JEDES Projekt, ganz oben in dessen Startdatei
+==============================================================================
+QUELLE: CLAUDE_CODE_GUIDELINES/START_TEMPLATE.txt
+STAND:  2026-09-05
+
+So wird er benutzt:
+  1. Den Block zwischen den beiden Markierungen kopieren.
+  2. <SPRACHE> ersetzen durch JAVA oder WEB.
+  3. <PROJEKTPFAD> ersetzen durch den absoluten Pfad des Projekts.
+  4. Den fertigen Block ganz oben in die Startdatei des Projekts setzen
+     ("Start nicht löschen.txt", START.txt oder wie sie dort heißt).
+
+Alles unter dem Block bleibt, wie es ist. Der Block ersetzt NUR die alte
+"Lies:"-Liste, nicht die Notizen darunter.
+==============================================================================
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>> BLOCK ANFANG >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
+
+  1. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\<SPRACHE>_GUIDELINES_UNIVERSAL.md
+     Die allgemeinen Regeln. Gelten für ALLE Projekte. Ganz lesen.
+     Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geändert, nie hier.
+
+  2. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\Prompt_Handling.txt
+     Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.
+     Enthält das Frage-/Anweisungs-Format und den Abschluss-Block. Ganz lesen.
+
+  3. <PROJEKTPFAD>\doc\GUIDELINES.md
+     Die Regeln DIESES Projekts. Besetzt die Rollen aus Datei 1 im
+     Projekt-Steckbrief und ergänzt projektspezifische Paragraphen ab §20.
+     — NICHT am Stück lesen. Zuerst nur die Überschriften holen
+       (grep -n "^## §" <PROJEKTPFAD>\doc\GUIDELINES.md), dann ausschließlich
+       die Paragraphen, die die Aufgabe berührt, plus IMMER den
+       Projekt-Steckbrief ganz oben.
+
+  4. <PROJEKTPFAD>\WEITERMACHEN_PROMPT.txt
+     Wo wir stehen, welche PD aktiv ist, was offen ist. Ganz lesen.
+
+  5. Die aktive Task_*.txt in <PROJEKTPFAD>\doc\, die in Datei 4 genannt ist.
+
+REGELN ZU DIESER REIHENFOLGE:
+  - Bei Konflikt gewinnt die projektnähere Regel: 3 schlägt 1.
+    Eine Abweichung von 1 wird im Projekt-Steckbrief oder im betreffenden
+    Paragraphen von 3 NAMENTLICH begründet. Stillschweigend abweichen gilt
+    nicht.
+  - Dateien 1 und 2 werden NICHT ins Projekt kopiert. Es gibt genau eine
+    Fassung, und sie liegt im Repo. Eine Kopie im Projekt wäre eine zweite
+    Wahrheit, die niemand nachzieht.
+  - Der Lesezugriff auf das Repo ist die EINZIGE erlaubte Ausnahme von der
+    Regel "der Arbeitsbereich endet am Projektordner".
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<< BLOCK ENDE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

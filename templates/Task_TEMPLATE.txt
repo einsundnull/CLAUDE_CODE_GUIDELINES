@@ -1,0 +1,60 @@
+Task_<JJJJ-MM-TT_HH-MM-SS>_<NameDerAufgabe>.txt
+===============================================
+Kopiervorlage fuer eine PD. Gehoert nach <Projekt>\doc\.
+Der verbindliche Wortlaut steht in universal\Prompt_Handling.txt.
+
+
+Initialer Prompt
+================
+<woertlich, wie der User ihn geschrieben hat>
+
+
+Rueckfragen und Antworten
+=========================
+- <Frage> .... <Antwort>
+- <Frage> .... <Antwort>
+
+Kategorie: [BT] Bigger Task
+
+
+Anzahl der Schritte: <n>
+
+
+Beschreibung der Schritte
+=========================
+[1/n] <was passiert>  [A|B|C]
+[2/n] <was passiert>  [A|B|C]
+...
+
+Risikoklassen: [A] groesstes ROI · [B] 100 % sicher · [C] groesseres Risiko
+
+
+Unnoetige Schritte
+==================
+[UNNOETIG] <Schritt, den man erwarten wuerde>
+      Begruendung: <warum er keinen Mehrwert bringt oder zuviel Risiko traegt>
+
+
+Modell-Empfehlung je Schritt
+============================
+[1/n] Sonnet  – <Grund>
+[2/n] Opus    – <Grund>
+[3/n] Haiku   – <Grund; Haiku nur fuer wiederholende, klar umrissene Arbeit>
+
+Token-Optimierung: nach <[k/n]> lohnt /clear plus WEITERMACHEN_PROMPT.txt,
+weil <Grund, z. B. "bis dahin liegt die ganze Altdatei im Kontext">.
+
+
+DB/API
+======
+<relevant und welche | nicht relevant + Grund>
+
+
+Fortschritt
+===========
+[1/n] offen
+[2/n] offen
+...
+
+Zwischenschritte werden hier eingefuegt als [n+i.j/n], wenn waehrend der
+Arbeit ein Problem auftaucht, das vorher nicht sichtbar war.
