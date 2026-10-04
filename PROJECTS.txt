@@ -2,12 +2,14 @@
 # Format:  Name | WEB oder JAVA | absoluter Windows-Pfad
 # Wird von bin/check-projects.sh gelesen. Zeilen mit # sind Kommentar.
 #
-# Stand: 2026-09-05
+# Stand: 2026-09-17
 
-GameLoop2  | JAVA | C:\Users\pc\eclipse-workspace\GameLoop2
-German     | WEB  | C:\Users\pc\Documents\Phoenix Code\German
-myLangSite | WEB  | C:\Users\pc\Documents\Phoenix Code\myLangSite
-Ringmenue  | WEB  | C:\Users\pc\Documents\Phoenix Code\German\Related Projekts\Ringmenü
+DGZFP                 | WEB  | C:\Users\pc\Desktop\DGZFP
+GameLoop2             | JAVA | C:\Users\pc\eclipse-workspace\GameLoop2
+German                | WEB  | C:\Users\pc\Documents\Phoenix Code\German
+myLangSite            | WEB  | C:\Users\pc\Documents\Phoenix Code\myLangSite
+Ringmenue             | WEB  | C:\Users\pc\Documents\Phoenix Code\German\Related Projekts\Ringmenü
+SpriteRigEditorClaude | JAVA | C:\Users\pc\eclipse-workspace\SpriteRigEditorClaude
 
 # ABWEICHENDE ORTE (bewusst so, nicht aufraeumen):
 #   GameLoop2  -> Projekt-Guidelines liegen in src\main\doc\GUIDELINES.md,
@@ -20,3 +22,15 @@ Ringmenue  | WEB  | C:\Users\pc\Documents\Phoenix Code\German\Related Projekts\R
 #                 Umzugs-Task sie nach doc\ holt.
 #   Ringmenue  -> liegt INNERHALB des German-Repos, ist aber ein eigenes
 #                 Projekt mit eigenem doc\ und eigenem Steckbrief.
+#   SpriteRigEditorClaude
+#              -> ORDNER und GIT-REPO heissen verschieden: der Ordner
+#                 SpriteRigEditorClaude, das Repo JAVA_SpriteRigEditor.
+#                 https://github.com/einsundnull/JAVA_SpriteRigEditor.git
+#                 So bestellt vom User am 2026-09-17, kein Versehen.
+#              -> die Projekt-Skripte liegen in tools\, NICHT in bin\.
+#                 Grund: bin\ ist hier der Eclipse-Ausgabeordner
+#                 (.classpath kind="output" path="bin"), ein Skript dort
+#                 ueberlebt kein "Project > Clean". Das Guidelines-Repo legt
+#                 seine eigenen Skripte nach bin\ - das ist dort richtig, weil
+#                 dort kein Java-Projekt liegt, und darf hier nicht
+#                 nachgeahmt werden.

@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-09-05
+> **STAND:** 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -92,6 +92,16 @@ einem Langläufer sind sie verbindlich.
   Escape-Behandlung und Backdrop — und repariert später nur eine davon.
 - Ein Baustein hat **eine** Datei/Stelle. Zwei Stellen, die dasselbe Element
   bauen, sind ein Bug, auch wenn beide funktionieren.
+- **Ein Schalter mit mehr als ZWEI Zuständen zeigt seine Stufe am Knopf.**
+  Sobald ein Knopf mehr schaltet als An/Aus — drei Rasterstufen, vier
+  Leistenstufen, drei Größen —, trägt er eine **kleine Ziffer in seiner
+  Ecke** (Stufe 1, 2, 3 …; die Aus-Stufe bleibt leer). Grund: An/Aus liest
+  man am gedrückten Zustand ab, eine von drei Stufen nicht. Ohne die Ziffer
+  muss der Nutzer den Knopf durchklicken, um zu sehen, wo er steht — und
+  verliert dabei genau die Einstellung, die er prüfen wollte. Die Ziffer ist
+  **ein Baustein** (eine Stelle, die sie anhängt und nachzieht), kein
+  handgesetztes Element je Knopf. Bestellt vom User am 2026-09-22 am Beispiel
+  des Raster-Knopfes.
 - **Trennung teuer/billig:** Ein Bedienelement mit laufender Eingabe
   (Regler, Textfeld) trennt „während der Eingabe" von „nach der Eingabe".
   Billige Änderungen laufen während der Eingabe, teure erst danach. Ein Zug am
@@ -154,7 +164,9 @@ Drei Schichten, und die Abhängigkeit läuft nur in eine Richtung:
 - **Lesen und Schreiben sind ein Paar** und stehen nebeneinander. Ein Feld,
   das geschrieben, aber nicht gelesen wird, ist tot; umgekehrt ist es ein Bug.
 - **Nie ungefragt löschen.** „Alles zurücksetzen" nennt namentlich, welche
-  Schlüssel es verwirft.
+  Schlüssel es verwirft — in Worten des Benutzers („Maßsatz",
+  „Einstellungen"); der technische Schlüsselname erscheint nur mit dem
+  Schalter der Kennungen (§19, §20).
 - Jeder Zugriff auf `localStorage`/`sessionStorage` ist gekapselt und fängt
   Fehler ab. In einem privaten Fenster oder bei blockierten Seitendaten wirft
   schon der Zugriff.
@@ -197,6 +209,7 @@ Drei Schichten, und die Abhängigkeit läuft nur in eine Richtung:
 - **Mockup-First.** Vor einem neuen oder geänderten Dialog- oder
   Seiten-Layout zuerst ein Mockup — `mockup-*.html` oder ein
   `Schema_<Thema>.txt` im `doc/` → **Freigabe** → Implementierung.
+  Ein HTML-Mockup baut mit DENSELBEN Dateien wie die App (§21).
 - **Jede Ausnahme** von diesen Guidelines wird als Code-Kommentar **und** im
   `doc/` begründet.
 - **Eine veraltete Datei behält nie ihren Originalnamen [B].** Ein Altstand
@@ -315,6 +328,7 @@ einem vergessenen; ein benannter Auslöser macht aus einer Lücke eine
 | Mess-Anzeige + Ablesen (§13) | | |
 | i18n-Namensraum + Vorgabesprache (§15) | | |
 | Graphify-Scope (§1) | | |
+| Text-Werkstatt + Sprachdateien (§17) | | |
 
 **Die drei fett gesetzten Zeilen haben keinen Auslöser — sie sind
 Pflichtantworten vor der ersten Zeile Code**, weil sie alles andere steuern:
@@ -376,6 +390,226 @@ Der verbindliche Wortlaut steht in `Prompt_Handling.txt`, Abschnitte
   dreimal dieselben fünf Zeilen. Wortlaut und Referenz-Umsetzung:
   `Prompt_Handling.txt`, Abschnitt „EIN SKRIPT SCHLIESST SICH NICHT SELBST",
   und `bin/_wait.sh` im Guidelines-Repo.
+
+---
+
+## §17 Text-Werkstatt: jeder Text einer Oberfläche ist bearbeitbar, prüfbar, übersetzbar  [A/B]
+
+> **Verbindlich ab 2026-09-27**, bestellt vom User im Projekt Schnittmuster
+> (Vorbild: die Prüfseite der Tooltip-Texte, `bin/make-tooltip-review.js` →
+> `doc/tooltip-texte-pruefen.html`, mit Feldern je Teil, Vorschau,
+> „Als Datei speichern“).
+
+**Die Regel:** Jedes Programm, das nach diesen Guidelines gebaut wird, führt
+ALLE sichtbaren Texte — Beschriftungen, Knöpfe, Tooltips, Hilfe, Meldungen,
+Fehlertexte, Seitentexte — in **Sprachdateien** und hat eine
+**Text-Werkstatt**: eine Seite aus HTML/JS/JSON, auf der der User
+
+1. **sieht, welcher Text wo steht** — je Eintrag der Schlüssel, der Ort
+   (Knopf, Fenster, Abschnitt, Seite; bei Oberflächen aus der laufenden
+   Anwendung gelesen, nicht von Hand gelistet) und die Art (Name, Tooltip,
+   Hilfe, Meldung);
+2. **jeden Text bearbeitet** — je Sprache ein Feld, mit Vorschau, wo die
+   Form zählt (Tooltip A·B·C, Knopfname);
+3. **eine Sprache hinzufügt** — eine neue Spalte, zunächst leer;
+4. **mit einem Knopf „Prüfen“** je Sprache sieht, was **fehlt** (leer oder
+   gar nicht vorhanden) und was **verwaist** ist (in der Sprachdatei, aber
+   nirgends mehr benutzt), und die Liste auf **„nur fehlende“**, **„nur
+   vorhandene“** oder **„alle“** filtert, dazu eine Suche;
+5. **das Ergebnis als Datei speichert** (JSON), die übernommen wird.
+
+**Vor dem Anlegen wird GEFRAGT** (nicht angenommen): *Soll die Sprachdatei
+neu erstellt oder eine bestehende aktualisiert werden?* Eine vorhandene
+Textsammlung (etwa ein `i18n.js`) wird nie still ersetzt — sie wird
+übernommen, und was dabei umbenannt oder zusammengelegt wird, steht im
+Bericht.
+
+**Form der Dateien** (der Steckbrief nennt sie): je Sprache ein
+Schlüssel→Text-Satz in JSON; eine Anwendung, die über `file://` läuft und
+kein `fetch()` darf, bindet dieselben Daten als `.js`-Hülle ein
+(`window.<Namensraum>_TEXTE = { … }`), erzeugt aus der JSON — es gibt EINE
+Quelle, nicht zwei. Die Werkstatt-Seite wird **erzeugt** (Skript in `bin/`),
+wie die Tooltip-Prüfseite, damit sie beim nächsten neuen Knopf nicht veraltet.
+
+**Warum das eine Regel ist und kein Komfort:** Texte, die im Code verstreut
+stehen, übersetzt niemand vollständig, und eine fehlende Übersetzung fällt
+erst auf, wenn ein Nutzer sie sieht. Die Deckungsgleichheit der Sprachen
+(§15) wird damit **sichtbar und anklickbar**, nicht nur ein Test. Und der
+User korrigiert seine Texte selbst, ohne eine Zeile Code anzufassen.
+
+Die bestehende Pflicht aus §15 („alle sichtbaren Texte laufen über eine
+Übersetzungsfunktion", „vom Nutzer eingetippter Text ist ein Datum") bleibt;
+§17 gibt ihr die Werkstatt. Für ein Wegwerf-Werkzeug (§14) ist §17 ein
+Angebot, für einen Langläufer Pflicht — **Auslöser: der erste Text, der in
+einer zweiten Sprache erscheinen soll, oder der zwanzigste Text überhaupt**.
+
+---
+
+## §18 Quick Buttons: die Knöpfe gehören an das, was man bearbeitet  [A/B]
+
+> **Verbindlich ab 2026-09-28**, bestellt vom User im Projekt Schnittmuster:
+> *„Wir nennen diese Art Buttons von jetzt an ‚Quick Buttons'. … dass du mir
+> von jetzt an immer vorschlägst für Optionen, bei denen es sich in einem
+> Projekt anbietet ‚Quick Buttons' zu erstellen, diese zu erstellen und oder
+> fragst, ob ich es möchte, wenn es Sinn macht."*
+> Vorbild: die Linien-Insel des Schnittmuster-Generators
+> (`doc/mockup-linien-knoepfe.html`).
+
+**Was ein Quick Button ist:** ein Knopf, der erscheint, sobald ein Element
+angewählt ist, und genau die Handlungen an DIESEM Element anbietet — als
+kleine Insel über der Arbeitsfläche (dort: rechts oben, direkt unter der
+Leiste), **dieselben Symbole wie in der Leiste, nur größer** (dort 1,5-fach),
+mit Tooltip Name · Wirkung · Taste. Ein Zahlenfeld, das zur Handlung gehört
+(dort: die Nahtzugabe in mm neben „Schneiden"), steht mit in der Insel.
+Ohne Anwahl ist die Insel weg.
+
+**Die Regel:**
+1. **Vorschlagen oder fragen — immer.** Wo eine Option an einem angewählten
+   Element hängt (Kurve/Gerade, Punkt dazu, schneiden, löschen, ein Wert, der
+   nur für dieses Element gilt), schlage ich einen Quick Button vor oder frage,
+   ob er gewünscht ist. Nicht still eine Zeile, ein Menü oder ein
+   Seitenleisten-Feld dafür bauen.
+2. **Ein Weg, zwei Orte:** der Quick Button ruft DENSELBEN Weg wie Taste,
+   Menü oder Feld — kein zweites Verhalten (§2). Ein Zustand, den er zeigt
+   (gedrückt, gesperrt, Wert), wird aus derselben Quelle nachgezogen.
+3. **Mockup zuerst (§9):** Lage, Größe, Reihenfolge und welche Knöpfe je
+   Elementart erscheinen, werden als Mockup freigegeben.
+4. **Der Name steht im Code und in der Doku:** Quick Buttons heißen so — in
+   Kommentaren, im `doc/`, in Fragen an den User.
+
+**Warum das eine Regel ist:** eine Handlung, die weit weg vom Element steht
+(eine Zeile oben, ein Menü, die Seitenleiste), sucht man; eine, die neben
+dem Element auftaucht, findet man. Und wer mit dem Blick auf dem Element
+bleibt, arbeitet schneller und verklickt sich seltener.
+
+---
+
+## §19 Jedes Bedienelement hat eine Kennung — sichtbar per Schalter, kopierbar  [A/B]
+
+> **Verbindlich ab 2026-09-28**, bestellt vom User im Projekt Schnittmuster:
+> *„In den Universellen Guidelines festhalten, dass von jetzt an alle
+> Bedienelemente in jedem Programm eine eindeutige ID brauchen, die per
+> Toggle immer angezeigt und ins Clipboard kopiert werden kann."*
+
+**Die Regel:**
+1. **Jedes Bedienelement** — Knopf, Feld, Schalter, Menüeintrag, Quick
+   Button (§18), Griff, Punkt, Linie und jedes Stück einer Linie in einer
+   Zeichenfläche — hat eine **eindeutige, stabile Kennung**. Stabil heißt:
+   nachgeschlagen, nicht gezählt — ein neues Element davor ändert sie nicht.
+2. **Ein Schalter** („Kennungen") blendet sie ein: am Tooltip, an der Zeile,
+   die das angewählte Element nennt, und wo es passt im Bild. Aus = nichts
+   davon zu sehen.
+3. **Eine Taste kopiert** die gerade gezeigte Kennung in die Zwischenablage
+   (Vorbild Schnittmuster: Strg+C, nur wenn eine Kennung zu sehen ist und
+   kein Text markiert ist; sonst gehört die Taste dem Betriebssystem). Die
+   Zeile bestätigt „Kopiert: …"; scheitert das Kopieren, sagt sie es.
+4. **Ein Element ohne Kennung ist ein Befund**, kein Detail: die Register
+   melden es (Prüfstand), statt eine Nummer zu erfinden.
+
+**Warum:** der User meldet Fehler und Wünsche an einem Element. Ohne Namen
+heißt es „der Punkt da oben links" — mit Namen ist der Befund eindeutig,
+nachbaubar und im Protokoll wiederzufinden.
+
+---
+
+## §20 Tooltips sprechen zum Benutzer — und verdecken nie ein offenes Fenster  [A/B]
+
+> **Verbindlich ab 2026-09-29**, bestellt vom User im Projekt Schnittmuster:
+> *„Tooltips dürfen niemals an mich als Entwickler adressiert sein. z.B.
+> Freies verschieben [...] Der Weg von früher! <- Der Benutzer weiß nicht,
+> was das bedeutet."* und *„Tooltips dürfen niemals kleine Fenster, die sich
+> beim Klicken auf eine Combobox eines Buttons öffnen, verdecken."*
+
+**Regel 1 — jeder sichtbare Text spricht zum BENUTZER.** Das gilt für
+Tooltips, Hilfetexte, Beschriftungen, Meldungen und Dialoge. Verboten sind:
+
+1. **Entwicklungsgeschichte:** „bisher", „der Weg von früher", „wie vorher",
+   „die alte Anordnung", „so war es bisher", „nicht mehr …", „neu seit …".
+   Der Benutzer kennt keinen früheren Stand. Beschrieben wird, was das
+   Element **jetzt** tut. Ein früherer Standard heißt „Vorgabe".
+   **Erlaubt** ist „vorher" nur, wo es die eigene letzte Handlung des
+   Benutzers meint („der vorige Maßsatz", „fragt vorher nach").
+2. **Pläne und Baustellen:** „kommt später", „noch nicht gebaut",
+   „(kommt in …)". Was es nicht gibt, steht nicht in der Oberfläche.
+3. **Arbeitsnamen:** Aufgaben-Kennungen (PD, W27, [3/9]), Paragraphen (§),
+   „Mockup", Datei-, Funktions- und Variablennamen, Speicher-Schlüssel.
+4. **Texte über abgeschaltete Wege:** eine Oberfläche, die der Benutzer
+   nicht mehr erreichen kann, wird in der Hilfe nicht beschrieben.
+
+**Die einzige Ausnahme ist ein ausdrücklicher Debug-Weg:** was nur mit dem
+Schalter der Kennungen (UNIVERSAL §19) oder in einer Debug-Anzeige
+erscheint, darf technische Namen tragen — dort sind sie gewollt.
+
+**Prüfung:** Der Prüfstand oder Rauchtest liest ALLE Texte der Sprachdatei
+und meldet die Muster aus 1–3 namentlich. Was bewusst ausgenommen ist (etwa
+Texte einer nicht mehr erreichbaren Oberfläche, deren Code bleibt), steht
+mit Grund in einer Ausnahmeliste im Test — nicht still.
+
+**Regel 2 — ein Tooltip verdeckt nie ein offenes Fenster.** Ein kleines
+Fenster, das ein Knopf, ein ▾ oder eine Klappliste geöffnet hat, ist die
+Stelle, an der der Benutzer gerade arbeitet. Der Tooltip weicht ihm aus:
+
+1. Jedes solche Fenster trägt, solange es offen ist, das Kennzeichen
+   „frei halten" (im Web: das Attribut, das der EINE Tooltip abfragt; in
+   Java: die Eigenschaft, die der Tooltip-Baustein abfragt). Das Kennzeichen
+   setzt der **Baustein des Fensters** (UNIVERSAL §2), nicht jeder Aufrufer.
+2. **Jede** Art, den Tooltip zu setzen — am Element, an der Mausspitze, in
+   der Ecke — wählt unter mehreren Plätzen den mit der kleinsten Überdeckung
+   und bietet dabei Plätze **neben** jedem offenen Fenster an. Keine Art
+   darf den Platz „stur" setzen.
+3. Ein Tooltip eines Knopfes **im** Fenster steht außerhalb des Fensters.
+4. Den eigenen Knopf verdeckt er ebenfalls nie.
+
+**Warum:** Ein Tooltip fängt keine Maus. Liegt er über einem offenen
+Fenster, klickt der Benutzer hindurch auf etwas, das er nicht sieht — und
+ein Text, den er nicht versteht, hilft ihm nicht, sondern verunsichert ihn.
+
+---
+
+## §21 Ein Mockup ist Single Source of Truth: es lädt die Bausteine der App  [A/B]
+
+> **Verbindlich ab 2026-10-04**, bestellt vom User im Projekt Schnittmuster:
+> *„Ich möchte mal ein Mockup, in dem es eine Single Source of Truth gibt. Das
+> heißt, wenn ich das Mockup bestätige, sieht es in der fertigen App genauso
+> aus wie im Mockup."* — und: *„Dass es für Mockups eine Single Source of
+> Truth geben soll, muss in den Universal-Guidelines festgehalten werden."*
+
+**Das Problem:** ein Mockup mit eigenem `<style>` und eigenem Markup ist ein
+ZWEITER Entwurf. Nach der Freigabe wird er in der App nachgebaut, und dabei
+weichen Abstände, Schriftgrößen, Farben und Knöpfe ab — freigegeben wurde
+etwas anderes, als ausgeliefert wird.
+
+**Die Regel:**
+1. **Ein HTML-Mockup lädt die echten Dateien der App:** die Token-Quelle
+   (§3), das Stylesheet und die Bausteine aus Schicht 2 (§2/§4), über
+   relative Pfade (`../css/…`, `../js/base/…`). Es hat KEIN eigenes
+   Styling für das, was freigegeben wird.
+2. **Was neu ist, wird gleich als Baustein gebaut**, nicht im Mockup: eine
+   neue Datei in Schicht 2 und die Regeln im echten Stylesheet. Das Mockup
+   füttert diesen Baustein nur mit Beispieldaten — die App füttert ihn
+   später mit echten.
+3. **Das Mockup darf nur Folgendes selbst enthalten:** Beispieldaten, die
+   Beschriftung der Varianten (M1, M2 …) und einen Rahmen, der die Lage in
+   der App nachstellt (z. B. eine Seitenleiste in ihrer echten Breite). Der
+   Rahmen nutzt dieselben Klassen wie die App.
+4. **Bis zur Freigabe hängt der neue Baustein nicht in der App.** Er ist
+   schon fertiger Code, aber noch nicht verdrahtet — die App ändert sich
+   erst nach dem „Ja".
+5. **Nach der Freigabe wird nur verdrahtet, nicht nachgebaut.** Muss am
+   Aussehen noch etwas geändert werden, geschieht es im Baustein — und das
+   Mockup zeigt es dann von selbst mit.
+6. **Prüfung:** das Mockup und die App werden im selben Browser
+   nebeneinander angesehen. Weicht etwas ab, ist das ein Fehler im
+   Baustein, nicht im Mockup.
+
+**Ausnahme:** ein Mockup, das nur eine IDEE skizziert (Varianten
+vergleichen, noch keine Gestalt), darf frei gezeichnet sein — dann steht im
+Kopf „Skizze, nicht Single Source of Truth", und vor dem Bau folgt ein
+Mockup nach dieser Regel.
+
+**Warum:** Was freigegeben wird, soll ausgeliefert werden — Zeichen für
+Zeichen. Zwei Fassungen derselben Oberfläche laufen auseinander wie jede
+doppelte Wahrheit (§2).
 
 ---
 
