@@ -1,0 +1,44 @@
+Vergleiche das Projekt "C:\Users\pc\Documents\Phoenix Code\myLangSite" mit "C:\Users\pc\Documents\Phoenix
+  Code\Schnittmuster"; Schnittmuster ist jünger und besser organisiert. Jedoch ist die ursprüngliche Organisation der
+  Prompts, der progress.txt, der Guidelines usw., im Weiteren als "Organisation" bezeichnet, der Vorgänger der
+  Organisation des "Schnittmuster" Programmes. Die Organisation des Schnittmusters hat sich in der Zwischenzeit
+  weiterentwickelt und kann als eine Art Goldstandard betrachtet werden. Ich möchte, dass du dir den Startprompt des
+  "Schnittmuster" Programmes anschaust und die Organisation des "myLangSite" Programmes auf diesen Standard bringst.
+Dabei sollst du so Tokensparend vorgehen, wie es geht. Das heißt, du überprüfst, welcher Weg am effizientesten ist.
+Z.B. Zuerst einen Wissensgraph mit "Graphify" anlegen, die Dokumentation im "myLangSite" nach dem Vorbild von "Schnittmuster" sortieren
+und die Directories aufräumen und von Altlasten befreien usw. Erstelle eine Tabelle mit den Vorgeschlagenen nötigen Schritten.
+Ich möchte, dass die Organisation der beiden Apps so ähnlich wie möglich ist.
+Hier der Startprompt der "Schnittmuster" App. : "LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
+
+  1. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\WEB_GUIDELINES_UNIVERSAL.md
+     Die allgemeinen Regeln. Gelten für ALLE Projekte. Ganz lesen.
+     Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geändert, nie hier.
+
+  2. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\Prompt_Handling.txt
+     Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.
+     Enthält das Frage-/Anweisungs-Format und den Abschluss-Block. Ganz lesen.
+
+  3. C:\Users\pc\Documents\Phoenix Code\Schnittmuster\doc\GUIDELINES.md
+     Die Regeln DIESES Projekts. Besetzt die Rollen aus Datei 1 im
+     Projekt-Steckbrief und ergänzt projektspezifische Paragraphen ab §20.
+     — NICHT am Stück lesen. Zuerst nur die Überschriften holen
+       (grep -n "^## §" doc/GUIDELINES.md), dann ausschließlich
+       die Paragraphen, die die Aufgabe berührt, plus IMMER den
+       Projekt-Steckbrief ganz oben.
+
+  4. C:\Users\pc\Documents\Phoenix Code\Schnittmuster\WEITERMACHEN_PROMPT.txt
+     Wo wir stehen, welche PD aktiv ist, was offen ist. Ganz lesen.
+
+  5. Die aktive Task_*.txt in C:\Users\pc\Documents\Phoenix Code\Schnittmuster\doc\,
+     die in Datei 4 genannt ist.
+
+REGELN ZU DIESER REIHENFOLGE:
+  - Bei Konflikt gewinnt die projektnähere Regel: 3 schlägt 1.
+    Eine Abweichung von 1 wird im Projekt-Steckbrief oder im betreffenden
+    Paragraphen von 3 NAMENTLICH begründet. Stillschweigend abweichen gilt
+    nicht.
+  - Dateien 1 und 2 werden NICHT ins Projekt kopiert. Es gibt genau eine
+    Fassung, und sie liegt im Repo. Eine Kopie im Projekt wäre eine zweite
+    Wahrheit, die niemand nachzieht.
+  - Der Lesezugriff auf das Repo ist die EINZIGE erlaubte Ausnahme von der
+    Regel "der Arbeitsbereich endet am Projektordner"."

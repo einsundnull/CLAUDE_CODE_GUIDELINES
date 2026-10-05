@@ -2,7 +2,7 @@
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/JAVA_GUIDELINES_UNIVERSAL.md`
 > (DIES IST DIE QUELLE)
-> **STAND:** 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
+> **STAND:** 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
 >
 > **Umzug am 2026-09-05:** Diese Datei lag bis dahin in
 > `C:\Users\pc\eclipse-workspace\GameLoop2\`. Das war der Grund, warum sie
@@ -292,6 +292,12 @@ Aus `Prompt_Handling.txt` (liegt als Kopie in jedem `doc/`):
 - `WEITERMACHEN_PROMPT.txt` zum Fortsetzen nach `/clear`; nennt immer die
   aktive PD. Wird sie zu lang: mit `<DATUM>`-Suffix archivieren und bereinigt
   neu anlegen (nur offene TODOs).
+- **Ihr Kopf ist der Startblock [B]** (seit 2026-10-05): direkt nach Titel
+  und Stand steht der Block `BLOCK ANFANG … BLOCK ENDE` mit der
+  Lesereihenfolge 1–5 und ihren Regeln — Wortlaut wörtlich aus
+  `Prompt_Handling.txt`, Abschnitt „DER STARTBLOCK", nur Projektpfad
+  angepasst, ohne Datum und Aufgabenstand. Er ist der Wiedereinstieg nach
+  `/clear` und wandert beim Archivieren unverändert in die Neufassung.
 - **Abschluss-Block** als letzte Zeilen jeder Ausgabe:
   PD aktualisiert? · progress aktualisiert? · WEITERMACHEN aktualisiert? ·
   WEITERMACHEN bereinigt/archiviert? · Aufgabe vollständig? · nächster

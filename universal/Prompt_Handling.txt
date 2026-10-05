@@ -2,7 +2,8 @@
 Prompt_Handling.txt — projektneutral
 ==============================================================================
 QUELLE: CLAUDE_CODE_GUIDELINES/universal/Prompt_Handling.txt  (DIES IST DIE QUELLE)
-STAND:  2026-09-05
+STAND:  2026-10-05 (NEU: Abschnitt "DER STARTBLOCK IM KOPF DER
+        WEITERMACHEN_PROMPT.txt"); davor 2026-09-05
 Herkunft: herausgelöst aus GameLoop2\Prompt_Handling.txt (Stand 2026-09-04)
           durch Entfernen aller Java- und GameLoop2-spezifischen Stellen.
           Was dort projektspezifisch war, steht jetzt als <Platzhalter> da und
@@ -262,7 +263,71 @@ ist (Auslöser: etwa 50 KB), wird sie mit <DATUM>-Suffix archiviert und eine
 bereinigte Fassung angelegt, die nur noch offene TODOs und Aufgaben enthält.
 Eine veraltete Datei behält NIE ihren Originalnamen.
 
+Die bereinigte Fassung übernimmt den STARTBLOCK (nächster Abschnitt) wörtlich.
+
 In der WEITERMACHEN_PROMPT.txt steht immer, in welcher PD.txt wir gerade sind.
+
+
+DER STARTBLOCK IM KOPF DER WEITERMACHEN_PROMPT.txt (BESTELLT AM 2026-10-05)
+==========================================================================
+Jede WEITERMACHEN_PROMPT.txt beginnt — direkt nach ihrem Titel- und
+Stand-Kopf — mit dem STARTBLOCK. Er ist der Wiedereinstieg nach "/clear":
+der User kopiert den Block (oder sagt nur "lies WEITERMACHEN_PROMPT.txt und
+führe den Startblock aus"), und das Modell weiß, was es in welcher
+Reihenfolge lesen muss. Ohne den Block wird die Reihenfolge jedes Mal von
+Hand getippt — und dabei vergessen.
+
+DIE FORM:
+  - Wortlaut wie unten, Zeichen für Zeichen. Angepasst werden NUR:
+    <Projektpfad>, der Dateiname der Universal-Datei
+    (WEB_GUIDELINES_UNIVERSAL.md oder JAVA_GUIDELINES_UNIVERSAL.md).
+  - Im Block stehen KEINE Metadaten: kein Datum, kein "NEU seit …", kein
+    Aufgabenstand. Die gehören darunter. Der Block ändert sich nur, wenn sich
+    diese Vorlage ändert.
+  - Wird die WEITERMACHEN_PROMPT.txt archiviert und neu angelegt, wandert der
+    Block unverändert mit.
+  - Vorbild: Schnittmuster\WEITERMACHEN_PROMPT.txt (2026-10-03).
+
+DER WORTLAUT:
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>> BLOCK ANFANG >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
+
+  1. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\<WEB|JAVA>_GUIDELINES_UNIVERSAL.md
+     Die allgemeinen Regeln. Gelten für ALLE Projekte. Ganz lesen.
+     Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geändert, nie hier.
+
+  2. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\Prompt_Handling.txt
+     Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.
+     Enthält das Frage-/Anweisungs-Format und den Abschluss-Block. Ganz lesen.
+
+  3. <Projektpfad>\doc\GUIDELINES.md
+     Die Regeln DIESES Projekts. Besetzt die Rollen aus Datei 1 im
+     Projekt-Steckbrief und ergänzt projektspezifische Paragraphen ab §20.
+     — NICHT am Stück lesen. Zuerst nur die Überschriften holen
+       (grep -n "^## §" doc/GUIDELINES.md), dann ausschließlich
+       die Paragraphen, die die Aufgabe berührt, plus IMMER den
+       Projekt-Steckbrief ganz oben.
+
+  4. <Projektpfad>\WEITERMACHEN_PROMPT.txt
+     Wo wir stehen, welche PD aktiv ist, was offen ist. Ganz lesen.
+
+  5. Die aktive Task_*.txt in <Projektpfad>\doc\,
+     die in Datei 4 genannt ist.
+
+REGELN ZU DIESER REIHENFOLGE:
+  - Bei Konflikt gewinnt die projektnähere Regel: 3 schlägt 1.
+    Eine Abweichung von 1 wird im Projekt-Steckbrief oder im betreffenden
+    Paragraphen von 3 NAMENTLICH begründet. Stillschweigend abweichen gilt
+    nicht.
+  - Dateien 1 und 2 werden NICHT ins Projekt kopiert. Es gibt genau eine
+    Fassung, und sie liegt im Repo. Eine Kopie im Projekt wäre eine zweite
+    Wahrheit, die niemand nachzieht.
+  - Der Lesezugriff auf das Repo ist die EINZIGE erlaubte Ausnahme von der
+    Regel "der Arbeitsbereich endet am Projektordner".
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<< BLOCK ENDE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 Nach jedem Schritt [n/m] und nach Abschluss jeder Aufgabe wird angegeben, ob
 und unter welchem Namen PD.txt und WEITERMACHEN_PROMPT.txt gespeichert wurden.
 
