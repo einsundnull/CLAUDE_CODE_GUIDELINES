@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -616,6 +616,41 @@ Mockup nach dieser Regel.
 **Warum:** Was freigegeben wird, soll ausgeliefert werden — Zeichen für
 Zeichen. Zwei Fassungen derselben Oberfläche laufen auseinander wie jede
 doppelte Wahrheit (§2).
+
+---
+
+## §22 Eine Fehlermeldung schließt der Benutzer — nie die Zeit  [A/B]
+
+> **Verbindlich ab 2026-10-06**, bestellt vom User im Projekt myLangSite:
+> *„Die Fehlermeldung sah schlecht aus. Ihr Design passte nicht zum Rest der
+> App und ich konnte sie nicht bestätigen, um sie zu entfernen, sondern musste
+> warten. […] in die universal-guidelines aufnehmen, dass sich
+> Fehlermeldungen immer durch den Benutzer bestätigen und dadurch schließen
+> können lassen müssen.“*
+
+**Die Regel:**
+1. **Jede Fehlermeldung bleibt offen, bis der Benutzer sie schließt** — mit
+   einem sichtbaren Knopf („OK“), dem ✕ und der Escape-Taste. Sie verschwindet
+   **nie** nach einer Zeit von selbst, auch nicht „nach 5 Sekunden“.
+2. **Es gibt genau EINEN Baustein für Fehlermeldungen** (UNIVERSAL §2), der
+   Bestätigungs-Dialog aus dem Steckbrief (§14). Er erzwingt Regel 1 selbst —
+   eine Option „autoClose“ für Fehler wird im Baustein überschrieben, nicht dem
+   Aufrufer überlassen.
+3. **Jede andere Toast-/Hinweis-Funktion im Projekt leitet den Typ „Fehler“
+   an diesen Baustein weiter.** Selbstgebaute Toasts mit eigenem Aussehen sind
+   für Fehler verboten; für kurze Erfolgsmeldungen erlaubt, solange sie das
+   Aussehen der App tragen (Token-Quelle, §3).
+4. **Dasselbe gilt für Hinweise, die der Benutzer lesen muss** (Warnungen,
+   Hinweiszeilen in einem Fenster): Was nicht von selbst verschwindet, hat
+   einen Weg, es zu schließen. Ein Hinweis ohne Schließen-Knopf ist ein Befund.
+5. **Prüfung:** Der Prüfstand/Rauchtest sucht nach Fehler-Toasts mit Zeitgeber
+   (`setTimeout` + Entfernen bei Typ „error“) und meldet sie namentlich.
+
+**Warum:** Eine Fehlermeldung, die verschwindet, bevor sie gelesen ist, ist so
+gut wie nicht gezeigt — der Benutzer weiß danach nicht, was schiefging, und
+muss den Fehler wiederholen, um ihn noch einmal zu sehen. Und wer warten muss,
+bis eine Meldung den Bildschirm freigibt, wird von der App aufgehalten statt
+informiert.
 
 ---
 
