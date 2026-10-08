@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -651,6 +651,37 @@ gut wie nicht gezeigt — der Benutzer weiß danach nicht, was schiefging, und
 muss den Fehler wiederholen, um ihn noch einmal zu sehen. Und wer warten muss,
 bis eine Meldung den Bildschirm freigibt, wird von der App aufgehalten statt
 informiert.
+
+---
+
+## §23 Ein Dialog passt ohne Scrollen auf den Bildschirm  [B]
+
+> **Verbindlich ab 2026-10-08**, bestellt vom User im Projekt myLangSite:
+> *„Dialoge sind, zumindest auf der Desktop Version, so anzulegen, dass sie
+> ohne Scrollen vollständig zu sehen sind. Diese Vorgabe muss nicht unter
+> allen Umständen zu erzwingen, aber sollte immer dort, wo es möglich ist
+> angewendet werden, um die Übersichtlichkeit und die Bedienbarkeit zu
+> erhöhen.“*
+
+**Die Regel:**
+1. **Ein Dialog ist auf dem Desktop ganz zu sehen, ohne zu scrollen** —
+   Text, Felder und Knöpfe. Maßstab ist ein Laptop-Fenster: **1366 × 650 px
+   Innenfläche**. Auf dem Handy gilt die Regel, wo es geht.
+2. **Wo es möglich ist, wird es gemacht.** Mittel in dieser Reihenfolge:
+   kleinere Abstände und Symbole, Angaben nebeneinander statt untereinander,
+   ein leerer Kopf entfällt, Nebensachen klappen auf. Ein Text wird dafür
+   nicht unverständlich gekürzt.
+3. **Wo es nicht geht** (lange Listen, große Formulare), scrollt nur der
+   Inhalt. Überschrift und Knöpfe bleiben stehen; der Knopf zum Bestätigen
+   ist nie unter dem Rand versteckt. Die Ausnahme steht als Kommentar am
+   Dialog.
+4. **Prüfung:** Ein neuer oder geänderter Dialog wird bei 1366 × 650
+   gemessen (Höhe des Dialogs ≤ Fensterhöhe). Das Mockup (§21) zeigt ihn in
+   dieser Größe.
+
+**Warum:** Was man erst suchen muss, übersieht man. Ein Bestätigungs-Dialog,
+dessen Hinweis oder Knopf unter dem Rand liegt, wird bestätigt, ohne dass
+der Hinweis gelesen wurde.
 
 ---
 
