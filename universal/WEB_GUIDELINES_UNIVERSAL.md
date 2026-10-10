@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -323,6 +323,7 @@ einem vergessenen; ein benannter Auslöser macht aus einer Lücke eine
 | Netz-Abhängigkeiten (CDN, Fonts, API) | | — |
 | Token-Quelle (§3) | | |
 | Dialog-Basisbaustein (§2) | | |
+| Dialog-Standardbreite + Form-Baustein (§24) | | |
 | Formular-/Bedienelement-Fabriken (§2) | | |
 | Bestätigungs-Dialog (§2) | | |
 | Schichten-Ist (§4) | | |
@@ -682,6 +683,58 @@ informiert.
 **Warum:** Was man erst suchen muss, übersieht man. Ein Bestätigungs-Dialog,
 dessen Hinweis oder Knopf unter dem Rand liegt, wird bestätigt, ohne dass
 der Hinweis gelesen wurde.
+
+Die **Form** des Dialogs regelt §24: §23 sagt, dass er passt, §24, wie
+groß er ist. Kompakter machen (Regel 2) heißt nicht flacher machen.
+
+---
+
+## §24 Ein Dialog hat die Form des Goldenen Schnitts und nutzt seine Höhe  [B]
+
+> **Verbindlich ab 2026-10-09**, bestellt vom User im Projekt myLangSite:
+> *„Der Stunde verschieben / löschen Dialog ist jetzt zu flach. […] Ich
+> möchte sie aber wieder höher, sie sollen den Platz in der Höhe ausnutzen
+> ohne Scroll. […] von der Dialoggröße her, entsprach die Höhe und Breite der
+> alten Dialoge eher meinem ästhetischen Empfinden. Bitte Best Practise bzw.
+> Goldenen Schnitt anwenden und in Universal-Guidelines festhalten.“*
+> Gemessen: der frühere Löschen-Dialog war 500 × 821 px — fast genau
+> hochkant im Goldenen Schnitt (500 × 1,618 = 809). Der kompakte Ersatz nach
+> §23 war 600 × 365 px — fast quadratisch-flach; das wirkte gequetscht.
+
+**Die Regel:**
+1. **Ein Dialog mit Eingaben** (Felder, Auswahl, Nachricht) steht
+   **hochkant im Goldenen Schnitt: Höhe = Breite × 1,618.** Die
+   Standardbreite steht im Steckbrief (§14); ohne Angabe gilt 500 px →
+   Höhe 809 px.
+2. **Die Höhe ist fest, nicht „so hoch wie der Inhalt“:**
+   `height: min(Breite × 1,618, 90 % der Fensterhöhe)`. So springt der
+   Dialog nicht, wenn ein Abschnitt erscheint (Prüfergebnis, Hinweis), und
+   der Bestätigen-Knopf steht immer an derselben Stelle.
+3. **Der Inhalt nutzt die Höhe:** genau ein Element wächst in den freien
+   Platz — das Nachrichtenfeld, eine Liste, eine Vorschau. Abstände bleiben
+   Token-Werte (§3); Leerraum wird nicht durch aufgeblähte Abstände
+   gefüllt. Gibt es nichts, das wachsen kann, steht der Rest zwischen Inhalt
+   und Knopfleiste.
+4. **Vorrang:** ohne Scrollen (§23) schlägt die Form. Reicht die feste Höhe
+   für die Anordnung untereinander nicht (Laptop-Fenster), wird **zuerst
+   kompakt angeordnet** (Mittel aus §23 Regel 2) — die Höhe bleibt dabei die
+   volle erlaubte Höhe, der Dialog wird nicht flacher. Reicht auch das nicht,
+   scrollt nur der Inhalt (§23 Regel 3).
+5. **Kurze Meldungen** (ein, zwei Sätze und „OK“, §22) sind keine
+   Eingabe-Dialoge: sie stehen **quer** im Goldenen Schnitt, Mindesthöhe =
+   Breite ÷ 1,618, sonst so hoch wie ihr Text.
+6. **Handy** (schmaler als 600 px): Breite 92 % des Fensters, Höhe nach
+   Inhalt — die Proportion gilt dort nicht.
+7. **Ein Baustein** (§2) setzt Größe und Kompakt-Umschaltung; kein Dialog
+   rechnet sich seine Maße selbst.
+8. **Prüfung:** das Mockup (§21) zeigt Breite × Höhe, das Verhältnis und ob
+   die kompakte Anordnung nötig war — bei 1366 × 650 und bei 1920 × 1080.
+
+**Warum:** Der Goldene Schnitt ist die Proportion, die als ausgewogen
+empfunden wird — Buchseiten, Karteikarten und Formulare stehen seit jeher
+hochkant in ungefähr diesem Verhältnis. Ein flacher, breiter Dialog wirkt
+gedrängt und lässt den Blick in langen Zeilen wandern; ein Dialog, dessen
+Höhe mit dem Inhalt springt, verschiebt den Knopf unter der Maus.
 
 ---
 
