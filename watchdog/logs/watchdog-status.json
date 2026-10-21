@@ -1,0 +1,15 @@
+﻿{
+    "Pid":  11644,
+    "Ssid":  "Wg 2,4 und 5GHz",
+    "State":  "Online",
+    "Interval":  60,
+    "LastCheckUnix":  1792598399,
+    "NextCheckUnix":  1792598462,
+    "LastOnline":  true,
+    "FailCount":  0,
+    "MaxFails":  3,
+    "Reconnects":  1,
+    "LastMessage":  "18:00:01 Verbunden mit \u0027Wg 2,4 und 5GHz\u0027 nach 1 s.",
+    "ErrorText":  "",
+    "UpdatedUnix":  1792598402
+}

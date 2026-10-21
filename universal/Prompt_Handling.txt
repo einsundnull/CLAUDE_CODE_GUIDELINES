@@ -2,7 +2,7 @@
 Prompt_Handling.txt — projektneutral
 ==============================================================================
 QUELLE: CLAUDE_CODE_GUIDELINES/universal/Prompt_Handling.txt  (DIES IST DIE QUELLE)
-STAND:  2026-10-05 (NEU: Abschnitt "DER STARTBLOCK IM KOPF DER
+STAND:  2026-10-20 (NEU: Abschnitt "CODE-AUDIT NACH JEDER PD"); davor 2026-10-18 (REGEL 1: keine Kürzel ohne Bedeutung); davor 2026-10-05 (NEU: Abschnitt "DER STARTBLOCK IM KOPF DER
         WEITERMACHEN_PROMPT.txt"); davor 2026-09-05
 Herkunft: herausgelöst aus GameLoop2\Prompt_Handling.txt (Stand 2026-09-04)
           durch Entfernen aller Java- und GameLoop2-spezifischen Stellen.
@@ -158,6 +158,15 @@ REGEL 1 — FRAGEN WERDEN VERSTÄNDLICH FORMULIERT.
   - EIN Gedanke pro Satz. Kein Nebensatz im Nebensatz.
   - Kurze Sätze. Wenn ein Satz über zwei Zeilen geht, wird er geteilt.
   - Keine Fachbegriffe ohne Erklärung.
+  - KEINE KÜRZEL OHNE BEDEUTUNG (bestellt vom User am 2026-10-18:
+    "dass ich 'PR4, EL3, MV4 usw.' nicht verstehe. Es muss immer gesagt
+    werden, was die offenen Punkte bedeuten."). Test-, Befund- und
+    Punkt-Kennungen (PR4, EL3, MV4, F2, BS4 …) stehen NIE allein. Jede
+    Kennung bekommt in derselben Zeile einen kurzen Satz, was dahinter
+    steckt — z. B. "BS4 (Stunde wird nach Ablauf automatisch freigegeben)".
+    Das gilt für jede Ausgabe: Antworten, Fragen, Anweisungen,
+    Abschluss-Block. Eine nackte Kennung zwingt den User, in Dateien
+    nachzuschlagen — und er entscheidet dann über etwas, das er nicht kennt.
   - Keine Paragraphen-Nummern IN der Frage. Sie gehören in den Bericht, nicht
     in die Frage. Der User soll entscheiden, nicht nachschlagen.
   - Die Frage steht ALLEIN. Kein Befund, keine Messung, keine Begründung im
@@ -222,6 +231,7 @@ Die letzten Zeilen jeder Ausgabe sind immer:
 # WEITERMACHEN_PROMPT.txt aktualisiert (ja/nein)
 # WEITERMACHEN_PROMPT.txt bereinigt und alter archiviert (ja/nein)
 # Die Aufgabe <ID> wurde vollständig abgeschlossen (ja/nein)
+# Code-Audit nach PD gelaufen (ja/nein/entfällt) - Befunde: <Anzahl>
 # Nächster Schritt: [n/m] bzw. nächstes TODO: <Aufgabe>
 # "/clear" Befehl und WEITERMACHEN_PROMPT.txt empfohlen (ja/nein)
 # Bewusst NICHT gemacht: <Liste + Grund; auch verworfene eigene Empfehlungen>
@@ -358,4 +368,29 @@ Du informierst immer, wenn alle Schritte einer Aufgabe vollständig
 abgeschlossen sind. Du gibst eine Empfehlung heraus, welche Schritte zur
 Überprüfung und Verbesserung der Codebase als nächstes sinnvoll sind, ohne
 überzuoptimieren.
+
+
+CODE-AUDIT NACH JEDER PD (BESTELLT VOM USER AM 2026-10-20)
+==========================================================
+Herkunft: der Audit-Prompt des Users vom 2026-06-01 (myLangSite,
+Task_2026-06-01_Code-Audit-Findings.txt), jetzt als feste Regel.
+
+Ist eine PD vollständig abgeschlossen, wird der Code, den sie geändert oder
+berührt hat, untersucht auf:
+  - Bugs und Inkonsistenzen
+  - Race Conditions (gleichzeitige Zugriffe, Reihenfolge asynchroner Abläufe,
+    doppelte Klicks, veraltete Antworten, die neuere überschreiben)
+  - Security-Probleme (fehlende Rechteprüfung, innerHTML mit Nutzerdaten,
+    offen liegende Schlüssel, zu weite Datenbank-Regeln oder -Abfragen)
+  - Auth-State-Probleme (Code läuft, bevor die Anmeldung feststeht)
+  - fehlende Safety-Checks (leere Werte, ungültige Eingaben, Grenzen)
+  - Endlosschleifen und sich selbst auslösende Ereignisse
+  - Redundanz und veraltete Implementierungen
+
+Die Befunde stehen in der progress-Datei, sortiert nach HOCH / MITTEL / NIEDRIG,
+je mit Datei:Zeile und einem Satz, was schiefgehen kann. Behoben wird NICHT
+ungefragt: der User entscheidet, welche Befunde eine neue PD werden.
+Ohne Befund heißt es "Audit: keine Befunde", nicht Schweigen.
+Der Umfang bleibt bei der PD — ein Gesamt-Audit des Projekts nur auf Auftrag.
+Im Abschluss-Block wird gemeldet, ob das Audit gelaufen ist.
 ==============================================================================

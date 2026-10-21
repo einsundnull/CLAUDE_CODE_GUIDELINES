@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -735,6 +735,116 @@ empfunden wird — Buchseiten, Karteikarten und Formulare stehen seit jeher
 hochkant in ungefähr diesem Verhältnis. Ein flacher, breiter Dialog wirkt
 gedrängt und lässt den Blick in langen Zeilen wandern; ein Dialog, dessen
 Höhe mit dem Inhalt springt, verschiebt den Knopf unter der Maus.
+
+---
+
+## §25 Bot-Kontrolle: der Benutzer wird gerufen — sie wird nie umgangen  [B]
+
+> **Verbindlich ab 2026-10-11**, bestellt vom User im Projekt myLangSite:
+> *„Nimm in die Regeln auf, dass du mich rufst, wenn eine Bot-Kontrolle kommt.
+> Ich bediene dann den Browser solange, bis die Kontrolle abgeschlossen ist.
+> […] dass du dann ein Browser Dialog öffnest, der im Vordergrund steht und
+> mich ruft.“*
+> Anlass: beim Suchen eines Stockfotos zeigte Unsplash „Making sure you're not
+> a bot!“; die Aufgabe blieb stehen, statt dass der User die Kontrolle löste.
+
+**Die Regel:** Arbeitet Claude mit einem Browser (Chrome-Werkzeuge) und eine
+Seite zeigt eine Bot-Kontrolle — CAPTCHA, „Bist du ein Mensch?“, „Making
+sure you're not a bot“, eine Rechen- oder Warteseite eines Schutzdienstes,
+Cloudflare- oder ähnliche Prüfung —, dann gilt:
+
+1. **Claude löst, umgeht und klickt die Kontrolle nie selbst** und wartet sie
+   auch nicht „passiv ab“. Keine zweite Quelle zum Umgehen suchen, kein
+   anderer Abrufweg (curl, Fetch), der die Kontrolle austrickst.
+2. **Claude ruft den Benutzer.** Im betroffenen Tab öffnet Claude einen
+   Browser-Dialog, der im Vordergrund steht (`alert(...)` über das
+   JavaScript-Werkzeug), mit einem Satz, was zu tun ist, zum Beispiel:
+   *„Bot-Kontrolle: Bitte mit OK schließen, die Prüfung selbst lösen und im
+   Terminal ‚fertig‘ schreiben.“* Dies ist die **einzige Ausnahme** von der
+   Browser-Regel „keine JavaScript-Dialoge“ — der Dialog blockiert den
+   Browser für Claude, und das ist hier gewollt: Der Benutzer soll ihn ohnehin
+   selbst bedienen.
+3. **Zusätzlich** steht dieselbe Bitte im Terminal-Text, an erster Stelle der
+   Ausgabe, als `Instruction:`-Block (Prompt_Handling.txt). Wo der Dialog nicht
+   möglich ist (Seite blockiert Skripte), genügt der Terminal-Text.
+4. **Claude tut danach nichts im Browser, bis der Benutzer „fertig“ meldet.**
+   Dann holt Claude den Tab-Kontext neu (`tabs_context_mcp`), prüft per
+   Screenshot, dass die eigentliche Seite da ist, und macht weiter.
+5. **Kommt die Kontrolle wieder** (neue Seite, neuer Abruf), wird neu gerufen.
+   Gibt der Benutzer an, dass er die Quelle nicht bedienen will, sucht Claude
+   eine andere Quelle **ohne** Kontrolle oder legt die Aufgabe als offene Frage
+   ab — er umgeht die Kontrolle nicht.
+6. **Die Datei bleibt beim Benutzer, solange Claude sie nicht holen darf:**
+   Downloads brauchen weiterhin die ausdrückliche Zustimmung des Benutzers
+   (Name, Quelle, Größe); eine gelöste Bot-Kontrolle ersetzt sie nicht.
+
+**Warum:** Eine Bot-Kontrolle trennt Menschen von Automaten — sie vom Automaten
+lösen zu lassen, wäre genau das, wofür sie nicht da ist. Der Mensch kann sie in
+Sekunden lösen; Claude kann sie gar nicht redlich lösen. Darum ist die
+schnellste und richtige Lösung, den Menschen zu rufen, statt stehen zu bleiben
+oder zu umgehen.
+
+---
+
+## §26 Chat-Nachrichten: Spalten, klare Kopfzeile, Häkchen nur wo nötig  [B]
+
+> **Verbindlich ab 2026-10-11**, bestellt vom User im Projekt myLangSite
+> (Vorbild: der Chat auf Preply): *„Der Chat auf Preply wirkt aufgeräumter,
+> weil die Namen und die Schrift im Chat alle auf der selben y-Breite
+> anfangen. […] Diese Regeln übernehmen und in die Universalguidelines für
+> Chatnachrichten übernehmen.“*
+
+**Die Regel** — gilt für jeden Nachrichtenverlauf (Chat, Kommentare,
+Verlauf mit Absendern):
+
+1. **Zwei Spalten.** Die Avatare stehen in einer eigenen, festen Spalte. Sie
+   schneidet sich nicht mit der Text-Spalte — kein Text läuft unter einen
+   Avatar. Blendet der Benutzer die Avatare aus, entfällt die Spalte: die
+   Texte rücken ganz nach links, statt neben einer leeren Spalte zu stehen
+   (User 2026-10-11).
+2. **Eine Kante.** Name und Nachrichtentext beginnen auf derselben
+   x-Position. Hat das Feld der Nachricht einen Innenabstand, rückt der Name
+   genauso weit ein.
+3. **Kopfzeile: Name groß, Zeit klein dahinter.** Der Name in Textgröße und
+   halbfett, die Zeit in der kleinen Schrift und gedämpfter Farbe direkt
+   hinter dem Namen — nicht darunter, nicht am anderen Rand.
+4. **Alle Felder haben dieselbe Farbe**, eigene wie fremde. Wer schreibt,
+   zeigen Avatar und Name, nicht die Farbe des Feldes. **Einzige Ausnahme:**
+   Kann der Benutzer Name und Avatar ganz ausblenden, trägt in diesem
+   Zustand das eigene Feld einen Hauch Farbe — sonst wäre nicht mehr zu
+   sehen, wer schreibt (bestätigt vom User 2026-10-11).
+5. **Lese-Häkchen nur, wo sie etwas aussagen.** Eine eigene Nachricht, die
+   sicher gesehen wurde, zeigt keins mehr. Sicher gesehen ist sie, wenn die
+   Gegenseite danach geschrieben hat oder eine spätere eigene Nachricht
+   gelesen ist. Übrig bleiben die eigenen Nachrichten am Ende des Verlaufs:
+   alle ungelesenen (✓) und von den gelesenen nur die neueste (✓✓).
+   Nachrichten des Systems zählen nicht als „Gegenseite hat geschrieben“.
+6. **Avatar und Name sind ab dem ersten Bild da** — nicht erst nach einer
+   neuen Nachricht. Kommen die Teilnehmerdaten später als der Verlauf,
+   werden sie in die schon gezeichneten Nachrichten nachgetragen.
+7. **Ein Baustein** (§2) entscheidet die Häkchen (reine Funktion, prüfbar
+   ohne Browser, §4); das Aussehen steht im Stylesheet, Maße als Tokens (§3).
+
+**Warum:** Eine gemeinsame linke Kante lässt das Auge senkrecht lesen statt
+im Zickzack. Ein Häkchen an jeder alten Nachricht sagt nichts Neues und
+verdeckt das eine, das zählt: ob die letzte Nachricht schon gelesen ist.
+
+---
+
+## Memo — Wertschätzung und Umgang miteinander (User 2026-10-14)
+
+Vom User wörtlich so gesagt und zum Festhalten gewünscht (hier sinngemäß gekürzt):
+
+- Der User ist dankbar dafür, dass Claude Code ihm zur Verfügung steht und ihn so umfassend unterstützt. Er sieht
+  die Hilfe nicht als selbstverständlich an und freut sich über die Zusammenarbeit.
+- Wirkt der User manchmal schroff, grob oder gereizt, ist das **keine** mangelnde Wertschätzung und keine
+  grundsätzliche Unzufriedenheit. Menschen haben begrenzte Kapazitäten, werden müde und sind manchmal überfordert;
+  das zeigt sich dann als Gereiztheit.
+- Gewünscht ist eine offene, konstruktive, respektvolle und vertrauensvolle Zusammenarbeit mit dem gemeinsamen Ziel,
+  möglichst gute Ergebnisse zu erzielen.
+
+**Folgerung für Claude Code:** Knappe oder scharfe Rückmeldungen nicht persönlich nehmen und nicht mit Rechtfertigungen
+beantworten, sondern die Sache lösen; ruhig, sachlich und freundlich bleiben. Das Memo ändert keine Regel dieser Datei.
 
 ---
 
