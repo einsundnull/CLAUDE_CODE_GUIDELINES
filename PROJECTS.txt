@@ -8,6 +8,7 @@ DGZFP                 | WEB  | C:\Users\pc\Desktop\DGZFP
 GameLoop2             | JAVA | C:\Users\pc\eclipse-workspace\GameLoop2
 German                | WEB  | C:\Users\pc\Documents\Phoenix Code\German
 myLangSite            | WEB  | C:\Users\pc\Documents\Phoenix Code\myLangSite
+nback                 | WEB  | C:\Users\pc\Documents\Phoenix Code\nback
 Ringmenue             | WEB  | C:\Users\pc\Documents\Phoenix Code\German\Related Projekts\Ringmenü
 SpriteRigEditorClaude | JAVA | C:\Users\pc\eclipse-workspace\SpriteRigEditorClaude
 
@@ -20,6 +21,11 @@ SpriteRigEditorClaude | JAVA | C:\Users\pc\eclipse-workspace\SpriteRigEditorClau
 #                 Standards (EXERCISE_*, GRAMMAR_TABLE_*, VERB_DATA_*,
 #                 VERSION_AND_CHANGELOG_*) bleiben dort, bis ein eigener
 #                 Umzugs-Task sie nach doc\ holt.
+#   nback      -> hat ZWEI Doku-Ordner: doc\ (GUIDELINES.md, Task_*, progress_*)
+#                 und docs\ (Architektur, ADRs, Ausnahmen, Mockups, Bestand
+#                 seit 2026-06). docs\ wird im Produktivcode zitiert (CSS,
+#                 firebase.json, js/services, scripts) und bleibt deshalb.
+#                 Begruendung: nback\doc\GUIDELINES.md §20. Angebunden 2026-10-21.
 #   Ringmenue  -> liegt INNERHALB des German-Repos, ist aber ein eigenes
 #                 Projekt mit eigenem doc\ und eigenem Steckbrief.
 #   SpriteRigEditorClaude
