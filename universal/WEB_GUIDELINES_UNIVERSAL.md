@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -828,6 +828,55 @@ Verlauf mit Absendern):
 **Warum:** Eine gemeinsame linke Kante lässt das Auge senkrecht lesen statt
 im Zickzack. Ein Häkchen an jeder alten Nachricht sagt nichts Neues und
 verdeckt das eine, das zählt: ob die letzte Nachricht schon gelesen ist.
+
+---
+
+## §27 Kein Layout Shift: das Layout springt nicht durch kleine Änderungen  [A/B]
+
+> **Verbindlich ab 2026-10-23**, bestellt vom User im Projekt myLangSite: *„Manchmal, wenn eine Scrollbar
+> eingeblendet wird, ändern sich die Längen um ein kleines Bisschen. Diese Änderung lässt das Layout auch
+> springen. Dieses soll nicht geschehen. Die Regeln, dass von Anfang an darauf zu achten ist, dass
+> Layoutelemente durch kleine Änderungen nicht jerken/springen dürfen, muss mit Angabe einer
+> Lösungsstrategie, wie es sich von vornherein verhindern lässt, in die Universal-Guidelines.“*
+> Anlass: Stundenliste im Dashboard (Reiter Anstehend ↔ Vergangen, gemessen 78 px Sprung) und Listen in der
+> Kalender-Seitenleiste (Scrollbar erscheint → Einträge 4 px schmaler, bei normaler Scrollbar 15–17 px).
+
+**Begriff:** Im UX-Design heißt das **Layout Shift** (Layout-Verschiebung). Google misst es als
+**CLS — Cumulative Layout Shift**, eine der Core Web Vitals (gut: unter 0,1). Der Sonderfall durch eine
+erscheinende Scrollbar heißt **scrollbar-bedingte Verschiebung** („scrollbar layout shift“).
+Erlaubt ist eine Verschiebung nur als **direkte Folge einer Handlung des Benutzers** an genau dieser Stelle
+(er klappt etwas auf) — nie als Nebenwirkung an anderer Stelle, nie durch Laden, Neuzeichnen oder Zeit.
+
+**Die Regel — von der ersten Zeile an, nicht als Reparatur:**
+1. **Platz für Scrollbars reservieren.** Jeder Bereich, der senkrecht scrollen KANN (`overflow: auto|scroll`,
+   `overflow-y: auto|scroll`), bekommt **`scrollbar-gutter: stable`**; die Seite selbst (`html`) ebenso.
+   Symmetrisch, wo es optisch zählt (zentrierte Inhalte): `scrollbar-gutter: stable both-edges`.
+2. **Höhen halten, wenn Inhalt wechselt.** Reiter, Filter, Sortieren, Suchen, Neuzeichnen: Der Bereich wird
+   nicht kürzer, als er gerade war (`min-height` = bisher größte Höhe, aus Daten gesetzt). Sonst kürzt der
+   Browser die Scrollposition und alles darüber/darunter springt.
+3. **Platz vor dem Laden reservieren.** Was später kommt (Bilder, Avatare, Karten, Leisten, Hinweise), hat
+   seine Größe schon vorher: feste Maße / `aspect-ratio` / Platzhalter (Skeleton) in Endgröße. Nachgeladener
+   Inhalt schiebt nichts weg — insbesondere nichts **oberhalb** des Blicks des Benutzers.
+4. **Feste Breiten für wechselnde Texte.** Zähler, Uhrzeiten, Beträge, Countdown: `font-variant-numeric:
+   tabular-nums` und eine Mindestbreite; Knöpfe, deren Beschriftung wechselt („Speichern…“), behalten ihre Breite.
+5. **Zustände ohne Größenänderung.** Hover, Fokus, Auswahl, Fett-Schrift: Rahmen und Schatten ändern nicht die
+   Maße (Rahmen immer da, nur die Farbe wechselt; `outline` statt `border` für Fokus). Fett nur, wenn die
+   Breite vorher reserviert ist.
+6. **Unvermeidliche Änderungen weich einbinden:** nur mit Übergang, und **ohne Layout zu verschieben**:
+   `transform`/`opacity` statt `top/height/margin`; Auf-/Zuklappen mit einer Höhen-Animation an genau der
+   Stelle der Handlung (FLIP: First–Last–Invert–Play); Inhalt, der hinzukommt, erscheint als Überlagerung
+   (Popover, Tooltip, Toast) statt als eingeschobener Block. `prefers-reduced-motion` wird beachtet.
+7. **Scrollposition bewahren.** Wird eine Liste neu gezeichnet, steht danach dasselbe Element an derselben
+   Stelle (Scroll-Anker: `overflow-anchor`, oder Position merken und wiederherstellen).
+
+**Prüfung:** Ein Prüfstand meldet jeden scrollbaren Bereich ohne `scrollbar-gutter` namentlich (Datei:Regel).
+Jeder neue oder geänderte Bereich wird **gemessen**: Lage eines Bezugs-Elements (z. B. Reiterleiste) vor und
+nach der Änderung — Abstand 0 px. Im Browser: DevTools → Performance → „Layout Shifts“, oder
+`PerformanceObserver({type: 'layout-shift'})`.
+
+**Warum:** Ein Element, das sich bewegt, während der Benutzer hinsieht oder zielt, kostet Orientierung und
+führt zu Fehlklicks (der Knopf rutscht unter die Maus). Auch 4 px sind sichtbar: Das Auge erkennt Bewegung
+viel feiner als Größe. Vorbeugen kostet eine CSS-Zeile je Bereich; nachträglich suchen kostet Stunden.
 
 ---
 
