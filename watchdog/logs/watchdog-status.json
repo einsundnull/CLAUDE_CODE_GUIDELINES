@@ -3,13 +3,13 @@
     "Ssid":  "Wg 2,4 und 5GHz",
     "State":  "Online",
     "Interval":  60,
-    "LastCheckUnix":  1792872440,
-    "NextCheckUnix":  1792872501,
+    "LastCheckUnix":  1792876308,
+    "NextCheckUnix":  1792876369,
     "LastOnline":  true,
     "FailCount":  0,
     "MaxFails":  3,
     "Reconnects":  2,
-    "LastMessage":  "22:07:21 Online ueber \u0027Wg 2,4 und 5GHz\u0027. Naechste Pruefung in 60s.",
+    "LastMessage":  "23:11:49 Online ueber \u0027Wg 2,4 und 5GHz\u0027. Naechste Pruefung in 60s.",
     "ErrorText":  "",
-    "UpdatedUnix":  1792872441
+    "UpdatedUnix":  1792876309
 }

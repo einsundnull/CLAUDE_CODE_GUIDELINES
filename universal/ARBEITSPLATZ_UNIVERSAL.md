@@ -32,7 +32,7 @@
 | Globale Anweisungen | `C:\Users\pc\.claude\CLAUDE.md` (die anderen Konten verweisen per `@~/.claude/CLAUDE.md` darauf) |
 | Laufende Server | PID-Dateien `C:\Users\pc\.claude\konten\konto<N>.pid` |
 | Chrome | `C:\Program Files\Google\Chrome\Application\chrome.exe`, Profile in `%LOCALAPPDATA%\Google\Chrome\User Data\<Profil>` |
-| Watchdog (WLAN) | `C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\watchdog\` (Befehle im Projekt-Register → `watchdogs`) |
+| Watchdog (WLAN) | `C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\watchdog\` (Befehle im Projekt-Register → `watchdogs`). Autostart = geplante Aufgabe „WLAN-Watchdog“ (`register-autostart.bat`, Admin); im Fenster „Claude-Konten“ als Häkchen |
 
 Ein neues Konto, ein neues Projekt oder ein geänderter Ort wird **im Register** eingetragen,
 nicht in dieser Datei und nicht im Skript.
@@ -87,11 +87,13 @@ Claude handelt **ohne Rückfrage** (vom User so bestellt) und erklärt nichts, w
 
 1. Im Chrome-Profil des Kontos (`konto.ps1 chrome N`): auf claude.ai mit diesem Konto
    anmelden, Claude-Erweiterung installieren/einschalten.
-2. `konto.ps1 anmelden N [projekt]` — liest den Anmelde-Link aus `claude auth login` und
-   öffnet ihn **im Chrome-Profil dieses Kontos** (Befund 2026-10-24: über den Standard-
-   Browser landete die Anmeldung von Konto 2 und 3 im Profil von Konto 1 und damit beim
-   falschen Konto). Der User klickt „Autorisieren“ und fügt den Code ein; das Skript prüft
-   die E-Mail und öffnet danach gleich das Ordner-Vertrauen.
+2. `konto.ps1 anmelden N [projekt]` (oder Knopf „Anmelden“ im Fenster) — startet
+   `claude auth login` mit `BROWSER` = Starter `~/.claude/konten/browser-konto<N>.cmd`, der
+   Chrome **im Profil dieses Kontos** öffnet. Der User klickt nur „Autorisieren“, **kein
+   Code** (Befund 2026-10-24: über den Standard-Browser landete die Anmeldung von Konto 2
+   und 3 im Profil von Konto 1 und damit beim falschen Konto; der Weg mit Code scheiterte
+   am Einfügen). Im selben Fenster fragt danach Claude nach dem Ordner-Vertrauen.
+   Claude kann die Anmeldung selbst starten; das Klicken bleibt beim User.
 3. Weitere Projekte: `konto.ps1 vertrauen N <projekt>`.
 4. Einmalig für alle: `autostart-ein.ps1` — beim Windows-Start laufen die Server aller
    angemeldeten Konten (`konto.ps1 alle`). **Das ist der Schutz für den Zug:** ist das
