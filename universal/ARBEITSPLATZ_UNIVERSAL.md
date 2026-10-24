@@ -26,6 +26,7 @@
 | **Projekt-Register** | dieselbe Datei → `projects` (id, Name, Ordner, Startprompt) |
 | **Wechsel-Werkzeug** | `C:\Users\pc\Documents\Phoenix Code\project-hub\bin\konten\konto.ps1` |
 | Autostart ein / aus | `…\project-hub\bin\konten\autostart-ein.ps1` / `autostart-aus.ps1` |
+| **Fenster für den User** (statt Befehle) | `…\project-hub\bin\konten\konto-ui.ps1`, Verknüpfung „Claude-Konten“ auf dem Desktop. Am Laptop verweist Claude auf das Fenster, nicht auf Befehle. |
 | Konto-Seite für das Telefon | project-hub-Website (Abschnitt „Account wechseln“), Quelle `project-hub/index.html` + `js/app.js` |
 | Hauptordner von Claude Code | `C:\Users\pc\.claude` (= Konto 1). Weitere Konten: `C:\Users\pc\.claude-konto<N>` |
 | Globale Anweisungen | `C:\Users\pc\.claude\CLAUDE.md` (die anderen Konten verweisen per `@~/.claude/CLAUDE.md` darauf) |
@@ -84,12 +85,14 @@ Claude handelt **ohne Rückfrage** (vom User so bestellt) und erklärt nichts, w
 
 ## §A4 Einmal je Konto, am Laptop (macht der User, Claude gibt die Befehle)  [B]
 
-1. `konto.ps1 anmelden N` — öffnet das Chrome-Profil des Kontos und das Anmeldefenster
-   von Claude Code (`claude auth login --email …`). Öffnet sich die Anmeldung im falschen
-   Profil: Link kopieren und im richtigen Profil öffnen.
-2. Im Chrome-Profil: auf claude.ai mit demselben Konto anmelden, Claude-Erweiterung
-   installieren/einschalten.
-3. `konto.ps1 vertrauen N <projekt>` — je Projekt, das das Konto bedienen soll.
+1. Im Chrome-Profil des Kontos (`konto.ps1 chrome N`): auf claude.ai mit diesem Konto
+   anmelden, Claude-Erweiterung installieren/einschalten.
+2. `konto.ps1 anmelden N [projekt]` — liest den Anmelde-Link aus `claude auth login` und
+   öffnet ihn **im Chrome-Profil dieses Kontos** (Befund 2026-10-24: über den Standard-
+   Browser landete die Anmeldung von Konto 2 und 3 im Profil von Konto 1 und damit beim
+   falschen Konto). Der User klickt „Autorisieren“ und fügt den Code ein; das Skript prüft
+   die E-Mail und öffnet danach gleich das Ordner-Vertrauen.
+3. Weitere Projekte: `konto.ps1 vertrauen N <projekt>`.
 4. Einmalig für alle: `autostart-ein.ps1` — beim Windows-Start laufen die Server aller
    angemeldeten Konten (`konto.ps1 alle`). **Das ist der Schutz für den Zug:** ist das
    Limit eines Kontos erreicht, antwortet dessen Sitzung nicht mehr und kann nichts
