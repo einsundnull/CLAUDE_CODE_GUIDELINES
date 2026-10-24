@@ -33,6 +33,9 @@ universal/
   JAVA_GUIDELINES_UNIVERSAL.md   §0–§16 + Steckbrief §14, für Java-Projekte
   WEB_GUIDELINES_UNIVERSAL.md    §0–§16 + Steckbrief §14, für HTML/CSS/JS
   Prompt_Handling.txt            Aufgaben-Workflow, Frage-Format, Abschluss-Block
+  ARBEITSPLATZ_UNIVERSAL.md      KEIN Projekt-Regelwerk: Claude-Konten, Werkzeuge, Orte;
+                                 Konto wechseln auf Zuruf (auch vom Telefon). Geladen in
+                                 JEDER Sitzung über C:\Users\pc\.claude\CLAUDE.md
 templates/
   Task_TEMPLATE.txt              Kopiervorlage für eine PD (Task_*.txt)
                                  CLAUDE.md, doc/GUIDELINES.md und

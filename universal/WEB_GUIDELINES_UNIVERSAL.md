@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -877,6 +877,50 @@ nach der Änderung — Abstand 0 px. Im Browser: DevTools → Performance → �
 **Warum:** Ein Element, das sich bewegt, während der Benutzer hinsieht oder zielt, kostet Orientierung und
 führt zu Fehlklicks (der Knopf rutscht unter die Maus). Auch 4 px sind sichtbar: Das Auge erkennt Bewegung
 viel feiner als Größe. Vorbeugen kostet eine CSS-Zeile je Bereich; nachträglich suchen kostet Stunden.
+
+---
+
+## §28 Auth Guard: ohne Anmeldung keine Seite, die eine Anmeldung braucht  [A/B]
+
+> **Verbindlich ab 2026-10-24**, bestellt vom User im Projekt myLangSite: *„Es sollte nicht möglich sein,
+> ohne ‚Es scheint, als wären Sie im Moment nicht eingeloggt‘ Warnungsdialog ohne Login in der App zu
+> navigieren. Bitte in Universal-Guidelines aufnehmen, dass Apps, deren Funktion einen Login voraussetzt,
+> dieses Feature haben müssen.“* Anlass: der Schüler-Kalender öffnete sich ohne Anmeldung als leere,
+> halb geladene Seite.
+
+**Begriff:** Das Muster heißt **Auth Guard** (auch *Route Guard*, *Login Guard*; die geschützten Seiten
+heißen *Protected Routes*). Endet die Anmeldung, während die Seite offen ist, spricht man von
+**Session-Expired-Handling**.
+
+**Die Regel** — gilt für jede App, deren Funktion eine Anmeldung voraussetzt:
+1. **Jede Seite, die ohne Anmeldung nichts kann, ist geschützt.** Öffnet sie jemand ohne Anmeldung, erscheint
+   sofort ein Fenster „Nicht angemeldet“ mit dem Satz *„Es scheint, als wären Sie im Moment nicht
+   eingeloggt …“* und zwei Wegen: **„Anmelden“** und **„Zur Startseite“**.
+2. **Das Fenster lässt sich nicht wegklicken, um auf der Seite zu bleiben.** ✕, Escape und Hintergrund
+   führen zur Startseite; nichts darunter ist bedienbar.
+3. **Nach der Anmeldung zurück an dieselbe Stelle:** die Seite (mit Parametern) wird vorher gemerkt
+   (Rückweg-Baustein), die Anmeldung führt dorthin zurück.
+4. **Auch während der Nutzung:** endet die Anmeldung (Abmelden in einem anderen Tab, Sitzung abgelaufen),
+   erscheint dasselbe Fenster — außer der Benutzer hat selbst „Abmelden“ gedrückt und wird ohnehin
+   weitergeleitet (kurz warten, dann prüfen).
+5. **Auf die Anmeldung warten, nicht raten:** Beim Laden ist der Anmeldestand kurz unbekannt (Sitzung wird
+   wiederhergestellt). Der Guard wartet darauf, bevor er entscheidet — sonst blitzt das Fenster bei
+   angemeldeten Benutzern auf.
+6. **Ein Baustein (§2), eine Liste:** welche Seiten geschützt sind, steht an EINER Stelle (Liste oder
+   reine Funktion, prüfbar ohne Browser, §4). Öffentliche Seiten (Startseite, Anmelden, Rechtstexte,
+   öffentliche Profile, Katalog) stehen nicht darin. Der Baustein wird über das Skript geladen, das jede
+   Seite ohnehin lädt — nicht je Seite von Hand.
+7. **Der Guard ersetzt keine Rechteprüfung.** Daten schützen die Regeln des Servers bzw. der Datenbank;
+   der Guard verhindert nur, dass jemand eine leere oder halb geladene Seite bedient.
+8. **Texte über die Übersetzung** (§15), Fenster aus dem Bestätigungs-Baustein (§2, §22).
+
+**Prüfung:** Jede geschützte Seite in einem Fenster ohne Anmeldung öffnen (zweite Adresse, privates
+Fenster) → Fenster erscheint, Escape führt zur Startseite, „Anmelden“ führt nach der Anmeldung zurück.
+Angemeldet → kein Fenster. Eine neue Seite steht im Steckbrief als geschützt oder öffentlich.
+
+**Warum:** Eine Seite, die ohne Anmeldung halb lädt, sieht kaputt aus, wirft Fehler, die nichts erklären,
+und lädt zum Klicken ein, das nichts bewirkt. Ein klares Fenster sagt, was fehlt, und bringt den Benutzer
+mit einem Klick dorthin, wo es weitergeht.
 
 ---
 

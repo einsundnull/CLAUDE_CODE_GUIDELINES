@@ -1,0 +1,4 @@
+# watchdog-target.txt
+# Das WLAN, das autostart-watchdog.ps1 ueberwacht.
+# Die erste Zeile ohne # ist der Netzname (SSID), exakt wie in scan-networks.ps1.
+# Leer = alle gespeicherten Profile (Verhalten von start-watchdog.bat).

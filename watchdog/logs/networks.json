@@ -1,0 +1,312 @@
+﻿{
+    "ScannedAt":  "2026-10-24 21:08:32",
+    "Connected":  "Wg 2,4 und 5GHz",
+    "Networks":  [
+                     {
+                         "Key":  "a",
+                         "Ssid":  "Wg 2,4 und 5GHz",
+                         "Signal":  100,
+                         "Auth":  "WPA3-Personal",
+                         "InRange":  true,
+                         "HasProfile":  true,
+                         "Connected":  true
+                     },
+                     {
+                         "Key":  "b",
+                         "Ssid":  "Matthias\u0027s A14",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "c",
+                         "Ssid":  "Vodafone Homespot",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "d",
+                         "Ssid":  "WestfalenBahn",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "e",
+                         "Ssid":  "aohostels FREE Wifi",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "f",
+                         "Ssid":  "36RoomsGuest",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "g",
+                         "Ssid":  "MEININGER Free WiFi",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "h",
+                         "Ssid":  "TLP-HOSTEL",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "i",
+                         "Ssid":  "_Free_Wifi_Berlin",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "j",
+                         "Ssid":  "FRITZ!Box 7530 TA",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "k",
+                         "Ssid":  "AI2NET",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "l",
+                         "Ssid":  "Kunden WLAN SAA",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "m",
+                         "Ssid":  "leko",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "n",
+                         "Ssid":  "TP-Link_FA30 2",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "o",
+                         "Ssid":  "TP-Link_FA30",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "p",
+                         "Ssid":  "Tasiko",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "q",
+                         "Ssid":  "Fabrika Tbilisi",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "r",
+                         "Ssid":  "iPhone",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "s",
+                         "Ssid":  "Galaxy M112571",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "t",
+                         "Ssid":  "Althaus",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "u",
+                         "Ssid":  "CoffeeLab",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "v",
+                         "Ssid":  "Groovy Roasters 2",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "w",
+                         "Ssid":  "pupala",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "x",
+                         "Ssid":  "V1AFAk3xcAAAAAQwKv",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "y",
+                         "Ssid":  "TP-LINK_9298",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z",
+                         "Ssid":  "SILK_634F88",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z1",
+                         "Ssid":  "CXNK0084E4C4",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z2",
+                         "Ssid":  "Deztam",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z3",
+                         "Ssid":  "Bazari Orbeliani",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z4",
+                         "Ssid":  "Honor 9 Lite",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z5",
+                         "Ssid":  "Nariyala",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z6",
+                         "Ssid":  "Redmi",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z7",
+                         "Ssid":  "RANI",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     },
+                     {
+                         "Key":  "z8",
+                         "Ssid":  "Qweerty",
+                         "Signal":  0,
+                         "Auth":  "",
+                         "InRange":  false,
+                         "HasProfile":  true,
+                         "Connected":  false
+                     }
+                 ]
+}
