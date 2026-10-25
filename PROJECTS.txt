@@ -2,7 +2,7 @@
 # Format:  Name | WEB oder JAVA | absoluter Windows-Pfad
 # Wird von bin/check-projects.sh gelesen. Zeilen mit # sind Kommentar.
 #
-# Stand: 2026-09-17
+# Stand: 2026-10-25 (WingsOfFury neu)
 
 DGZFP                 | WEB  | C:\Users\pc\Desktop\DGZFP
 GameLoop2             | JAVA | C:\Users\pc\eclipse-workspace\GameLoop2
@@ -11,6 +11,7 @@ myLangSite            | WEB  | C:\Users\pc\Documents\Phoenix Code\myLangSite
 nback                 | WEB  | C:\Users\pc\Documents\Phoenix Code\nback
 Ringmenue             | WEB  | C:\Users\pc\Documents\Phoenix Code\German\Related Projekts\Ringmenü
 SpriteRigEditorClaude | JAVA | C:\Users\pc\eclipse-workspace\SpriteRigEditorClaude
+WingsOfFury           | WEB  | C:\Users\pc\Documents\Phoenix Code\WingsOfFury
 
 # ABWEICHENDE ORTE (bewusst so, nicht aufraeumen):
 #   GameLoop2  -> Projekt-Guidelines liegen in src\main\doc\GUIDELINES.md,
