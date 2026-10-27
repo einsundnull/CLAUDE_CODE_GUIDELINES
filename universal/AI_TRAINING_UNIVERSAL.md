@@ -1,7 +1,7 @@
 # AI_TRAINING_UNIVERSAL — eine KI trainieren, ohne dass sie die Belohnung austrickst
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/AI_TRAINING_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-27 (Erstfassung)
+> **STAND:** 2026-10-27 (§T10.4 Beispiele abspielbar)
 >
 > **Gilt für jedes Projekt, in dem etwas lernt:** Neuroevolution, Reinforcement Learning,
 > Training gegeneinander (Self-Play), Lernen aus Aufnahmen. Sprache und Stack egal.
@@ -240,6 +240,17 @@ benennen, die Belohnung ändern, **§T4 erneut laufen lassen**, dann Probelauf (
 2. **Jede Änderung eines Belohnungs-Gewichts** steht mit Grund und Messwert im Code-Kommentar
    des Gewichts (Vorbild: „gemessen <Datum>: …“).
 3. Ein Lauf ohne Messwert gilt als nicht gelaufen.
+4. **Jedes Beispiel ist abspielbar** (User 2026-10-27: „wenn du mir Beispiele nennst, wie stürzt immer ins
+   Wasser […], auch die Generation nennen, wo ich mir das selber angucken kann […] oder auch
+   Beispielgenerationen abspeichern“). Wer dem User ein Verhalten nennt, nennt dazu **Übung, Generation,
+   Startlage (Seed) und Rechenschritt** — so, dass der User es in der Anzeige des Projekts selbst abspielen
+   kann. Vorher selbst nachprüfen, dass genau diese Generation auf genau dieser Startlage das Verhalten zeigt.
+   - Generationen, die als Beispiel taugen, werden **gespeichert, auch wenn nichts übernommen wird**
+     (Archiv). Ein neuer Lauf überschreibt archivierte Generationen nie, auch nicht nach dem Zurücksetzen
+     des Gehirns: er zählt hinter der letzten archivierten Generation weiter.
+   - Zeigt sich ein Verhalten nur unter anderen Bedingungen als im Training (z. B. anderer Rechenschritt),
+     braucht die Anzeige einen Schalter für genau diese Bedingung — sonst sieht der User etwas anderes als
+     das genannte Beispiel.
 
 ---
 
