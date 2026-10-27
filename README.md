@@ -36,6 +36,13 @@ universal/
   ARBEITSPLATZ_UNIVERSAL.md      KEIN Projekt-Regelwerk: Claude-Konten, Werkzeuge, Orte;
                                  Konto wechseln auf Zuruf (auch vom Telefon). Geladen in
                                  JEDER Sitzung über C:\Users\pc\.claude\CLAUDE.md
+  AI_TRAINING_UNIVERSAL.md       §T0–§T11: KI trainieren ohne Austricksen der Belohnung
+                                 (Belohnungs-Prüfung, Kennzahlen, Abbruch-Regeln, Self-Play).
+                                 Geladen über den Claude-Skill ~/.claude/skills/ai-training/
+skills/
+  ai-training/SKILL.md           Claude-Skill, verweist nur auf AI_TRAINING_UNIVERSAL.md.
+                                 ~/.claude/skills/ai-training ist eine Junction auf diesen
+                                 Ordner (alle Konten sehen ihn über ihre skills-Junction).
 templates/
   Task_TEMPLATE.txt              Kopiervorlage für eine PD (Task_*.txt)
                                  CLAUDE.md, doc/GUIDELINES.md und
