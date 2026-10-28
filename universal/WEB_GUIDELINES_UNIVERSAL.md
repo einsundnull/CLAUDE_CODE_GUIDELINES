@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -608,6 +608,15 @@ etwas anderes, als ausgeliefert wird.
 6. **Prüfung:** das Mockup und die App werden im selben Browser
    nebeneinander angesehen. Weicht etwas ab, ist das ein Fehler im
    Baustein, nicht im Mockup.
+7. **Jedes Mockup ist über den Project Hub erreichbar** — auch am Telefon,
+   ohne Laptop (User 2026-10-28: *„mockups immer über project hub erreichbar
+   machen. In guidelines festhalten“*). Das Veröffentlichungs-Werkzeug des
+   Projekts kopiert das Mockup samt **allen** geladenen Bausteinen (ganze
+   Import-Kette) und Datendateien nach `project-hub/mockups/<projekt>/`;
+   die Übersicht dort listet jedes Mockup. Ein Mockup gilt erst als
+   vorgelegt, wenn es dort läuft (vorher im Hub-Ordner auf fehlende Dateien
+   geprüft) und der Hub gepusht ist. „Nur lokal ansehbar“ gibt es nicht; ein
+   Artifact oder localhost-Link ist höchstens Zusatz, nie Ersatz.
 
 **Ausnahme:** ein Mockup, das nur eine IDEE skizziert (Varianten
 vergleichen, noch keine Gestalt), darf frei gezeichnet sein — dann steht im
