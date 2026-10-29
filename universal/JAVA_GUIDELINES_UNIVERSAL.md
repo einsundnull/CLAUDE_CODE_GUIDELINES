@@ -683,6 +683,20 @@ ein Text, den er nicht versteht, hilft ihm nicht, sondern verunsichert ihn.
 
 ---
 
+## §21 Dialoge sind app-spezifisch, nie generisch  [A/B]
+
+> **Verbindlich ab 2026-10-29**, bestellt vom User (Projekt WingsOfFury): *„Dialoge bitte nicht generisch,
+> sondern app-spezifisch.“* Vollständiger Wortlaut und Begründung: WEB_GUIDELINES_UNIVERSAL §29.
+
+1. Kein `JOptionPane`, kein `JFileChooser`/`FileDialog`, kein Standard-`JColorChooser` und kein nackter
+   `setToolTipText`, die der Benutzer im Vorgabe-Aussehen sieht. Je Art **ein** Baustein (§2) in der Gestalt der
+   App (Rahmen, Kopf, Knöpfe, Schrift, Farben aus der Token-Quelle §3).
+2. Auch der Inhalt ist app-spezifisch: die Sache in Worten des Benutzers, nicht „Sind Sie sicher?“.
+3. Mockup/Schema zuerst (§9); der Prüfstand meldet jeden direkten Aufruf der Vorgabe-Dialoge namentlich,
+   bewusste Ausnahmen stehen mit Grund in einer Liste im Test.
+
+---
+
 ## Anhang — Herkunft und Pflege
 
 - Extrahiert am 2026-07-30 aus `GameLoop2/src/main/doc/GUIDELINES.md`

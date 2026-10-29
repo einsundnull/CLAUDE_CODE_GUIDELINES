@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -930,6 +930,47 @@ Angemeldet → kein Fenster. Eine neue Seite steht im Steckbrief als geschützt 
 **Warum:** Eine Seite, die ohne Anmeldung halb lädt, sieht kaputt aus, wirft Fehler, die nichts erklären,
 und lädt zum Klicken ein, das nichts bewirkt. Ein klares Fenster sagt, was fehlt, und bringt den Benutzer
 mit einem Klick dorthin, wo es weitergeht.
+
+---
+
+## §29 Dialoge sind app-spezifisch, nie generisch  [A/B]
+
+> **Verbindlich ab 2026-10-29**, bestellt vom User im Projekt WingsOfFury: *„Es gibt noch einen Verstoß. Entweder
+> taucht er nicht in den Guidelines auf oder er wird nicht beachtet. Wenn er nicht in den Guidelines auftaucht, muss
+> er in die Guidelines aufgenommen werden. Dialoge bitte nicht generisch, sondern app-spezifisch.“*
+> Anlass: die Start-Level-Auswahl öffnete die Klappliste des Betriebssystems (am Handy das graue Rad bzw. die
+> weiße Liste) — mitten in einem Spiel im Stil der 1940er.
+
+**Begriff:** *Generisch* ist alles, dessen Aussehen der Browser oder das Betriebssystem bestimmt statt der App:
+`alert` / `confirm` / `prompt`, die aufgeklappte Liste eines `<select>`, Datums- und Farbwähler des Browsers,
+der Tooltip aus dem `title`-Attribut, ein unverändertes `<dialog>` mit Browser-Rahmen, ein Dialog aus einer
+Bibliothek mit deren Vorgabe-Aussehen. *App-spezifisch* heißt: Form, Farbe, Schrift, Rahmen, Bewegung und Ton
+kommen aus der App und passen zu ihrem Thema.
+
+**Die Regel:**
+1. **Keine Oberfläche des Browsers oder Betriebssystems, die der Benutzer sieht.** Kein `alert`/`confirm`/`prompt`
+   (einzige Ausnahme: der Ruf bei einer Bot-Kontrolle, UNIVERSAL §25), keine offene Klappliste eines `<select>`,
+   kein `title`-Tooltip als einziger Tooltip. Dafür gibt es je Art **einen** Baustein (UNIVERSAL §2): Dialog,
+   Auswahl-Liste, Tooltip, Bestätigung, Fehlermeldung (§22).
+2. **Der Baustein trägt die Gestalt der App**, nicht nur ihre Farben: Rahmen, Kopf, Knöpfe, Schrift und Übergänge
+   entsprechen dem Thema (ein Spiel im Stil der 1940er: Schablonenschrift, Blech, Nieten, Funkspruch-Ton; eine
+   Lern-Seite: ihre Karten). Was dafür gebraucht wird, sind Tokens (§3) und Klassen im echten Stylesheet.
+3. **Auch der Inhalt ist app-spezifisch.** Ein Dialog fragt in der Sprache der App und zeigt, was dort zählt —
+   eine Level-Wahl zeigt Missionen (Name, Bild/Symbol, Lage), nicht nur eine Zeile Text; eine Bestätigung nennt
+   die Sache in Worten des Benutzers („Bestenliste leeren?“), nicht „Sind Sie sicher?“.
+4. **Das native Element darf bleiben, wo es unsichtbar arbeitet:** ein `<select>` als Datenquelle, Tastatur- und
+   Vorlese-Weg ist erlaubt, solange seine aufgeklappte Liste nie erscheint (der Baustein öffnet stattdessen seine
+   eigene). Fokus, Escape und Tastatur gelten wie in §15.
+5. **Handy eingeschlossen:** gerade dort öffnen die Browser ihre eigenen Wähler. Der Baustein wird am Handy
+   genauso app-spezifisch gezeigt (groß genug für den Finger, §23/§24 Regel 6).
+6. **Mockup zuerst (§9, §21):** die Gestalt des Bausteins wird als Mockup mit den echten Dateien freigegeben.
+7. **Prüfung:** der Prüfstand meldet namentlich jedes `alert(`/`confirm(`/`prompt(`, jedes `<select>` ohne den
+   Auswahl-Baustein und jedes `title=`/`.title =` ohne den Tooltip-Baustein. Was bewusst bleibt, steht mit Grund
+   in einer Ausnahmeliste im Test.
+
+**Warum:** Eine Systemliste oder ein grauer Browser-Kasten reißt den Benutzer aus der App — er sieht für einen
+Moment ein anderes Programm. Was app-spezifisch aussieht und spricht, fühlt sich fertig an; was generisch ist,
+sieht aus wie eine Baustelle, auch wenn es funktioniert.
 
 ---
 
