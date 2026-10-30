@@ -1,7 +1,7 @@
 # AI_TRAINING_UNIVERSAL — eine KI trainieren, ohne dass sie die Belohnung austrickst
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/AI_TRAINING_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-27 (§T10.4 Beispiele abspielbar)
+> **STAND:** 2026-10-30 (§T12 unbeaufsichtigtes Training: Vollmacht, kurze Blöcke, nie stehen lassen)
 >
 > **Gilt für jedes Projekt, in dem etwas lernt:** Neuroevolution, Reinforcement Learning,
 > Training gegeneinander (Self-Play), Lernen aus Aufnahmen. Sprache und Stack egal.
@@ -273,6 +273,43 @@ statt „—“ der Satz „existiert nicht — Auslöser: …“.
 | Gegner-Pool beim Training gegeneinander (§T8) | |
 | Gehirn-Datei + Übernahme-Regel (§T9) | |
 | Live-Anzeige der Kennzahlen (§T5) | |
+
+---
+
+## §T12 Unbeaufsichtigtes Training: Vollmacht, kurze Blöcke, nie stehen lassen  [A]
+
+Abgeleitet aus zwei Aufträgen des Users (Projekt WingsOfFury):
+- 2026-10-28 (`doc/Task_2026-10-28_3600_Level-Stufen-Zero-Belohnung.txt`): *„Ja, starte das Training
+  jetzt und frag danach nicht mehr, wenn du Veränderungen machen musst. Alles, was realistisch scheint,
+  darf gemacht werden.“* Dazu: offene Fragen nicht mehr stellen, selbst entscheiden und begründen.
+- 2026-10-30: *„Mach es in kurzen Abschnitten und gucke immer zwischendurch, ob jemand Reward-Hacking
+  betreibt. Zum Beispiel sich immer in einer Wolke versteckt. In einer Wolke verstecken muss dann bestraft
+  werden, von vornherein. […] regelmäßig die Ergebnisse geben, in Tabellenform, aber nicht anhalten mit dem
+  Training, weil ich nicht darauf reagieren kann, weil ich schlafe.“*
+
+1. **Vollmacht.** Ist das Training freigegeben und der User nicht erreichbar, ändert Claude ohne Rückfrage
+   alles, was für ein sinnvolles Training nötig ist und **realistisch** bleibt: Belohnungs-Gewichte,
+   Lehrplan, Übungen und Szenarien, Startlagen, Gegner-Pool, Sinne des Netzes, Physik der trainierten
+   Einheit im Rahmen der Wirklichkeit. Jede Entscheidung steht mit Grund und Messwert im Protokoll
+   (Abschnitt „Entscheidungen ohne Rückfrage“) und am Gewicht (§T10.2).
+   **Nicht gedeckt:** der vom User festgelegte Standard (z. B. die Physik-Werte für alle Geräte), Spielregeln,
+   die der User ausdrücklich bestimmt hat, Löschen fremder Daten, Force-Push, Zugangsdaten.
+2. **Bekannte Verstecke werden von vornherein bestraft**, nicht erst, wenn sie auftauchen (§T2): jeder Ort
+   oder Zustand, an dem die Einheit sicher ist, ohne ihre Aufgabe zu tun (Wolke, Kartenrand, große Höhe,
+   unerreichbare Ecke). Vor dem Start die Strafe einbauen und mit einem Test-Flieger „Verstecker“ in der
+   Belohnungs-Prüfung (§T4) zeigen, dass er verliert.
+3. **Kurze Blöcke** (Richtwert 10–20 Generationen oder ≤ 30 min). Nach jedem Block die Verhaltens-Kennzahlen
+   (§T5) lesen und gezielt nach Austricksen suchen: Versteck-Anteil, Feuer ohne Treffer, Kreisen, Flucht,
+   Abstände, Punkte ohne Zielbelohnung (H2). Ein Verdacht wird am Beispiel nachgeprüft (§T10.4).
+4. **Nie stehen lassen.** Eine harte Regel (§T7) hält den Block an — nicht die Nacht. Claude liest die
+   Punkte-Bilanz, benennt die Ursache, ändert die Belohnung, lässt §T4 und einen kurzen Probelauf (§T6)
+   laufen und startet den nächsten Block. Ist eine Übung festgefahren, wechselt Claude auf eine andere und
+   kommt später zurück. Das Training endet erst mit einer Nachricht des Users.
+5. **Bericht in Tabellenform**, regelmäßig (nach jedem Block, mindestens stündlich), ohne Frage am Ende:
+   | Zeit | Übung | Generationen | Bester / Champion | Kern-Kennzahlen | Warnungen / Verdacht | Eingriff |
+   Darunter ein Satz: was als Nächstes läuft. Fragen sammeln sich für den Morgen in einem eigenen Block.
+6. **Übernehmen** nur, was gegen den Vergleichsgegner gemessen besser ist (§T9); Trainingsdaten getrennt
+   von der Logik pushen.
 
 ---
 
