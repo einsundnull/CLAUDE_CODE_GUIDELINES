@@ -2,7 +2,7 @@
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/JAVA_GUIDELINES_UNIVERSAL.md`
 > (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
+> **STAND:** 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
 >
 > **Umzug am 2026-09-05:** Diese Datei lag bis dahin in
 > `C:\Users\pc\eclipse-workspace\GameLoop2\`. Das war der Grund, warum sie
@@ -361,6 +361,10 @@ Aus `Prompt_Handling.txt` (liegt als Kopie in jedem `doc/`):
 
 ## §13 Mess-Budget: gemessen wird vor optimiert  [A/B]
 
+- **Performance by Design (seit 2026-10-30):** Programm-Art, Ziel-Geräte, Performance-Budget,
+  Pflicht-Bausteine, Messwerkzeuge und die regelmäßige Prüfung stehen in
+  `universal/PERFORMANCE_UNIVERSAL.md` („LEISTUNG §Pn", Skill `performance`). Sie gelten ab
+  dem ersten Code eines Projekts, nicht erst, wenn es ruckelt.
 - **Ein Optimierungsschritt ohne vorherige Messung ist ein „unnötiger
   Schritt".** Erfahrungswert aus GameLoop2: von drei aus dem Code
   hergeleiteten Performance-Befunden traf genau **einer** zu; der größte
@@ -427,6 +431,7 @@ einer Lücke eine **Terminsache**. Vorbild: `PixelArt/doc/GUIDELINES.md`.
 | Settings-Klasse + Ablageort (§12) | | |
 | Shortcut-Registry + Hilfe-Taste (§11) | | |
 | Mess-Anzeige + Kopier-Shortcut (§13) | | |
+| **Leistung: die sieben Zeilen aus LEISTUNG §P8** (Programm-Art … letzte Prüfung) | | |
 | Graphify-Scope (§1) | | |
 | Text-Werkstatt + Sprachdateien (§17) | | |
 

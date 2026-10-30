@@ -71,6 +71,31 @@ while IFS='|' read -r NAME KIND PATH_WIN; do
     PROBLEMS=$((PROBLEMS+1))
   fi
 
+  # 2b. Leistungs-Zeilen im Steckbrief (PERFORMANCE_UNIVERSAL.md §P8, seit 2026-10-30)
+  #     und letzte Leistungs-Pruefung nicht aelter als 30 Tage (§P5)
+  for G in "$P/doc/GUIDELINES.md" "$P/src/main/doc/GUIDELINES.md" "$P/Guidelines/GUIDELINES.md"; do
+    [ -f "$G" ] || continue
+    if ! grep -q "Programm-Art" "$G"; then
+      echo "    LEISTUNG FEHLT: keine Zeilen nach LEISTUNG §P8 im Steckbrief"
+      PROBLEMS=$((PROBLEMS+1))
+    else
+      LAST="$(grep -i "Letzte Pr" "$G" | grep -o '20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]' | sort | tail -1)"
+      if [ -z "$LAST" ]; then
+        echo "    LEISTUNG: keine Pruefung mit Datum eingetragen"
+        PROBLEMS=$((PROBLEMS+1))
+      else
+        AGE=$(( ( $(date +%s) - $(date -d "$LAST" +%s) ) / 86400 ))
+        if [ "$AGE" -gt 30 ]; then
+          echo "    LEISTUNG: letzte Pruefung $LAST ($AGE Tage) — faellig (§P5)"
+          PROBLEMS=$((PROBLEMS+1))
+        else
+          echo "    Leistung: letzte Pruefung $LAST"
+        fi
+      fi
+    fi
+    break
+  done
+
   # 3. alte Kopien allgemeiner Regeln = Drift-Gefahr
   #    Eine Kopie mit VERALTET-Kopf ist entschaerft und wird nur erwaehnt.
   OLD="$(find "$P" -maxdepth 2 \

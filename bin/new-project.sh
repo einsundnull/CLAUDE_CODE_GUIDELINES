@@ -173,10 +173,19 @@ Wo eine Rolle noch nicht besetzt ist, steht NICHT "—", sondern
 
 Die Tabelle mit den passenden Zeilen steht in §14 der UNIVERSAL-Datei.
 Sie wird von dort uebernommen und ausgefuellt — nicht aus dem Kopf gebaut.
+Dazu die Leistungs-Zeilen aus ${REPO_WIN}\\universal\\PERFORMANCE_UNIVERSAL.md §P8
+(Programm-Art, Ziel-Geraete, Budget, Messung) — VOR der ersten Zeile Code.
 
 | Rolle | Projekt-Wert |
 |---|---|
 | <aus UNIVERSAL §14 uebernehmen> | |
+| Programm-Art (LEISTUNG §P1) | |
+| Ziel-Geraete + Referenzgeraet (LEISTUNG §P1) | |
+| Performance-Budget (LEISTUNG §P2) | |
+| Mess-Anzeige + Schalter (LEISTUNG §P4.1) | |
+| Headless-Messung: Befehl + schwerste Szene (LEISTUNG §P4.2) | |
+| Grundlinie: Zahl + Datum (LEISTUNG §P5) | |
+| Letzte Pruefung: Datum + Ergebnis (LEISTUNG §P5) | |
 
 ---
 

@@ -39,10 +39,15 @@ universal/
   AI_TRAINING_UNIVERSAL.md       §T0–§T11: KI trainieren ohne Austricksen der Belohnung
                                  (Belohnungs-Prüfung, Kennzahlen, Abbruch-Regeln, Self-Play).
                                  Geladen über den Claude-Skill ~/.claude/skills/ai-training/
+  PERFORMANCE_UNIVERSAL.md       §P0–§P8: Performance by Design — Programm-Art + Ziel-Geräte,
+                                 Budget, Pflicht-Bausteine, Messwerkzeuge, regelmäßige Prüfung.
+                                 Geladen über den Claude-Skill ~/.claude/skills/performance/
 skills/
   ai-training/SKILL.md           Claude-Skill, verweist nur auf AI_TRAINING_UNIVERSAL.md.
                                  ~/.claude/skills/ai-training ist eine Junction auf diesen
                                  Ordner (alle Konten sehen ihn über ihre skills-Junction).
+  performance/SKILL.md           Claude-Skill, verweist nur auf PERFORMANCE_UNIVERSAL.md;
+                                 ~/.claude/skills/performance ist ebenso eine Junction.
 templates/
   Task_TEMPLATE.txt              Kopiervorlage für eine PD (Task_*.txt)
                                  CLAUDE.md, doc/GUIDELINES.md und
