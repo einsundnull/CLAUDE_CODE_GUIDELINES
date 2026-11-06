@@ -1,7 +1,7 @@
 # AI_TRAINING_UNIVERSAL — eine KI trainieren, ohne dass sie die Belohnung austrickst
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/AI_TRAINING_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-30 (§T12 unbeaufsichtigtes Training: Vollmacht, kurze Blöcke, nie stehen lassen)
+> **STAND:** 2026-11-06 (§T4 Prüfung muss rot werden können, §T10 Regel-Stand am Gehirn); davor 2026-10-30 (§T12 unbeaufsichtigtes Training: Vollmacht, kurze Blöcke, nie stehen lassen)
 >
 > **Gilt für jedes Projekt, in dem etwas lernt:** Neuroevolution, Reinforcement Learning,
 > Training gegeneinander (Self-Play), Lernen aus Aufnahmen. Sprache und Stack egal.
@@ -123,6 +123,9 @@ Hält sie nicht, wird **nicht** trainiert — der Lauf wäre sinnlos.
   kann das Training zwischen ihnen nicht unterscheiden.
 - **Der Test liegt im Prüfstand** des Projekts (läuft bei jeder Änderung der Belohnung mit)
   und als **Vorprüfung im Trainer** (vor Generation 1; Ausgabe: die Tabelle mit Punkten).
+- **Der Test muss rot werden können** (PRÜFSTAND §S1): Jede Rangfolge und jeder Abstand wird einmal
+  gegen eine absichtlich kaputte Belohnung geprüft. Beleg: Ein 20-%-Abstand war in beiden Fassungen
+  immer erfüllt (WingsOfFury 2026-11).
 - **Jedes neu entdeckte Austricksen wird ein neuer Test-Flieger.** Die Tabelle wächst mit dem
   Projekt; ein Fehler, der einmal Trainingszeit gekostet hat, kostet sie nie wieder.
 
@@ -251,6 +254,10 @@ benennen, die Belohnung ändern, **§T4 erneut laufen lassen**, dann Probelauf (
    - Zeigt sich ein Verhalten nur unter anderen Bedingungen als im Training (z. B. anderer Rechenschritt),
      braucht die Anzeige einen Schalter für genau diese Bedingung — sonst sieht der User etwas anderes als
      das genannte Beispiel.
+
+5. **Jedes Gehirn trägt den Stand der Spielregeln, mit denen es gelernt hat.** Eine Regeländerung meldet,
+   welche Gehirne betroffen sind; neu trainieren entscheidet der User. Beleg: Gehirne lernten mit altem
+   Schaden und in einer alten Welt (WingsOfFury 2026-11).
 
 ---
 

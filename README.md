@@ -42,12 +42,17 @@ universal/
   PERFORMANCE_UNIVERSAL.md       §P0–§P8: Performance by Design — Programm-Art + Ziel-Geräte,
                                  Budget, Pflicht-Bausteine, Messwerkzeuge, regelmäßige Prüfung.
                                  Geladen über den Claude-Skill ~/.claude/skills/performance/
+  PRUEFSTAND_UNIVERSAL.md        §S1–§S3: Prüfungen, die wirklich etwas prüfen (war einmal rot,
+                                 Verhalten statt Quelltext, Zusagen statt Bestand).
+                                 Geladen über den Claude-Skill ~/.claude/skills/pruefstand/
 skills/
   ai-training/SKILL.md           Claude-Skill, verweist nur auf AI_TRAINING_UNIVERSAL.md.
                                  ~/.claude/skills/ai-training ist eine Junction auf diesen
                                  Ordner (alle Konten sehen ihn über ihre skills-Junction).
   performance/SKILL.md           Claude-Skill, verweist nur auf PERFORMANCE_UNIVERSAL.md;
                                  ~/.claude/skills/performance ist ebenso eine Junction.
+  pruefstand/SKILL.md            Claude-Skill, verweist nur auf PRUEFSTAND_UNIVERSAL.md;
+                                 ~/.claude/skills/pruefstand ist ebenso eine Junction.
 templates/
   Task_TEMPLATE.txt              Kopiervorlage für eine PD (Task_*.txt)
                                  CLAUDE.md, doc/GUIDELINES.md und

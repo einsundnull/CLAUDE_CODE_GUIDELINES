@@ -1,7 +1,7 @@
 # ARBEITSPLATZ_UNIVERSAL — Konten, Werkzeuge und Orte (gilt in JEDER Sitzung)
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/ARBEITSPLATZ_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-24 (NEU: Kategorie „Arbeitsplatz“ — Konto wechseln auf Zuruf, auch vom Telefon)
+> **STAND:** 2026-11-06 (§A5 Benutzerordner und Schlüssel); davor 2026-10-24 (NEU: Kategorie „Arbeitsplatz“ — Konto wechseln auf Zuruf, auch vom Telefon)
 >
 > **Diese Datei zielt nicht auf ein Projekt**, sondern auf den Arbeitsplatz des Users:
 > welche Claude-Konten es gibt, wo die Werkzeuge liegen und wie Claude auf Zuruf
@@ -114,3 +114,5 @@ Anmelden und Vertrauen bestätigt immer der User.
   Chrome-Profil?
 - Was ein Konto kann, steht nur im Register — kein zweites Verzeichnis der Konten
   (keine Liste der E-Mails in CLAUDE.md, Gedächtnis oder Projekten).
+- Der Benutzerordner `C:\Users\pc` ist kein Git-Repo. Schlüssel liegen in keinem Repo-Ordner, sondern in
+  `C:\Users\pc\Documents\Schluessel-privat` (Prompt_Handling: SCHLÜSSEL UND SPERRLISTE).

@@ -12,6 +12,10 @@
 #   <Projekt>/CLAUDE.md              Anker
 #   <Projekt>/WEITERMACHEN_PROMPT.txt
 #   <Projekt>/START.txt              der fertige Lese-Block
+#   <Projekt>/.gitattributes         festes Zeilenende
+#   <Projekt>/.gitignore             Sperrliste fuer Schluessel, Ort fuer Wegwerf-Skripte
+#   <Projekt>/.ignore                haelt Suchen sauber
+#   <Projekt>/.vercelignore          nur WEB: interne Dateien gehen nicht online
 #
 # Die allgemeinen Regeln werden NICHT kopiert. Das Projekt liest sie aus
 # diesem Repo. Genau eine Fassung, keine Drift.
@@ -58,6 +62,64 @@ skip_or_write() {   # $1 = Zieldatei
 }
 
 echo "Richte ein: $NAME  ($LANG_KIND)"
+
+# --- Ordnung ab dem ersten Commit (UNIVERSAL §8, §15; Prompt_Handling SCHLUESSEL) ---
+if skip_or_write "$TARGET/.gitattributes"; then
+cat > "$TARGET/.gitattributes" <<'EOF'
+# Festes Zeilenende ab dem ersten Commit.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+EOF
+  echo "  angelegt: .gitattributes"
+fi
+if skip_or_write "$TARGET/.gitignore"; then
+cat > "$TARGET/.gitignore" <<'EOF'
+# Wegwerf-Skripte und Messungen haben genau diesen einen Ort.
+tools/_tmp/
+__pycache__/
+node_modules/
+
+# Sperrliste: Schluessel liegen nie im Repo, auch nicht unter anderem Namen.
+*[Aa][Pp][Ii][ -_][Kk][Ee][Yy]*
+*[Rr]ecovery*[Cc]ode*
+*[Cc]redential*
+*[Ss]ecret*
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+EOF
+  echo "  angelegt: .gitignore"
+fi
+if skip_or_write "$TARGET/.ignore"; then
+cat > "$TARGET/.ignore" <<'EOF'
+# Suchen ueberspringen das; die Ordner bleiben unberuehrt.
+tools/_tmp/
+graphify-out/
+doc/archive_*/
+EOF
+  echo "  angelegt: .ignore"
+fi
+if [ "$LANG_KIND" = "WEB" ] && skip_or_write "$TARGET/.vercelignore"; then
+cat > "$TARGET/.vercelignore" <<'EOF'
+# Online liegt nur, was die Seite braucht. Danach Abrufprobe: diese Dateien liefern online 404.
+/CLAUDE.md
+/START.txt
+/WEITERMACHEN_PROMPT.txt
+/.ignore
+/.vercelignore
+/doc
+/tools
+/bin
+/test
+/graphify-out
+EOF
+  echo "  angelegt: .vercelignore"
+fi
 
 # --- START.txt -------------------------------------------------------------
 if skip_or_write "$TARGET/START.txt"; then

@@ -10,6 +10,7 @@
 #   - gibt es doc/GUIDELINES.md?
 #   - ist im Projekt noch eine ALTE Kopie einer allgemeinen Regeldatei?
 #     (das ist der Drift-Fall, den dieses Repo abschaffen soll)
+#   - ist die Pflichtlektuere zu gross? (Prompt_Handling: GROESSE DER PFLICHTLEKTUERE)
 #
 # Aendert nichts. Meldet nur.
 # ---------------------------------------------------------------------------
@@ -92,6 +93,26 @@ while IFS='|' read -r NAME KIND PATH_WIN; do
           echo "    Leistung: letzte Pruefung $LAST"
         fi
       fi
+    fi
+    break
+  done
+
+  # 2c. Groesse der Pflichtlektuere (Prompt_Handling: GROESSE DER PFLICHTLEKTUERE)
+  for PAIR in "CLAUDE.md:4" "WEITERMACHEN_PROMPT.txt:6"; do
+    F="$P/${PAIR%%:*}"; LIMIT="${PAIR##*:}"
+    [ -f "$F" ] || continue
+    BYTES=$(wc -c < "$F")
+    if [ "$BYTES" -gt $((LIMIT*1024)) ]; then
+      echo "    GROESSE: ${PAIR%%:*} $((BYTES/1024)) KB, Grenze $LIMIT KB"
+      PROBLEMS=$((PROBLEMS+1))
+    fi
+  done
+  for G in "$P/doc/GUIDELINES.md" "$P/src/main/doc/GUIDELINES.md" "$P/Guidelines/GUIDELINES.md"; do
+    [ -f "$G" ] || continue
+    BYTES=$(awk '/^## .*Steckbrief/{f=1;print;next} f&&/^## /{exit} f' "$G" | wc -c)
+    if [ "$BYTES" -gt $((8*1024)) ]; then
+      echo "    GROESSE: Steckbrief $((BYTES/1024)) KB, Grenze 8 KB"
+      PROBLEMS=$((PROBLEMS+1))
     fi
     break
   done

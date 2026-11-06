@@ -1,7 +1,7 @@
 # PERFORMANCE_UNIVERSAL — Performance by Design: schnell von Anfang an, regelmäßig geprüft
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/PERFORMANCE_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-30 (Erstfassung)
+> **STAND:** 2026-11-06 (§P3 Teilraten-Rechnen, §P5 Median); davor 2026-10-30 (Erstfassung)
 >
 > **Gilt für jedes Programm:** Spiele, Apps, Werkzeuge — Browser, Desktop, Telefon, Java oder Web.
 > Geladen über den Claude-Skill `performance` (`~/.claude/skills/performance/SKILL.md`), sobald ein
@@ -89,6 +89,8 @@ Speicher: kein Wachsen im Dauerlauf (10 min spielen/benutzen → Speicher wieder
 5. **Keine neuen Objekte in der heißen Schleife** (Partikel, Vektoren, Listen wiederverwenden / Pools).
 6. **Ferne Objekte vereinfachen** (Level of Detail): außerhalb des Bildes gröber oder als Gruppe.
 7. **Eigene Zufallsströme** für Zusätze, damit Optimierungen die Simulation nicht verschieben.
+8. **Wer eine Objektgruppe seltener rechnet, verteilt die Bewegung über den Takt** und misst stehende
+   und springende Bilder. Sonst zuckt sie (Beleg: 56 % / 44 % der Bilder nach einem Tempo-Schalter).
 
 ### Zeichnen (Canvas, WebGL, Java2D)
 1. **Pixeldichte höchstens 2** (Telefone haben 3 = 9 Bildpunkte je Punkt).
@@ -143,7 +145,10 @@ Speicher: kein Wachsen im Dauerlauf (10 min spielen/benutzen → Speicher wieder
 
 **Wie:** Headless-Messung (§P4.2) gegen die **Grundlinie** im Steckbrief. Wo das Projekt einen
 Prüfstand hat, ist die Messung ein **Prüfpunkt mit Grenze** (z. B. „schwerste Szene ≤ Grundlinie ×
-1,25"): wird es langsamer, wird der Prüfstand rot — vor dem Push, nicht beim User.
+1,25"): wird es langsamer, wird der Prüfstand rot — vor dem Push, nicht beim User. **Ein Vergleich ist
+nie ein einzelner Lauf:** Er nimmt den Median aus mehreren Läufen und Startwerten, die gemessene Streuung
+steht im Steckbrief, und die Grenze liegt über ihr. Beleg: Ein Schalter wirkte mit einem Startwert teurer
+und über drei Startwerte schneller; ohne Codeänderung schwankte es bis 50 % (WingsOfFury 2026-11).
 
 **Ergebnis:** neue Zahl + Datum in den Steckbrief; liegt sie über Budget → §P6.
 

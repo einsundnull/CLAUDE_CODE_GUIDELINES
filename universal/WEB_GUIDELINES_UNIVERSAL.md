@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -39,6 +39,10 @@ umgebaut, um diesen Regeln zu genügen.**
 - Ein Regelverstoß im Bestand ist eine **dokumentierte Altlast**, kein Auftrag.
   Er wird im `doc/` und in der `WEITERMACHEN_PROMPT.txt` geführt, bis er
   bearbeitet wird.
+- **Ein neuer Mechanismus löst den alten ab [A].** Das geschieht in derselben PD, oder
+  der Rest steht mit Auslöser in der PD. Sonst laufen zwei Wege für dieselbe Sache
+  dauerhaft nebeneinander („Lava Flow“; Belege: zwei Regelwerke und zwei Sprachordner
+  in myLangSite, drei Stellen fürs Steigen in WingsOfFury).
 
 **Die drei häufigsten unnötigen Schritte, namentlich [A]:**
 
@@ -79,6 +83,11 @@ einem Langläufer sind sie verbindlich.
   bauen, mit Backup in `graphify-out/<DATUM>/`.
 - Für ein Projekt aus einer einzigen Datei ist der Graph **kein** Pflichtteil.
   Der Auslöser steht im Steckbrief.
+
+- **Der Graph hat einen Neubau-Auslöser [B].** Im Steckbrief steht, ab wann er als
+  veraltet gilt (z. B. ab n geänderten Code-Dateien seit dem Bau). Vor der Nutzung
+  wird das geprüft, denn ein alter Graph antwortet so sicher wie ein neuer. Beleg:
+  214 geänderte Dateien seit dem Bau, 98 Dateien fehlten (WingsOfFury 2026-11).
 
 ---
 
@@ -150,6 +159,11 @@ Drei Schichten, und die Abhängigkeit läuft nur in eine Richtung:
 - Die Extraktion des Bestands ist [C] und braucht eine eigene Aufgabe mit
   Freigabe. Sie passiert nicht nebenbei.
 
+- **Doppelter Code [A/B]:** Ab der **dritten** Kopie derselben Funktion wird ein
+  Baustein daraus, auch außerhalb der Oberfläche. Bei Geld, Zeit oder einer anderen
+  Fachregel schon ab der **zweiten**: Dort kostet jede abweichende Kopie echte Werte
+  (Beleg: fünf `convertTimeToUTC` in myLangSite). Gesucht wird beim Code-Audit.
+
 ---
 
 ## §6 Persistenz-Format-Standard  [A/B]
@@ -170,6 +184,16 @@ Drei Schichten, und die Abhängigkeit läuft nur in eine Richtung:
 - Jeder Zugriff auf `localStorage`/`sessionStorage` ist gekapselt und fängt
   Fehler ab. In einem privaten Fenster oder bei blockierten Seitendaten wirft
   schon der Zugriff.
+
+- **Abgeleitetes wird berechnet, nicht mitgeführt [A].** Was aus anderen Daten folgt
+  (Lage, Zugehörigkeit, Summe, Liste des Offenen), wird gefragt, wenn es gebraucht
+  wird, oder nur über genau eine Funktion geändert. Eine mitgeführte Kopie verlangt,
+  dass sich jede Änderungsquelle meldet, und die eine, die es vergisst, fällt erst viel
+  später auf (Belege: GameLoop2 §26 und §63, Höhe und Insel in WingsOfFury).
+- **Eine Reservierung hat ein Ende [A].** Eine Sperre, Reservierung oder ein treuhänderisch
+  gehaltener Wert gilt nur, solange der Halter lebt und bei der Sache ist. Wer reserviert,
+  legt fest, wodurch sie endet, sonst bleibt sie für immer liegen (Belege: verwaiste
+  Treuhand-Beträge in myLangSite, ein für immer reservierter Jeep in WingsOfFury).
 
 ---
 
@@ -198,6 +222,14 @@ Drei Schichten, und die Abhängigkeit läuft nur in eine Richtung:
 - `*-legacy` / `*-demo` / `*-test`-Dateien im Produktivbaum sind Altlasten.
   Sie werden im `doc/` gelistet mit Vermerk „tot / abhängig / zu löschen".
   Löschen ist [B] **nachdem** die Referenzfreiheit belegt ist.
+
+- **Ein Name hat im Projekt genau eine Bedeutung [A].** Zwei Funktionen, die gleich
+  heißen und anders rechnen, oder ein Wert, dessen Sinn vom Ort abhängt, sind Fehler.
+  Sonderwerte wie 0 bedeuten überall dasselbe, nicht einmal „keine“ und einmal
+  „unbegrenzt“ (Belege: GameLoop2 §33 und §52, WingsOfFury 2026-11).
+- **Die Projektvorlage bringt Ordnung mit [B].** `bin/new-project.sh` legt `.gitattributes`
+  (festes Zeilenende), `.gitignore` (Sperrliste für Schlüssel, ein Ort für Wegwerf-Skripte)
+  und `.ignore` (hält Suchen sauber) an. Der Bestand wird deshalb nicht umgestellt (§0).
 
 ---
 
@@ -298,6 +330,9 @@ Aus `Prompt_Handling.txt` (liegt als Kopie in jedem Projekt):
 - **Jede Zahl in den Guidelines ist ein Messwert mit Datum.** Eine Zahl ohne
   Datum ist eine Behauptung.
 
+- **Prüfungen schreiben:** Die Regeln stehen in `universal/PRUEFSTAND_UNIVERSAL.md`
+  („PRÜFSTAND §Sn“, Skill `pruefstand`). Sie gelten für jedes Projekt mit Prüfstand.
+
 ---
 
 ## §14 Projekt-Steckbrief (jedes Projekt füllt das aus)
@@ -339,7 +374,7 @@ einem vergessenen; ein benannter Auslöser macht aus einer Lücke eine
 | Mess-Anzeige + Ablesen (§13) | | |
 | **Leistung: die sieben Zeilen aus LEISTUNG §P8** (Programm-Art … letzte Prüfung) | | |
 | i18n-Namensraum + Vorgabesprache (§15) | | |
-| Graphify-Scope (§1) | | |
+| Graphify-Scope + Neubau-Auslöser (§1) | | |
 | Text-Werkstatt + Sprachdateien (§17) | | |
 
 **Die drei fett gesetzten Zeilen haben keinen Auslöser — sie sind
@@ -373,6 +408,18 @@ Pflichtantworten vor der ersten Zeile Code**, weil sie alles andere steuern:
   nicht startet, sagt das in ihrer `CLAUDE.md`.
 - **Kein `innerHTML` mit fremden oder Nutzer-Daten.** Text wird als Text
   gesetzt.
+
+- **Interne Dateien gehen nicht online [A].** Ab dem ersten Deploy gibt es eine
+  Ausschlussliste (bei Vercel `.vercelignore`): Anker- und Regeldateien, `doc/`, Werkzeuge,
+  Prüfungen, Sicherungen, Arbeitsdateien, persönliche Daten. Vor dem Eintragen zeigt ein
+  Trockenlauf, dass keine bleibende Seite etwas Ausgeschlossenes lädt. Danach folgt die
+  Abrufprobe: `CLAUDE.md`, `WEITERMACHEN_PROMPT.txt` und eine Datei aus `doc/` liefern online
+  404. Eine Positivliste geht bei Seiten ohne Build nicht, weil dort der Projektordner selbst
+  ausgeliefert wird. Belege: german, tailor und WingsOfFury 2026-11, myLangSite 2026-06.
+- **Gesten schließen sicher ab [B].** Wo ein Projekt `setPointerCapture` oder Gesten mit
+  mehreren Fingern nutzt, hören sie Bewegen, Loslassen und Abbruch am Fenster. Jedes
+  `pointerdown` hat einen sicheren Abschluss, auch über `pointercancel`. Beleg: Ein Daumen
+  zählte als zwei Finger (WingsOfFury 2026-11).
 
 ---
 
@@ -611,8 +658,8 @@ etwas anderes, als ausgeliefert wird.
    Aussehen noch etwas geändert werden, geschieht es im Baustein — und das
    Mockup zeigt es dann von selbst mit.
 6. **Prüfung:** das Mockup und die App werden im selben Browser
-   nebeneinander angesehen. Weicht etwas ab, ist das ein Fehler im
-   Baustein, nicht im Mockup.
+   nebeneinander angesehen, auch mit leerem Speicher wie auf einem neuen
+   Gerät. Weicht etwas ab, ist das ein Fehler im Baustein, nicht im Mockup.
 7. **Jedes Mockup ist über den Project Hub erreichbar** — auch am Telefon,
    ohne Laptop (User 2026-10-28: *„mockups immer über project hub erreichbar
    machen. In guidelines festhalten“*). Das Veröffentlichungs-Werkzeug des
@@ -620,7 +667,10 @@ etwas anderes, als ausgeliefert wird.
    Import-Kette) und Datendateien nach `project-hub/mockups/<projekt>/`;
    die Übersicht dort listet jedes Mockup. Ein Mockup gilt erst als
    vorgelegt, wenn es dort läuft (vorher im Hub-Ordner auf fehlende Dateien
-   geprüft) und der Hub gepusht ist. „Nur lokal ansehbar“ gibt es nicht; ein
+   geprüft) und der Hub gepusht ist. Dazu gehört ein Foto und eine Messung des
+   Inhalts der echten Seite im Hub, hochkant und quer: Vorhandene Dateien oder
+   eine geprüfte Testseite beweisen nicht, dass etwas zu sehen ist.
+   „Nur lokal ansehbar“ gibt es nicht; ein
    Artifact oder localhost-Link ist höchstens Zusatz, nie Ersatz.
 
 **Ausnahme:** ein Mockup, das nur eine IDEE skizziert (Varianten
@@ -998,8 +1048,8 @@ beantworten, sondern die Sache lösen; ruhig, sachlich und freundlich bleiben. D
 
 ## Anhang — Herkunft und Pflege
 
-- Geändert wird **nur** die Quelle in `newProjectGuidelines/prompts/`. Danach
-  werden die Projekt-Kopien nachgezogen und ihr `STAND:`-Datum mitgezogen.
+- Geändert wird **nur** diese Datei im Repo CLAUDE_CODE_GUIDELINES. Die Projekte lesen
+  sie über den absoluten Pfad; Kopien gibt es seit dem 2026-09-05 nicht mehr.
 - Nicht aus der Java-Fassung übernommen, weil im Web anders geregelt:
   Package-Split (§4 dort) → hier Schichten als Aufrufregel ohne Dateizwang.
 - Nicht aus `GUIDELINES_v2.md` übernommen: die ES5/IIFE/No-Build-Pflicht. Sie

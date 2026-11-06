@@ -2,7 +2,7 @@
 Prompt_Handling.txt — projektneutral
 ==============================================================================
 QUELLE: CLAUDE_CODE_GUIDELINES/universal/Prompt_Handling.txt  (DIES IST DIE QUELLE)
-STAND:  2026-11-06 (Startblock + "WIE DIE LESEREIHENFOLGE GELESEN WIRD": die UNIVERSAL-Regeln werden abschnittsweise gelesen); davor 2026-10-20 (NEU: Abschnitt "CODE-AUDIT NACH JEDER PD"); davor 2026-10-18 (REGEL 1: keine Kürzel ohne Bedeutung); davor 2026-10-05 (NEU: Abschnitt "DER STARTBLOCK IM KOPF DER
+STAND:  2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: Massenänderung, Schlüssel, Pflichtlektüre, Prüfschulden, Audit-Liste); davor 2026-11-06 (Startblock + "WIE DIE LESEREIHENFOLGE GELESEN WIRD": die UNIVERSAL-Regeln werden abschnittsweise gelesen); davor 2026-10-20 (NEU: Abschnitt "CODE-AUDIT NACH JEDER PD"); davor 2026-10-18 (REGEL 1: keine Kürzel ohne Bedeutung); davor 2026-10-05 (NEU: Abschnitt "DER STARTBLOCK IM KOPF DER
         WEITERMACHEN_PROMPT.txt"); davor 2026-09-05
 Herkunft: herausgelöst aus GameLoop2\Prompt_Handling.txt (Stand 2026-09-04)
           durch Entfernen aller Java- und GameLoop2-spezifischen Stellen.
@@ -89,6 +89,10 @@ sondern als benannte Checkliste (A1, A2, A3 …) in der progress-Datei
 hinterlassen — Taste/Klick, erwartete Beobachtung. "Build grün" ist kein
 Verify, und "noch nicht gebaut" ist eine messbare Aussage, die gemessen wird,
 bevor sie in eine Verify-Liste kommt.
+Beim Abschluss einer PD werden offene Punkte dieser Liste sortiert: was wirklich nur am
+Gerät geht, ist markiert, alles andere wird automatisiert oder dem User zur Entscheidung
+genannt. Es gibt keine feste Obergrenze und kein automatisches Verwerfen (Prüfschulden;
+Beleg: lange Liste "Älter" aus Oktober in WingsOfFury).
 Bei jeder neuen Implementation werden die konkreten Tasten oder Klicks
 genannt, mit denen man sie anzeigen und testen kann.
 
@@ -269,7 +273,7 @@ und der User will es bearbeitet haben, wird es als Zwischenschritt eingefügt:
 ARCHIVIERUNG
 ============
 Wenn die WEITERMACHEN_PROMPT.txt zu sehr mit abgeschlossenen Aufgaben gefüllt
-ist (Auslöser: etwa 50 KB), wird sie mit <DATUM>-Suffix archiviert und eine
+ist (Auslöser: Grenze aus GRÖSSE DER PFLICHTLEKTÜRE), wird sie mit <DATUM>-Suffix archiviert und eine
 bereinigte Fassung angelegt, die nur noch offene TODOs und Aufgaben enthält.
 Eine veraltete Datei behält NIE ihren Originalnamen.
 
@@ -366,6 +370,33 @@ gelesen:
 Diese Regel KÜRZT die Guidelines nicht — sie regelt nur den Zugriff.
 
 
+MASSENÄNDERUNG: ERST TROCKENLAUF
+================================
+Eine Änderung über viele Dateien oder Datensätze läuft zuerst als Trockenlauf und zeigt eine
+Stichprobe aller Treffer. Erst dann wird geschrieben. Der Befund eines Werkzeugs wird erst nach
+einer Gegenprobe geglaubt. Beleg: Ein Muster löschte Begründungen des Users aus Kommentaren, ein
+Skript meldete falsch zwei verwaiste Module (WingsOfFury 2026-11). Das gilt erst recht für
+Skripte, die Geld oder Benutzerdaten umschreiben.
+
+
+SCHLÜSSEL UND SPERRLISTE
+========================
+Jedes Repo hat in seiner .gitignore eine Sperrliste für Schlüssel. Geheimnisse liegen nur in
+ignorierten Dateien oder außerhalb des Repos. "git add -A" in den Push-Skripten bleibt erlaubt;
+genau deshalb ist die Sperrliste Pflicht. Der Benutzerordner ist nie ein Repo.
+
+
+GRÖSSE DER PFLICHTLEKTÜRE
+=========================
+Was in jeder Sitzung geladen oder immer gelesen wird, hat eine Obergrenze:
+  CLAUDE.md 4 KB · Projekt-Steckbrief 8 KB · WEITERMACHEN_PROMPT.txt 6 KB
+Was abschnittsweise gelesen wird (doc/GUIDELINES.md ohne Steckbrief), hat keine.
+Gemessen wird von bin/check-projects.sh im Guidelines-Repo, weil nicht jedes Projekt einen
+Prüfstand hat. Über der Grenze: Inhalt in Karten oder Fachdateien verlegen, die nach Bedarf
+gelesen werden. Beleg: rund 110.000 Token Pflichtlektüre vor der ersten Zeile Code
+(WingsOfFury 2026-11), CLAUDE.md von 82 und 111 KB in anderen Projekten.
+
+
 VERBINDLICHKEIT
 ===============
 Das Einhalten der Architektur- und Style-Guidelines ist verpflichtend, solange
@@ -393,6 +424,9 @@ berührt hat, untersucht auf:
     offen liegende Schlüssel, zu weite Datenbank-Regeln oder -Abfragen)
   - Auth-State-Probleme (Code läuft, bevor die Anmeldung feststeht)
   - fehlende Safety-Checks (leere Werte, ungültige Eingaben, Grenzen)
+  - unsichere Vorgaben (fehlt eine Angabe, gilt die Fassung ohne Wirkung; Punkte, Rechte
+    und Löschen nur ausdrücklich)
+  - Sperren und Reservierungen ohne Ende
   - Endlosschleifen und sich selbst auslösende Ereignisse
   - Redundanz und veraltete Implementierungen
 

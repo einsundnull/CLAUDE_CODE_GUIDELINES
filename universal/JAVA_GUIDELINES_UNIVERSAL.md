@@ -2,7 +2,7 @@
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/JAVA_GUIDELINES_UNIVERSAL.md`
 > (DIES IST DIE QUELLE)
-> **STAND:** 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
+> **STAND:** 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
 >
 > **Umzug am 2026-09-05:** Diese Datei lag bis dahin in
 > `C:\Users\pc\eclipse-workspace\GameLoop2\`. Das war der Grund, warum sie
@@ -41,6 +41,10 @@ umgebaut, um diesen Regeln zu genügen.**
 - Ein Regelverstoß im Bestand ist eine **dokumentierte Altlast**, kein Auftrag.
   Er wird im `doc/` und in der `WEITERMACHEN_PROMPT.txt` geführt, bis er
   bearbeitet wird.
+- **Ein neuer Mechanismus löst den alten ab [A].** Das geschieht in derselben PD, oder
+  der Rest steht mit Auslöser in der PD. Sonst laufen zwei Wege für dieselbe Sache
+  dauerhaft nebeneinander („Lava Flow“; Belege: zwei Regelwerke und zwei Sprachordner
+  in myLangSite, drei Stellen fürs Steigen in WingsOfFury).
 
 **Die drei häufigsten unnötigen Schritte, namentlich [A]:**
 
@@ -96,6 +100,11 @@ einem Langläufer sind sie verbindlich.
   begründet, sondern mit einer Textsuche über den Quellbaum belegt**
   (gemessen an TransparencyTool 2026-07-30: der Graph meldete für eine tote
   Klasse 28 Referenzen, tatsächlich waren es null).
+
+- **Der Graph hat einen Neubau-Auslöser [B].** Im Steckbrief steht, ab wann er als
+  veraltet gilt (z. B. ab n geänderten Code-Dateien seit dem Bau). Vor der Nutzung
+  wird das geprüft, denn ein alter Graph antwortet so sicher wie ein neuer. Beleg:
+  214 geänderte Dateien seit dem Bau, 98 Dateien fehlten (WingsOfFury 2026-11).
 
 ---
 
@@ -184,6 +193,11 @@ Jedes Projekt benennt im Steckbrief (§14) seine größte Klasse.
 - Beim Extrahieren wandert die Logik in die Schicht, in die sie gehört (§4) —
   nicht in eine neue Sammelklasse gleicher Art.
 
+- **Doppelter Code [A/B]:** Ab der **dritten** Kopie derselben Funktion wird ein
+  Baustein daraus, auch außerhalb der Oberfläche. Bei Geld, Zeit oder einer anderen
+  Fachregel schon ab der **zweiten**: Dort kostet jede abweichende Kopie echte Werte
+  (Beleg: fünf `convertTimeToUTC` in myLangSite). Gesucht wird beim Code-Audit.
+
 ---
 
 ## §6 Persistenz-Format-Standard  [A/B]
@@ -205,6 +219,16 @@ Jedes Projekt benennt im Steckbrief (§14) seine größte Klasse.
   gehört in die `io`-Schicht, nicht in Controller und Panels.
 - **Autosave-Konvention** wird pro Projekt festgelegt (z. B. bei
   `mouseReleased`, sofort nach Add/Delete) und gilt dann einheitlich.
+
+- **Abgeleitetes wird berechnet, nicht mitgeführt [A].** Was aus anderen Daten folgt
+  (Lage, Zugehörigkeit, Summe, Liste des Offenen), wird gefragt, wenn es gebraucht
+  wird, oder nur über genau eine Funktion geändert. Eine mitgeführte Kopie verlangt,
+  dass sich jede Änderungsquelle meldet, und die eine, die es vergisst, fällt erst viel
+  später auf (Belege: GameLoop2 §26 und §63, Höhe und Insel in WingsOfFury).
+- **Eine Reservierung hat ein Ende [A].** Eine Sperre, Reservierung oder ein treuhänderisch
+  gehaltener Wert gilt nur, solange der Halter lebt und bei der Sache ist. Wer reserviert,
+  legt fest, wodurch sie endet, sonst bleibt sie für immer liegen (Belege: verwaiste
+  Treuhand-Beträge in myLangSite, ein für immer reservierter Jeep in WingsOfFury).
 
 ---
 
@@ -247,6 +271,14 @@ Sobald **zwei** Programme dieselbe Datei lesen oder schreiben:
 - **`*Legacy`/`*Demo`/`*Test`-Dateien im Produktivbaum sind Altlasten.**
   Sie werden im `doc/` gelistet mit Vermerk „tot / abhängig / zu löschen".
   Löschen ist [B] **nachdem** die Referenzfreiheit im Graphen (§1) belegt ist.
+
+- **Ein Name hat im Projekt genau eine Bedeutung [A].** Zwei Funktionen, die gleich
+  heißen und anders rechnen, oder ein Wert, dessen Sinn vom Ort abhängt, sind Fehler.
+  Sonderwerte wie 0 bedeuten überall dasselbe, nicht einmal „keine“ und einmal
+  „unbegrenzt“ (Belege: GameLoop2 §33 und §52, WingsOfFury 2026-11).
+- **Die Projektvorlage bringt Ordnung mit [B].** `bin/new-project.sh` legt `.gitattributes`
+  (festes Zeilenende), `.gitignore` (Sperrliste für Schlüssel, ein Ort für Wegwerf-Skripte)
+  und `.ignore` (hält Suchen sauber) an. Der Bestand wird deshalb nicht umgestellt (§0).
 
 ---
 
@@ -392,6 +424,9 @@ Aus `Prompt_Handling.txt` (liegt als Kopie in jedem `doc/`):
 - **Eine Kennzahl, die ohne Erklärung wie ein Einbruch aussieht, gehört
   nicht ins Overlay** — sie erklärt sich selbst (z. B. „Ruhe: x % gespart").
 
+- **Prüfungen schreiben:** Die Regeln stehen in `universal/PRUEFSTAND_UNIVERSAL.md`
+  („PRÜFSTAND §Sn“, Skill `pruefstand`). Sie gelten für jedes Projekt mit Prüfstand.
+
 ---
 
 ## §14 Projekt-Steckbrief (jedes Projekt füllt das aus)
@@ -432,7 +467,7 @@ einer Lücke eine **Terminsache**. Vorbild: `PixelArt/doc/GUIDELINES.md`.
 | Shortcut-Registry + Hilfe-Taste (§11) | | |
 | Mess-Anzeige + Kopier-Shortcut (§13) | | |
 | **Leistung: die sieben Zeilen aus LEISTUNG §P8** (Programm-Art … letzte Prüfung) | | |
-| Graphify-Scope (§1) | | |
+| Graphify-Scope + Neubau-Auslöser (§1) | | |
 | Text-Werkstatt + Sprachdateien (§17) | | |
 
 **Die vier fett gesetzten Zeilen haben keinen Auslöser — sie sind
@@ -710,34 +745,12 @@ ein Text, den er nicht versteht, hilft ihm nicht, sondern verunsichert ihn.
   TransparencyTool (Swing, Bild-/Szenen-Editor).
 - **Pflege:** Eine Regel wandert hierher, sobald sie im **zweiten** Projekt
   gilt. Bis dahin bleibt sie im Projekt-Dokument. Eine hier geänderte Regel
-  gilt sofort für alle Projekte — die Änderung braucht deshalb einen
-  Eintrag in der `WEITERMACHEN_PROMPT.txt` **jedes** betroffenen Projekts.
+  gilt sofort für alle Projekte, für neuen und berührten Code (§0).
 
-- **Wo diese Datei liegt (Entscheidung 2026-08-23):** In **jedem**
-  Projekt-Root eine eigene Fassung. Kein Dokument im Workspace-Root, keine
-  Querverweise zwischen Projektordnern — ein Projektordner ist vollständig
-  für sich lesbar. Der Preis dafür sind mehrere Fassungen, und der wird
-  bezahlt, nicht ignoriert:
-
-  | | |
-  |---|---|
-  | **Master** | `GameLoop2/JAVA_GUIDELINES_UNIVERSAL.md` — hier wird geändert. |
-  | **Kopien** | `GameLoop3/` · `PixelArt/` — nur nachgezogen, nie dort editiert. |
-
-  **Eine Änderung am Master ist erst fertig, wenn alle Kopien nachgezogen
-  sind** (`diff` gegen jede Kopie muss leer sein) **und jede betroffene
-  `WEITERMACHEN_PROMPT.txt` den Eintrag hat.** Wer nur den Master ändert,
-  hat keine Guideline geändert, sondern eine Abweichung erzeugt (§9).
-  Gegenprobe, die in jede Änderungs-PD gehört:
-  `for d in GameLoop2 GameLoop3 PixelArt; do diff GameLoop2/JAVA_GUIDELINES_UNIVERSAL.md $d/JAVA_GUIDELINES_UNIVERSAL.md; done`
-
-- **Kandidaten, die noch nicht hier stehen** (nur ein Projekt, deshalb noch
-  Projektregel — beim zweiten Vorkommen wandern sie hoch, statt neu erfunden
-  zu werden):
-  · **„Ein Prüfstand sichert ZUSAGEN zu, keinen BESTAND"** (GameLoop2 §51,
-  mit dem Beleg, dass eine Erwartungszahl an EINEM Tag dreimal wechselte,
-  ohne dass sich Produktivcode änderte) — fällig, sobald ein zweites Projekt
-  einen Prüfstand hat.
-  · **„Regression wird neu erhoben, nie abgeschrieben"** (dito).
+- **Wo diese Datei liegt:** nur im Repo CLAUDE_CODE_GUIDELINES. Die Projekte lesen sie
+  über den absoluten Pfad; Kopien gibt es seit dem 2026-09-05 nicht mehr.
+- **Kandidaten, die noch nicht hier stehen** (nur ein Projekt, deshalb noch Projektregel —
+  beim zweiten Vorkommen wandern sie hoch, statt neu erfunden zu werden):
+  · **„Regression wird neu erhoben, nie abgeschrieben"** (GameLoop2 §51).
 - Projektspezifische Paragraphen werden ab **§20** numeriert, damit §0–§17
   projektübergreifend dieselbe Bedeutung behalten.
