@@ -20,3 +20,6 @@ API Key*.txt
 *.pfx
 .env
 .env.*
+
+# WLAN-Protokolle des Watchdogs: entstehen am Laptop, die Skripte legen den Ordner selbst an
+watchdog/logs/
