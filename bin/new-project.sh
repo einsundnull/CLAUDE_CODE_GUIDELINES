@@ -65,8 +65,11 @@ cat > "$TARGET/START.txt" <<EOF
 LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
 
   1. ${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md
-     Die allgemeinen Regeln. Gelten fuer ALLE Projekte. Ganz lesen.
+     Die allgemeinen Regeln. Gelten fuer ALLE Projekte.
      Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geaendert, nie hier.
+     — NICHT am Stueck lesen. Zuerst nur die Ueberschriften holen
+       (grep -n "^## " <diese Datei>), dann §0 und ausschliesslich
+       die Paragraphen, die die Aufgabe beruehrt.
 
   2. ${REPO_WIN}\\universal\\Prompt_Handling.txt
      Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.

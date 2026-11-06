@@ -1,0 +1,22 @@
+# Sperrliste: dieses Repo ist oeffentlich, bin/push.sh macht "git add -A".
+# Schluessel gehoeren nicht in diesen Ordner. Sie liegen in
+# C:\Users\pc\Documents\Schluessel-privat
+# Die Eintraege fangen sie ab, falls wieder einer hier abgelegt wird.
+
+# Ordner und Dateien, die hier schon einmal lagen
+Keys/
+Vercel/
+API Key*.txt
+
+# Was nach Schluessel aussieht, unter jedem Namen und in jedem Unterordner
+*[Aa][Pp][Ii][ -_][Kk][Ee][Yy]*
+*[Rr]ecovery*[Cc]ode*
+*[Dd]ebug*[Tt]oken*
+*[Cc]redential*
+*[Ss]ecret*
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*

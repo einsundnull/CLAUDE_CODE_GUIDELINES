@@ -21,8 +21,11 @@ Alles unter dem Block bleibt, wie es ist. Der Block ersetzt NUR die alte
 LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
 
   1. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\<SPRACHE>_GUIDELINES_UNIVERSAL.md
-     Die allgemeinen Regeln. Gelten für ALLE Projekte. Ganz lesen.
+     Die allgemeinen Regeln. Gelten für ALLE Projekte.
      Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geändert, nie hier.
+     — NICHT am Stück lesen. Zuerst nur die Überschriften holen
+       (grep -n "^## " <diese Datei>), dann §0 und ausschließlich
+       die Paragraphen, die die Aufgabe berührt.
 
   2. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\Prompt_Handling.txt
      Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.
