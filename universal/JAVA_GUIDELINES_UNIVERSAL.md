@@ -2,7 +2,7 @@
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/JAVA_GUIDELINES_UNIVERSAL.md`
 > (DIES IST DIE QUELLE)
-> **STAND:** 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
+> **STAND:** 2026-11-06 (§10 Lesefolge in der CLAUDE.md statt Startblock, §14 Findbares entfällt); 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-05
 >
 > **Umzug am 2026-09-05:** Diese Datei lag bis dahin in
 > `C:\Users\pc\eclipse-workspace\GameLoop2\`. Das war der Grund, warum sie
@@ -21,9 +21,7 @@
 > `doc/GUIDELINES.md` einen **Projekt-Steckbrief** (§14) an, der diese Rollen
 > mit konkreten Klassen besetzt, und ergänzt projektspezifische Paragraphen.
 >
-> **Lesereihenfolge für jede Aufgabe:**
-> 1. diese Datei · 2. `<Projekt>/doc/GUIDELINES.md` · 3. `doc/Prompt_Handling.txt`
-> · 4. `doc/WEITERMACHEN_PROMPT.txt` · 5. die aktive `Task_*.txt` (PD)
+> **Einstieg:** Die `CLAUDE.md` des Projekts nennt ihn. Diese Datei wird abschnittsweise gelesen.
 
 ---
 
@@ -312,7 +310,7 @@ Sobald **zwei** Programme dieselbe Datei lesen oder schreiben:
 
 ## §10 Task-Workflow für größere Änderungen  [B]
 
-Aus `Prompt_Handling.txt` (liegt als Kopie in jedem `doc/`):
+Aus `Prompt_Handling.txt` (im Repo, geladen über den Skill `aufgaben-ablauf`, nie kopiert):
 
 - Größere Aufgabe **[BT]** → `Task_<DateTime>_<Name>.txt` (PD) im `doc/`;
   Schritte `[m/n]` mit Risikoklasse `[A]/[B]/[C]`; Model-Empfehlung;
@@ -324,12 +322,9 @@ Aus `Prompt_Handling.txt` (liegt als Kopie in jedem `doc/`):
 - `WEITERMACHEN_PROMPT.txt` zum Fortsetzen nach `/clear`; nennt immer die
   aktive PD. Wird sie zu lang: mit `<DATUM>`-Suffix archivieren und bereinigt
   neu anlegen (nur offene TODOs).
-- **Ihr Kopf ist der Startblock [B]** (seit 2026-10-05): direkt nach Titel
-  und Stand steht der Block `BLOCK ANFANG … BLOCK ENDE` mit der
-  Lesereihenfolge 1–5 und ihren Regeln — Wortlaut wörtlich aus
-  `Prompt_Handling.txt`, Abschnitt „DER STARTBLOCK", nur Projektpfad
-  angepasst, ohne Datum und Aufgabenstand. Er ist der Wiedereinstieg nach
-  `/clear` und wandert beim Archivieren unverändert in die Neufassung.
+- **Die Lesefolge steht in der `CLAUDE.md` des Projekts [B]** (Abschnitt „Einstieg“), nicht als
+  Block in der `WEITERMACHEN_PROMPT.txt`. Die CLAUDE.md lädt von selbst; ein Block zum Einfügen
+  hatte vier Kopien.
 - **Abschluss-Block** als letzte Zeilen jeder Ausgabe:
   PD aktualisiert? · progress aktualisiert? · WEITERMACHEN aktualisiert? ·
   WEITERMACHEN bereinigt/archiviert? · Aufgabe vollständig? · nächster
@@ -442,6 +437,9 @@ zweiten eigenen Fenster", „ab dem zweiten Panel-Typ"). Ein leeres Feld ist
 nicht unterscheidbar von einem vergessenen; ein benannter Auslöser macht aus
 einer Lücke eine **Terminsache**. Vorbild: `PixelArt/doc/GUIDELINES.md`.
 
+**Findbares entfällt [B]:** Steht ein Wert schon in der `CLAUDE.md` des Projekts oder ist er ohne Suche
+im Code zu sehen, entfällt seine Zeile. Sonst stünde er doppelt und driftet.
+
 | Rolle | Projekt-Klasse/Wert | Auslöser, falls (noch) nicht vorhanden |
 |---|---|---|
 | Sprache + Version | | — |
@@ -504,8 +502,7 @@ ergänzt. Ohne diese Klärung wird keine Persistenz-Architektur entworfen.
 ## §16 Wie du fragst und wie du ausgibst  [B]
 
 > **Verbindlich ab 2026-09-04**, bestellt vom User in GameLoop2. Die
-> Formatvorlage steht im Wortlaut in `Prompt_Handling.txt` (Abschnitt „DAS
-> FORMAT FÜR FRAGEN UND ANWEISUNGEN") — **dort wird geändert**, hier steht die
+> Formatvorlage steht im Wortlaut in `KERN.md` — **dort wird geändert**, hier steht die
 > Regel. Zwei Wortlaute derselben Vorlage würden driften (§9).
 
 **Der Anlass ist kein Geschmack, sondern ein Fehler, der passiert ist.** Der

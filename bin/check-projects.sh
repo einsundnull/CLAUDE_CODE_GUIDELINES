@@ -31,6 +31,13 @@ fi
 
 PROBLEMS=0
 
+# Der Kern laedt in jeder Sitzung (Prompt_Handling: GROESSE DER PFLICHTLEKTUERE)
+KERN_BYTES=$(wc -c < "$REPO/universal/KERN.md")
+if [ "$KERN_BYTES" -gt 4096 ]; then
+  echo "GROESSE: universal/KERN.md $KERN_BYTES Bytes, Grenze 4 KB"
+  PROBLEMS=$((PROBLEMS+1))
+fi
+
 while IFS='|' read -r NAME KIND PATH_WIN; do
   case "$NAME" in ''|'#'*) continue ;; esac
   NAME="$(echo "$NAME" | sed 's/^ *//;s/ *$//')"
@@ -143,6 +150,13 @@ while IFS='|' read -r NAME KIND PATH_WIN; do
   fi
   echo
 done < "$LIST"
+
+# Startprompts der Hub-Seite: jedes Projekt hat eine Karte und einen aktuellen Prompt
+echo "=== Startprompts (project.easy-lang.com)"
+if ! node "C:/Users/pc/Documents/Phoenix Code/project-hub/bin/startprompts.mjs"; then
+  PROBLEMS=$((PROBLEMS+1))
+fi
+echo
 
 echo "-------------------------------------------------------------"
 if [ "$PROBLEMS" -eq 0 ]; then

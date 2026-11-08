@@ -11,7 +11,6 @@
 #   <Projekt>/doc/GUIDELINES.md      Steckbrief mit Ausfuell-Pflicht
 #   <Projekt>/CLAUDE.md              Anker
 #   <Projekt>/WEITERMACHEN_PROMPT.txt
-#   <Projekt>/START.txt              der fertige Lese-Block
 #   <Projekt>/.gitattributes         festes Zeilenende
 #   <Projekt>/.gitignore             Sperrliste fuer Schluessel, Ort fuer Wegwerf-Skripte
 #   <Projekt>/.ignore                haelt Suchen sauber
@@ -108,7 +107,6 @@ if [ "$LANG_KIND" = "WEB" ] && skip_or_write "$TARGET/.vercelignore"; then
 cat > "$TARGET/.vercelignore" <<'EOF'
 # Online liegt nur, was die Seite braucht. Danach Abrufprobe: diese Dateien liefern online 404.
 /CLAUDE.md
-/START.txt
 /WEITERMACHEN_PROMPT.txt
 /.ignore
 /.vercelignore
@@ -121,46 +119,6 @@ EOF
   echo "  angelegt: .vercelignore"
 fi
 
-# --- START.txt -------------------------------------------------------------
-if skip_or_write "$TARGET/START.txt"; then
-cat > "$TARGET/START.txt" <<EOF
-LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
-
-  1. ${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md
-     Die allgemeinen Regeln. Gelten fuer ALLE Projekte.
-     Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geaendert, nie hier.
-     — NICHT am Stueck lesen. Zuerst nur die Ueberschriften holen
-       (grep -n "^## " <diese Datei>), dann §0 und ausschliesslich
-       die Paragraphen, die die Aufgabe beruehrt.
-
-  2. ${REPO_WIN}\\universal\\Prompt_Handling.txt
-     Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.
-     Enthaelt das Frage-/Anweisungs-Format und den Abschluss-Block. Ganz lesen.
-
-  3. ${TARGET_WIN}\\doc\\GUIDELINES.md
-     Die Regeln DIESES Projekts. Besetzt die Rollen aus Datei 1 im
-     Projekt-Steckbrief und ergaenzt projektspezifische Paragraphen ab §20.
-     — NICHT am Stueck lesen. Zuerst nur die Ueberschriften holen
-       (grep -n "^## §" ${TARGET_WIN}\\doc\\GUIDELINES.md), dann ausschliesslich
-       die Paragraphen, die die Aufgabe beruehrt, plus IMMER den
-       Projekt-Steckbrief ganz oben.
-
-  4. ${TARGET_WIN}\\WEITERMACHEN_PROMPT.txt
-     Wo wir stehen, welche PD aktiv ist, was offen ist. Ganz lesen.
-
-  5. Die aktive Task_*.txt in ${TARGET_WIN}\\doc\\, die in Datei 4 genannt ist.
-
-REGELN ZU DIESER REIHENFOLGE:
-  - Bei Konflikt gewinnt die projektnaehere Regel: 3 schlaegt 1. Eine
-    Abweichung von 1 wird in 3 NAMENTLICH begruendet.
-  - Dateien 1 und 2 werden NICHT ins Projekt kopiert. Es gibt genau eine
-    Fassung, und sie liegt im Repo.
-  - Der Lesezugriff auf das Repo ist die EINZIGE erlaubte Ausnahme von der
-    Regel "der Arbeitsbereich endet am Projektordner".
-EOF
-  echo "  angelegt: START.txt"
-fi
-
 # --- CLAUDE.md -------------------------------------------------------------
 if skip_or_write "$TARGET/CLAUDE.md"; then
 cat > "$TARGET/CLAUDE.md" <<EOF
@@ -168,17 +126,12 @@ cat > "$TARGET/CLAUDE.md" <<EOF
 
 Diese Datei wird bei jeder Sitzung automatisch geladen.
 
-## Lesereihenfolge
+## Einstieg
 
-Siehe \`START.txt\` im Projekt-Root. Kurz:
-1. ${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md
-2. ${REPO_WIN}\\universal\\Prompt_Handling.txt
-3. \`doc/GUIDELINES.md\` (nur die einschlaegigen §, plus immer den Steckbrief)
-4. \`WEITERMACHEN_PROMPT.txt\`
-5. die dort genannte aktive \`doc/Task_*.txt\`
-
-Die allgemeinen Regeln liegen NICHT hier. Sie liegen im Repo
-CLAUDE_CODE_GUIDELINES und werden nur dort geaendert.
+"weiter" oder neue Sitzung: \`WEITERMACHEN_PROMPT.txt\` ganz lesen, dann die dort genannte aktive \`doc/Task_*.txt\`.
+Vor Code-Aenderungen den Steckbrief in \`doc/GUIDELINES.md\`. Regeln nur abschnittsweise: \`grep -n "^## " <Datei>\`, Betroffenes lesen.
+Allgemeine Regeln: ${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md (nur im Repo geaendert, nie kopiert).
+Bei Konflikt gewinnt das Projekt, namentlich begruendet in \`doc/GUIDELINES.md\`.
 
 ## Was das Projekt ist
 
@@ -200,7 +153,7 @@ CLAUDE_CODE_GUIDELINES und werden nur dort geaendert.
 
 | Ort | Inhalt |
 |---|---|
-| Projekt-Root | Quellcode, \`CLAUDE.md\`, \`START.txt\`, \`WEITERMACHEN_PROMPT.txt\` |
+| Projekt-Root | Quellcode, \`CLAUDE.md\`, \`WEITERMACHEN_PROMPT.txt\` |
 | \`doc/\` | \`GUIDELINES.md\`, alle \`Task_*.txt\` (PD), alle \`progress_*.txt\`, Mockups |
 
 ## Git
@@ -218,7 +171,7 @@ cat > "$TARGET/doc/GUIDELINES.md" <<EOF
 > **Status: VERBINDLICH ab ${TODAY}.** Erstfassung.
 >
 > **Zweistufiges Regelwerk:** Die projektneutralen Regeln stehen in
-> \`${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md\` (dort §0–§16).
+> \`${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md\`.
 > Dieses Dokument besetzt deren Rollen (Steckbrief unten) und ergaenzt die
 > projektspezifischen Regeln ab §20.
 >
@@ -270,15 +223,6 @@ WEITERMACHEN_PROMPT.txt — ${NAME}
 $(printf '=%.0s' $(seq 1 $((26 + ${#NAME}))))
 Stand: ${TODAY}
 
-LIES IN DIESER REIHENFOLGE
---------------------------
-Siehe START.txt im Projekt-Root. Kurz:
-1. ${REPO_WIN}\\universal\\${LANG_KIND}_GUIDELINES_UNIVERSAL.md
-2. ${REPO_WIN}\\universal\\Prompt_Handling.txt
-3. ${TARGET_WIN}\\doc\\GUIDELINES.md  (nur die einschlaegigen §, plus Steckbrief)
-4. Diese Datei.
-5. Die aktive PD (unten genannt).
-
 AKTIVE PD
 ---------
 Keine. Die naechste groessere Aufgabe bekommt eine
@@ -286,7 +230,7 @@ Task_<DateTime>_<Name>.txt in doc\\.
 
 WO WAS LIEGT
 ------------
-Projekt-Root   Quellcode, CLAUDE.md, START.txt, diese Datei
+Projekt-Root   Quellcode, CLAUDE.md, diese Datei
 doc\\           GUIDELINES.md, alle Task_*.txt, alle progress_*.txt
 
 MESSWERTE (veralten von selbst — jede Zahl mit Datum)
@@ -309,3 +253,5 @@ echo "FERTIG. Naechster Schritt: den Projekt-Steckbrief in doc/GUIDELINES.md"
 echo "ausfuellen. Die drei fett gesetzten Zeilen sind Pflichtantworten."
 echo
 echo "Danach das Projekt in ${REPO_WIN}\\PROJECTS.txt eintragen."
+echo "Dann in project-hub/projects.json eine Karte anlegen (mit startPrompt) und dort"
+echo "node bin/startprompts.mjs --schreiben ausfuehren: das erzeugt den Startprompt."

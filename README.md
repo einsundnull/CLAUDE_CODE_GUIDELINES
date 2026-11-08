@@ -30,12 +30,15 @@ verschiedene `Prompt_Handling.txt`. Keine davon war als veraltet erkennbar.
 
 ```
 universal/
-  JAVA_GUIDELINES_UNIVERSAL.md   §0–§16 + Steckbrief §14, für Java-Projekte
-  WEB_GUIDELINES_UNIVERSAL.md    §0–§16 + Steckbrief §14, für HTML/CSS/JS
-  Prompt_Handling.txt            Aufgaben-Workflow, Frage-Format, Abschluss-Block
+  KERN.md                        Einstieg, Orte, Frage-Format, Abschluss-Block. Lädt in JEDER Sitzung
+                                 über C:\Users\pc\.claude\CLAUDE.md. Obergrenze 4 KB.
+  JAVA_GUIDELINES_UNIVERSAL.md   Regeln + Steckbrief §14, für Java-Projekte
+  WEB_GUIDELINES_UNIVERSAL.md    Regeln + Steckbrief §14, für HTML/CSS/JS
+  Prompt_Handling.txt            Aufgaben-Ablauf: Schritte, PD, Archiv, Audit, Skripte.
+                                 Geladen über den Claude-Skill ~/.claude/skills/aufgaben-ablauf/
   ARBEITSPLATZ_UNIVERSAL.md      KEIN Projekt-Regelwerk: Claude-Konten, Werkzeuge, Orte;
-                                 Konto wechseln auf Zuruf (auch vom Telefon). Geladen in
-                                 JEDER Sitzung über C:\Users\pc\.claude\CLAUDE.md
+                                 Konto wechseln auf Zuruf (auch vom Telefon).
+                                 Geladen über den Claude-Skill ~/.claude/skills/konto-wechseln/
   AI_TRAINING_UNIVERSAL.md       §T0–§T11: KI trainieren ohne Austricksen der Belohnung
                                  (Belohnungs-Prüfung, Kennzahlen, Abbruch-Regeln, Self-Play).
                                  Geladen über den Claude-Skill ~/.claude/skills/ai-training/
@@ -53,6 +56,8 @@ skills/
                                  ~/.claude/skills/performance ist ebenso eine Junction.
   pruefstand/SKILL.md            Claude-Skill, verweist nur auf PRUEFSTAND_UNIVERSAL.md;
                                  ~/.claude/skills/pruefstand ist ebenso eine Junction.
+  aufgaben-ablauf/SKILL.md       verweist nur auf Prompt_Handling.txt; ebenso eine Junction.
+  konto-wechseln/SKILL.md        verweist nur auf ARBEITSPLATZ_UNIVERSAL.md; ebenso eine Junction.
 templates/
   Task_TEMPLATE.txt              Kopiervorlage für eine PD (Task_*.txt)
                                  CLAUDE.md, doc/GUIDELINES.md und
@@ -70,7 +75,11 @@ bin/
                                  damit die fünf Zeilen nicht dreimal dastehen.
                                  Regel: Prompt_Handling.txt, „EIN SKRIPT
                                  SCHLIESST SICH NICHT SELBST"
-START_TEMPLATE.txt               der Block, der oben in jede Projekt-Startdatei kommt
+  hooks/session-start.mjs        warnt, wenn eine Sitzung oberhalb eines Projektordners startet
+                                 (eingetragen in ~/.claude/settings.json)
+CLAUDE.md                        Einstieg für Sitzungen in diesem Repo (seit 2026-11-08; vorher
+                                 stand der Text als BESONDERS im Startprompt-Erzeuger des Hubs)
+START_TEMPLATE.txt               abgelöst: nur noch ein Verweis
 PROJECTS.txt                     welches Projekt welche Sprache liest und wo es liegt
 ```
 
@@ -83,15 +92,16 @@ bash ~/Documents/CLAUDE_CODE_GUIDELINES/bin/new-project.sh "C:/Pfad/zum/Projekt"
 ```
 
 Das Skript legt an: `doc/`, `CLAUDE.md`, `doc/GUIDELINES.md` (leerer Steckbrief
-mit Ausfüll-Pflicht), `WEITERMACHEN_PROMPT.txt` und `START.txt` mit dem
-fertigen Lese-Block. Es überschreibt nichts, was schon da ist.
+mit Ausfüll-Pflicht) und `WEITERMACHEN_PROMPT.txt`. Die Lesefolge steht im Abschnitt
+„Einstieg“ der `CLAUDE.md`. Es überschreibt nichts, was schon da ist.
+Der Startprompt der Hub-Seite nennt nur Projekt und Ordner. Ohne Abschnitt „Einstieg“ erzeugt
+`project-hub/bin/startprompts.mjs` keinen Prompt und meldet ein PROBLEM (seit 2026-11-08).
 
 ## Bestehendes Projekt anbinden
 
-Den Block aus `START_TEMPLATE.txt` oben in die Startdatei des Projekts setzen
-(`Start nicht löschen.txt` oder wie sie dort heißt), `<SPRACHE>` und
-`<PROJEKTPFAD>` ersetzen. Die alte `Lies:`-Liste ersetzen, die Notizen
-darunter stehen lassen.
+Den Abschnitt „Einstieg“ aus der CLAUDE.md-Vorlage in `bin/new-project.sh` in die `CLAUDE.md` des
+Projekts setzen, Pfad und Sprache anpassen. Ein alter Startblock wird dabei gelöscht.
+Sitzungen im Projektordner starten, nur dort laden seine Regeln und Hooks.
 
 ## Regeln ändern
 

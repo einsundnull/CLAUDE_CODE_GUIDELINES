@@ -1,0 +1,51 @@
+Task_2026-11-08_Startprompts-kuerzen.txt
+=========================================
+
+Initialer Prompt (User 2026-11-08):
+  Untersuche, ob sich die Startprompts (Beispiele GuideLines und myLangSite) nach Claude-Code-Best-Practice
+  durch Skills verbessern lassen. Keine Information darf verloren gehen. Tabelle mit Verbesserungen,
+  Prozent und gesparten Token.
+
+Ergebnis der Untersuchung (Kurzfassung, Zahlen in progress_2026-11-08_Startprompts-kuerzen.txt):
+  Ein Skill /weiter kostet beim Aufruf etwa 400 Token, der Prompt heute etwa 142: schlechter.
+  Besser: die Pfade stehen im Abschnitt "Einstieg" der CLAUDE.md jedes Projekts (verlangt KERN schon),
+  der Prompt nennt nur noch Projekt und Ordner. Etwa -63 % am Prompt.
+
+Rückfrage und Antwort:
+  Frage: Variante B umsetzen (Einstieg in jede CLAUDE.md, CLAUDE.md fürs Repo, Erzeuger kürzen)?
+  Antwort User: "1a" = ja, alles.
+
+Kategorie: [BT]
+Anzahl der Schritte: 6
+
+[1/6] [B] Erzeuger project-hub/bin/startprompts.mjs: kurzer Prompt; Prompt nur, wenn die CLAUDE.md
+      einen Abschnitt "## Einstieg" hat; BESONDERS entfällt. Trockenlauf muss danach ROT sein
+      (Projekte ohne Einstieg). Modell: Opus/Sonnet.
+[2/6] [B] CLAUDE.md des Guidelines-Repos anlegen (Inhalt aus BESONDERS + README-Verweis). Modell: jedes außer Haiku.
+[3/6] [A] Abschnitt "Einstieg" in die CLAUDE.md von GameLoop2, German, myLangSite, nback, Ringmenü,
+      SpriteRigEditorClaude, Schnittmuster. Bestehende "Lesereihenfolge" wird zu "Einstieg"
+      (Überschrift behält "früher: Lesereihenfolge", damit Zitate auffindbar bleiben).
+      "ganz lesen" der allgemeinen Regeln und von Prompt_Handling.txt entfällt: KERN und Skill
+      aufgaben-ablauf gelten. Modell: Opus (jede Datei anders).
+[4/6] [B] Alte Startblöcke (BLOCK ANFANG) entfernen, wie KERN verlangt: WEITERMACHEN_PROMPT.txt von
+      myLangSite, nback, Schnittmuster; START.txt von nback und SpriteRigEditorClaude (Verweis-Muster:
+      Datei bleibt, sagt wohin). Modell: Sonnet.
+[5/6] [B] Prompts schreiben (node bin/startprompts.mjs --schreiben), check-projects.sh laufen lassen.
+[6/6] [B] README und new-project.sh nachziehen (Hinweis "Prompt verlangt Einstieg"), Audit, Abschluss.
+
+[UNNÖTIG] Skill /weiter — teurer als der heutige Prompt, zweite Quelle neben dem Erzeuger.
+[UNNÖTIG] CLAUDE.md-Größen (über 4 KB) und WEITERMACHEN-Größen (über 6 KB) senken — eigene Aufgabe,
+          check-projects.sh meldet sie schon.
+[UNNÖTIG] DGZFP anbinden (keine CLAUDE.md, keine Karte im Hub) — eigene Aufgabe.
+
+DB/API: nicht relevant (nur Text- und Skriptdateien).
+Push/Commit: nicht ungefragt. Hub-Push (Vercel) macht der User.
+
+Fortschritt:
+[1/6] abgeschlossen — Trockenlauf danach rot: 9 PROBLEM, 1 ANDERS (Beleg in progress)
+[2/6] abgeschlossen
+[3/6] abgeschlossen — 7 CLAUDE.md (German: Abschnitt neu oben; die anderen: Lesereihenfolge umbenannt)
+[4/6] abgeschlossen — 3 WEITERMACHEN, 2 START.txt
+[5/6] abgeschlossen — "Alle Startprompts sind aktuell."
+[6/6] abgeschlossen — README, Memory, Audit
+AUFGABE VOLLSTÄNDIG ABGESCHLOSSEN 2026-11-08. Nicht committet, nicht gepusht.

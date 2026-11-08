@@ -1,13 +1,13 @@
-# ARBEITSPLATZ_UNIVERSAL — Konten, Werkzeuge und Orte (gilt in JEDER Sitzung)
+# ARBEITSPLATZ_UNIVERSAL — Konten, Werkzeuge und Orte (gilt in jeder Sitzung, geladen bei Bedarf)
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/ARBEITSPLATZ_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-11-06 (§A5 Benutzerordner und Schlüssel); davor 2026-10-24 (NEU: Kategorie „Arbeitsplatz“ — Konto wechseln auf Zuruf, auch vom Telefon)
+> **STAND:** 2026-11-06 (lädt als Skill statt in jeder Sitzung); 2026-11-06 (§A5 Benutzerordner und Schlüssel); davor 2026-10-24 (NEU: Kategorie „Arbeitsplatz“ — Konto wechseln auf Zuruf, auch vom Telefon)
 >
 > **Diese Datei zielt nicht auf ein Projekt**, sondern auf den Arbeitsplatz des Users:
 > welche Claude-Konten es gibt, wo die Werkzeuge liegen und wie Claude auf Zuruf
 > handelt — auch wenn der User im Zug sitzt und nur das Telefon hat.
-> Sie wird über `C:\Users\pc\.claude\CLAUDE.md` in jede Sitzung geladen, in jedem
-> Projekt und unter jedem Konto. **Der User erklärt diese Abläufe nie wieder.**
+> Sie lädt über den Skill `konto-wechseln`, den jedes Konto sieht, in jedem Projekt. Ein Import
+> kostete in jeder Sitzung rund 1 900 Token. **Der User erklärt diese Abläufe nie wieder.**
 >
 > Bestellt vom User am 2026-10-24: *„Sorge dafür, dass ich es vom Telefon aus und auch
 > sonst nie wieder erklären muss, wie wir vorgehen müssen. […] dass du immer weisst, wo
@@ -27,9 +27,10 @@
 | **Wechsel-Werkzeug** | `C:\Users\pc\Documents\Phoenix Code\project-hub\bin\konten\konto.ps1` |
 | Autostart ein / aus | `…\project-hub\bin\konten\autostart-ein.ps1` / `autostart-aus.ps1` |
 | **Fenster für den User** (statt Befehle) | `…\project-hub\bin\konten\konto-ui.ps1`, Verknüpfung „Claude-Konten“ auf dem Desktop. Am Laptop verweist Claude auf das Fenster, nicht auf Befehle. |
-| Konto-Seite für das Telefon | project-hub-Website (Abschnitt „Account wechseln“), Quelle `project-hub/index.html` + `js/app.js` |
+| Konto-Seite für das Telefon | project-hub-Website https://project.easy-lang.com (Abschnitt „Account wechseln“), Quelle `project-hub/index.html` + `js/app.js` |
+| Startprompts je Projekt | dieselbe Website, Knopf auf der Projektkarte; erzeugt von `project-hub/bin/startprompts.mjs` aus dem Register, nie von Hand ändern |
 | Hauptordner von Claude Code | `C:\Users\pc\.claude` (= Konto 1). Weitere Konten: `C:\Users\pc\.claude-konto<N>` |
-| Globale Anweisungen | `C:\Users\pc\.claude\CLAUDE.md` (die anderen Konten verweisen per `@~/.claude/CLAUDE.md` darauf) |
+| Globale Anweisungen | `C:\Users\pc\.claude\CLAUDE.md` (die anderen Konten verweisen per `@~/.claude/CLAUDE.md` darauf); sie lädt `universal/KERN.md` |
 | Laufende Server | PID-Dateien `C:\Users\pc\.claude\konten\konto<N>.pid` |
 | Chrome | `C:\Program Files\Google\Chrome\Application\chrome.exe`, Profile in `%LOCALAPPDATA%\Google\Chrome\User Data\<Profil>` |
 | Watchdog (WLAN) | `C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\watchdog\` (Befehle im Projekt-Register → `watchdogs`). Autostart = geplante Aufgabe „WLAN-Watchdog“ (`register-autostart.bat`, Admin); im Fenster „Claude-Konten“ als Häkchen |
@@ -64,7 +65,7 @@ Claude handelt **ohne Rückfrage** (vom User so bestellt) und erklärt nichts, w
 2. `… konto.ps1 wechseln N <projekt>` — `<projekt>` ist die id des Projekts, in dem die
    Sitzung gerade arbeitet (Projekt-Register), Vorgabe `myLangSite`.
 3. Dem User **einen** kurzen Block geben: „Claude-App → Konto <E-Mail> → Code →
-   Sitzung ‚Konto N - <Projekt>‘“. Plus der Startblock bzw. Startprompt des Projekts
+   Sitzung ‚Konto N - <Projekt>‘“. Plus der Startprompt des Projekts
    aus dem Register (`startPrompt`), damit die neue Sitzung weiß, wo es weitergeht.
 4. Vor dem Wechsel die eigene Arbeit sichern: progress-Datei und
    `WEITERMACHEN_PROMPT.txt` des Projekts auf Stand bringen — die neue Sitzung beginnt

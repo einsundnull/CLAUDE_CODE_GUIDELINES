@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-11-06 (§10 Lesefolge in der CLAUDE.md statt Startblock, §14 Findbares entfällt, §16 Wortlaut in KERN.md); 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -19,9 +19,7 @@
 > **Projekt-Dokument**. Eine Regel aus dieser Datei heißt immer
 > **„UNIVERSAL §n"**. Beide haben getrennte Nummernräume.
 >
-> **Lesereihenfolge für jede Aufgabe:**
-> 1. diese Datei · 2. `<Projekt>/doc/GUIDELINES.md` · 3. `Prompt_Handling.txt`
-> · 4. `WEITERMACHEN_PROMPT.txt` · 5. die aktive `Task_*.txt` (PD)
+> **Einstieg:** Die `CLAUDE.md` des Projekts nennt ihn. Diese Datei wird abschnittsweise gelesen.
 
 ---
 
@@ -263,7 +261,7 @@ Drei Schichten, und die Abhängigkeit läuft nur in eine Richtung:
 
 ## §10 Task-Workflow für größere Änderungen  [B]
 
-Aus `Prompt_Handling.txt` (liegt als Kopie in jedem Projekt):
+Aus `Prompt_Handling.txt` (im Repo, geladen über den Skill `aufgaben-ablauf`, nie kopiert):
 
 - Größere Aufgabe **[BT]** → `Task_<DateTime>_<Name>.txt` (PD) im `doc/`;
   Schritte `[m/n]` mit Risikoklasse `[A]/[B]/[C]`; Modell-Empfehlung;
@@ -274,14 +272,11 @@ Aus `Prompt_Handling.txt` (liegt als Kopie in jedem Projekt):
 - `WEITERMACHEN_PROMPT.txt` zum Fortsetzen nach `/clear`; nennt immer die
   aktive PD. Wird sie zu lang: mit `<DATUM>`-Suffix archivieren und bereinigt
   neu anlegen (nur offene TODOs).
-- **Ihr Kopf ist der Startblock [B]** (seit 2026-10-05): direkt nach Titel
-  und Stand steht der Block `BLOCK ANFANG … BLOCK ENDE` mit der
-  Lesereihenfolge 1–5 und ihren Regeln — Wortlaut wörtlich aus
-  `Prompt_Handling.txt`, Abschnitt „DER STARTBLOCK", nur Projektpfad
-  angepasst, ohne Datum und Aufgabenstand. Er ist der Wiedereinstieg nach
-  `/clear` und wandert beim Archivieren unverändert in die Neufassung.
+- **Die Lesefolge steht in der `CLAUDE.md` des Projekts [B]** (Abschnitt „Einstieg“), nicht als
+  Block in der `WEITERMACHEN_PROMPT.txt`. Die CLAUDE.md lädt von selbst; ein Block zum Einfügen
+  hatte vier Kopien.
 - **Abschluss-Block** als letzte Zeilen jeder Ausgabe (Wortlaut in
-  `Prompt_Handling.txt`). **Die letzte Zeile ist die wichtigste:** was
+  `KERN.md`). **Die letzte Zeile ist die wichtigste:** was
   ausgelassen, verworfen oder bewusst anders entschieden wurde, wird
   namentlich genannt — auch eine eigene Empfehlung, die der User verworfen hat.
 - **Runtime-Verify gehört dem User.** Was nur im Browser sichtbar ist, wird
@@ -347,6 +342,9 @@ Wo eine Rolle noch nicht besetzt ist, steht **nicht** „—", sondern der Satz
 dem zweiten eigenen Dialog"). Ein leeres Feld ist nicht unterscheidbar von
 einem vergessenen; ein benannter Auslöser macht aus einer Lücke eine
 **Terminsache**.
+
+**Findbares entfällt [B]:** Steht ein Wert schon in der `CLAUDE.md` des Projekts oder ist er ohne Suche
+im Code zu sehen, entfällt seine Zeile. Sonst stünde er doppelt und driftet.
 
 | Rolle | Projekt-Wert | Auslöser, falls (noch) nicht vorhanden |
 |---|---|---|
@@ -425,8 +423,7 @@ Pflichtantworten vor der ersten Zeile Code**, weil sie alles andere steuern:
 
 ## §16 Wie du fragst und wie du ausgibst  [B]
 
-Der verbindliche Wortlaut steht in `Prompt_Handling.txt`, Abschnitte
-„WIE DU FRAGST" und „DAS FORMAT FÜR FRAGEN UND ANWEISUNGEN". Kurz:
+Der verbindliche Wortlaut steht in `KERN.md`, das in jeder Sitzung lädt. Kurz:
 
 - Höchstens 4 Fragen pro Runde, einfache Sätze, letzte Option immer
   „Etwas anderes — ich schreibe es hin", und bei jeder Frage steht, was ohne

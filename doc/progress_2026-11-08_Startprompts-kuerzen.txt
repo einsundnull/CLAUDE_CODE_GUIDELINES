@@ -1,0 +1,54 @@
+progress_2026-11-08_Startprompts-kuerzen.txt
+PD: doc/Task_2026-11-08_Startprompts-kuerzen.txt
+
+UNTERSUCHUNG (vor der Umsetzung)
+- Skill /weiter (Entwurf im Scratchpad, nicht eingebaut): Körper ~1286 B / ~400 Token beim Aufruf.
+  Heutiger Prompt myLangSite 454 B / ~142 Token. Skill also teurer. Verworfen.
+- Token geschätzt mit 3,2 Byte/Token (±20 %), kein echter Zähler (bräuchte API-Schlüssel).
+- Befund: Nur WingsOfFury hatte "## Einstieg". German nannte die allgemeine Regeldatei nur im Prompt.
+- Befund: Der alte German-Prompt nannte "Aufgaben und Verlauf: German\doc" — den Ordner gibt es nicht;
+  PD und progress liegen im Projekt-Root. Im neuen Einstieg richtig.
+- Befund: nback und Ringmenü sagten "WEB_GUIDELINES_UNIVERSAL ganz lesen" (64 KB, ~20.000 Token),
+  alle sagten "Prompt_Handling.txt ganz lesen". Der Prompt ("nur abschnittsweise") und KERN hielten
+  das bisher in Schach. Jetzt steht "nur abschnittsweise" im Einstieg selbst, Prompt_Handling über den
+  Skill aufgaben-ablauf.
+
+UMSETZUNG
+[1/6] project-hub/bin/startprompts.mjs: Prompt = (weiter) + Projekt + Ordner + "anderer Ordner:
+      CLAUDE.md lesen, Abschnitt Einstieg". Verlangt /^## Einstieg\b/m in der CLAUDE.md.
+      BESONDERS entfernt. Ohne WEITERMACHEN nur, wenn die CLAUDE.md "keine WEITERMACHEN_PROMPT.txt" sagt.
+      Roter Lauf vorher: 9x "PROBLEM ... kein Abschnitt Einstieg" bzw. "CLAUDE.md fehlt" (GuideLines).
+[2/6] CLAUDE_CODE_GUIDELINES/CLAUDE.md neu: die drei BESONDERS-Zeilen + Prüfen + Hochladen.
+[3/6] Einstieg: GameLoop2, myLangSite, nback, Ringmenü, SpriteRigEditorClaude, Schnittmuster
+      (Überschrift "## Einstieg (früher: Lesereihenfolge …)", damit alte Zitate per grep auffindbar bleiben).
+      German: Abschnitt neu ganz oben, Vorrang-Abschnitt unverändert.
+[4/6] BLOCK ANFANG entfernt in WEITERMACHEN_PROMPT.txt von myLangSite, nback, Schnittmuster (ersetzt durch
+      zwei Zeilen Verweis). Schnittmuster: die Neuheits-Notiz (§17, §20) als Zeile behalten.
+      START.txt von nback (Notizen behalten) und SpriteRigEditorClaude: Verweis-Muster.
+      Achtung: myLangSite/WEITERMACHEN_PROMPT.txt hatte schon vorher nicht committete Änderungen.
+[5/6] --schreiben: 10 Prompts geschrieben. check-projects.sh: "Alle Startprompts sind aktuell."
+      Die übrigen 23 Punkte sind alte Größen- und Leistungsmeldungen, nicht von dieser Aufgabe.
+[6/6] README.md (CLAUDE.md-Zeile, Hinweis zum Erzeuger), Memory reference_hub_startprompts.
+
+MESSUNG NACHHER
+  myLangSite-Prompt 454 B -> 185 B (-59 %), ~142 -> ~58 Token
+  GuideLines-Prompt 294 B -> 176 B (-40 %), ~92 -> ~55 Token
+  alle 10 Prompts  4507 B -> 1905 B (-58 %), ~1408 -> ~595 Token
+  German CLAUDE.md +~700 B (~220 Token je German-Sitzung): neuer Inhalt, der vorher nur im Prompt stand.
+
+AUDIT (startprompts.mjs)
+  NIEDRIG startprompts.mjs promptText: "keine WEITERMACHEN_PROMPT.txt" ist ein Textvergleich; eine
+          CLAUDE.md, die den Satz nur zitiert, würde eine fehlende WEITERMACHEN-Datei durchlassen.
+  Erkennung geprüft: "## Einstiegspunkt" -> nein, "## Einstieg", "## Einstieg (…)", CRLF -> ja.
+
+RUNTIME-VERIFY (nur am Gerät sichtbar)
+  A1 Hub-Seite nach dem Push: Knopf "Startprompt" auf der Karte myLangSite -> 4 Zeilen, ohne Pfade zu Regeln.
+  A2 Neue Sitzung im Ordner myLangSite, Eingabe "weiter" -> Claude liest WEITERMACHEN und die aktive PD,
+     WEB_GUIDELINES_UNIVERSAL nur abschnittsweise (nicht ganz).
+  A3 Neue Sitzung im Benutzerordner, GuideLines-Prompt einfügen -> Claude liest die CLAUDE.md des Repos
+     und wartet auf die Aufgabe.
+
+OFFEN / NICHT GEMACHT
+  - Nichts committet oder gepusht. Hub braucht bin/pushProjectHub.sh (Vercel), macht der User.
+  - project-hub hatte schon fremde offene Änderungen (.gitignore, projects.json, mockups/).
+  - DGZFP: keine CLAUDE.md, keine Karte im Hub.

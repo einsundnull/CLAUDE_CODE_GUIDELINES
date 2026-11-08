@@ -2,12 +2,14 @@
 Prompt_Handling.txt — projektneutral
 ==============================================================================
 QUELLE: CLAUDE_CODE_GUIDELINES/universal/Prompt_Handling.txt  (DIES IST DIE QUELLE)
-STAND:  2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: Massenänderung, Schlüssel, Pflichtlektüre, Prüfschulden, Audit-Liste); davor 2026-11-06 (Startblock + "WIE DIE LESEREIHENFOLGE GELESEN WIRD": die UNIVERSAL-Regeln werden abschnittsweise gelesen); davor 2026-10-20 (NEU: Abschnitt "CODE-AUDIT NACH JEDER PD"); davor 2026-10-18 (REGEL 1: keine Kürzel ohne Bedeutung); davor 2026-10-05 (NEU: Abschnitt "DER STARTBLOCK IM KOPF DER
-        WEITERMACHEN_PROMPT.txt"); davor 2026-09-05
+STAND:  2026-11-06 (geteilt: Frage-Format, Abschluss-Block, Orte, Einstieg stehen jetzt in KERN.md, das in jeder
+        Sitzung lädt; Startblock abgelöst). Frühere Stände: Git.
+Geladen über den Skill aufgaben-ablauf, nur bei Bedarf.
 Herkunft: herausgelöst aus GameLoop2\Prompt_Handling.txt (Stand 2026-09-04)
           durch Entfernen aller Java- und GameLoop2-spezifischen Stellen.
-          Was dort projektspezifisch war, steht jetzt als <Platzhalter> da und
-          wird von der jeweiligen doc/GUIDELINES.md besetzt.
+
+Ein alter Startblock sagt "Ganz lesen": Das gilt nicht mehr. Diese Datei wird nur bei größeren Aufgaben,
+beim Archivieren, beim Audit und bei neuen Skripten gelesen. Alles andere: KERN.md.
 ==============================================================================
 
 Prompts werden in zwei Kategorien unterschieden:
@@ -60,43 +62,6 @@ Keine PD.txt, aber trotzdem eine progress_<DateTime>_<Name>.txt mit Prompt,
 Zusammenfassung, Vorschlägen und tatsächlicher Lösung.
 
 
-WO DIE DATEIEN LIEGEN (häufigster Fehler: sie landen irgendwo)
-==============================================================
-PD.txt und progress_*.txt gehören in das doc/-Verzeichnis des Projekts.
-Im Projekt-Root liegen die Ankerdateien: CLAUDE.md und WEITERMACHEN_PROMPT.txt.
-Die UNIVERSAL-Guidelines und diese Datei liegen seit dem 2026-09-05 NICHT mehr
-im Projekt, sondern nur noch im Repo CLAUDE_CODE_GUIDELINES unter universal/;
-eine Kopie im Projekt wäre eine zweite Wahrheit. Die namentliche, gezählte Liste der
-offenen Aufgaben steht in der WEITERMACHEN_PROMPT.txt und wird dort gepflegt —
-hier wird sie bewusst NICHT ein zweites Mal geführt (zwei Listen driften).
-Kein progress_* im Home-Verzeichnis.
-
-
-TABU: DER ARBEITSBEREICH ENDET AM PROJEKTORDNER
-===============================================
-<Projektordner> ist die Grenze. Nicht darüber hinaus lesen, suchen, auflisten
-oder ändern — auch nicht "nur zum Vergleichen", auch nicht in einem
-"<Projekt> - Kopie (n)". Keine rekursive Suche ohne Pfadanker im Projekt.
-Ausnahme: die in der doc/GUIDELINES.md namentlich genannten Quell-Pfade
-(zum Beispiel dieser prompts/-Ordner). Führt eine Aufgabe wirklich hinaus,
-wird das vorher gesagt und begründet.
-
-
-RUNTIME-VERIFY GEHÖRT DEM USER
-==============================
-Was nur zur Laufzeit sichtbar ist, wird NICHT als "funktioniert" behauptet,
-sondern als benannte Checkliste (A1, A2, A3 …) in der progress-Datei
-hinterlassen — Taste/Klick, erwartete Beobachtung. "Build grün" ist kein
-Verify, und "noch nicht gebaut" ist eine messbare Aussage, die gemessen wird,
-bevor sie in eine Verify-Liste kommt.
-Beim Abschluss einer PD werden offene Punkte dieser Liste sortiert: was wirklich nur am
-Gerät geht, ist markiert, alles andere wird automatisiert oder dem User zur Entscheidung
-genannt. Es gibt keine feste Obergrenze und kein automatisches Verwerfen (Prüfschulden;
-Beleg: lange Liste "Älter" aus Oktober in WingsOfFury).
-Bei jeder neuen Implementation werden die konkreten Tasten oder Klicks
-genannt, mit denen man sie anzeigen und testen kann.
-
-
 EIN SKRIPT SCHLIESST SICH NICHT SELBST
 ======================================
 Jedes Skript, das der User selbst startet (.sh, .bat, .ps1), endet mit einer
@@ -135,116 +100,6 @@ WO DIE FUNKTION LIEGT:
   Funktion  wait_for_key.
 
 
-WIE DU FRAGST (gilt in jeder Sitzung, nicht nur beim Projektstart)
-==================================================================
-- Höchstens 4 Fragen pro Runde. Lieber mehrere Runden.
-- Einfache Sprache. Ein Fachwort wird im Halbsatz miterklärt.
-- Wo du Optionen anbietest, ist die LETZTE immer:
-  "Etwas anderes — ich schreibe es hin". Immer. Auch wenn du sicher bist,
-  dass deine Optionen vollständig sind; sie sind es oft nicht.
-- Bei jeder Frage steht, was ohne Antwort passiert: entweder
-  "Default: X, später änderbar" oder "ohne Antwort geht es nicht weiter".
-- Du fragst NICHT nach, was im Code, in der Projektdatei oder im doc/ steht.
-  Das liest du selbst. Gefragt wird nur nach Absichten, Grenzen, Plänen.
-
-
-#############################
-DAS FORMAT FÜR FRAGEN UND ANWEISUNGEN (BESTELLT VOM USER AM 2026-09-04)
-#############################
-ANLASS, DAMIT NIEMAND DIE REGEL FÜR GESCHMACK HÄLT: der User sagte wörtlich
-"Die Ausgaben und vor allem die Sätze und ihre Formulierungen sind für mich
-oft unverständlich und in dem vielen Text oft nicht zu finden." Eine Frage,
-die er nicht findet, ist eine Frage, die er nicht beantwortet — und dann baue
-ich auf einer Annahme weiter. DAS IST KEIN STILPROBLEM, ES IST EIN
-FEHLERRISIKO.
-
-REGEL 1 — FRAGEN WERDEN VERSTÄNDLICH FORMULIERT.
-  - EIN Gedanke pro Satz. Kein Nebensatz im Nebensatz.
-  - Kurze Sätze. Wenn ein Satz über zwei Zeilen geht, wird er geteilt.
-  - Keine Fachbegriffe ohne Erklärung.
-  - KEINE KÜRZEL OHNE BEDEUTUNG (bestellt vom User am 2026-10-18:
-    "dass ich 'PR4, EL3, MV4 usw.' nicht verstehe. Es muss immer gesagt
-    werden, was die offenen Punkte bedeuten."). Test-, Befund- und
-    Punkt-Kennungen (PR4, EL3, MV4, F2, BS4 …) stehen NIE allein. Jede
-    Kennung bekommt in derselben Zeile einen kurzen Satz, was dahinter
-    steckt — z. B. "BS4 (Stunde wird nach Ablauf automatisch freigegeben)".
-    Das gilt für jede Ausgabe: Antworten, Fragen, Anweisungen,
-    Abschluss-Block. Eine nackte Kennung zwingt den User, in Dateien
-    nachzuschlagen — und er entscheidet dann über etwas, das er nicht kennt.
-  - Keine Paragraphen-Nummern IN der Frage. Sie gehören in den Bericht, nicht
-    in die Frage. Der User soll entscheiden, nicht nachschlagen.
-  - Die Frage steht ALLEIN. Kein Befund, keine Messung, keine Begründung im
-    selben Block — das steht davor oder in der progress-Datei.
-
-REGEL 2 — FRAGEN UND ANWEISUNGEN BEKOMMEN EINEN EIGENEN, SICHTBAREN BLOCK.
-  Er wird EXAKT so gebaut (Trennlinien über die volle Breite, damit der Block
-  im Fließtext sofort ins Auge fällt):
-
-Question:
-──────────────────────────────────────────────────────────────────────────
-1. This is the easy readable and easy understandable text of the Question.
-   This is the easy readable and easy understandable text of the Question.
-──────────────────────────────────────────────────────────────────────────
-2. This is the easy readable and easy understandable text of the Question.
-   This is the easy readable and easy understandable text of the Question.
-──────────────────────────────────────────────────────────────────────────
-
-Instruction:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-1. This is the easy readable and easy understandable text of the Instruction
-   Do this
-   Do that
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-2. This is the easy readable and easy understandable text of the Instruction
-   Do this
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  DIE BAUTEILE:
-  - "Question:" für alles, was der User BEANTWORTEN soll.
-    Trennlinie ist "─" (U+2500).
-  - "Instruction:" für alles, was der User TUN soll (Tasten, Klicks, Befehle,
-    Abnahme-Schritte). Trennlinie ist "~".
-  - Durchnummeriert: 1. 2. 3. Jede Nummer ist EINE Sache.
-  - Folgezeilen sind um 3 Zeichen eingerückt und stehen unter dem Text,
-    nicht unter der Nummer.
-  - Zwischen zwei Nummern steht eine Trennlinie. Über der ersten und unter
-    der letzten auch.
-  - Eine Anweisung sagt, WAS zu tun ist — je Zeile ein Schritt.
-
-REGEL 3 — WO DIESE BLÖCKE STEHEN.
-  - Am ENDE der Ausgabe, direkt vor dem Abschluss-Block. Dort sucht der User
-    sie.
-  - NIE mitten im Fließtext.
-  - Gibt es nichts zu fragen und nichts zu tun, entfällt der Block. Ein
-    leerer "Question:"-Block auf Vorrat ist Lärm.
-
-REGEL 4 — AUCH DER RESTLICHE TEXT WIRD KÜRZER.
-  - Das WICHTIGSTE steht ZUERST. Was der User tun soll und was kaputt war,
-    steht vor der Herleitung.
-  - Herleitung, Messprotokoll und Beleg gehören in die progress-Datei, nicht
-    in die Antwort. In der Antwort steht das ERGEBNIS und wo der Beleg liegt.
-  - Keine Wiederholung. Was im Bericht steht, wird nicht noch einmal erzählt.
-
-
-DER ABSCHLUSS-BLOCK
-===================
-Die letzten Zeilen jeder Ausgabe sind immer:
-
-# PD.txt aktualisiert (ja/nein)
-# progress.txt aktualisiert (ja/nein)
-# WEITERMACHEN_PROMPT.txt aktualisiert (ja/nein)
-# WEITERMACHEN_PROMPT.txt bereinigt und alter archiviert (ja/nein)
-# Die Aufgabe <ID> wurde vollständig abgeschlossen (ja/nein)
-# Code-Audit nach PD gelaufen (ja/nein/entfällt) - Befunde: <Anzahl>
-# Nächster Schritt: [n/m] bzw. nächstes TODO: <Aufgabe>
-# "/clear" Befehl und WEITERMACHEN_PROMPT.txt empfohlen (ja/nein)
-# Bewusst NICHT gemacht: <Liste + Grund; auch verworfene eigene Empfehlungen>
-
-Die letzte Zeile ist die wichtigste. Was ausgelassen, verworfen oder bewusst
-anders entschieden wurde, wird namentlich genannt — auch eine eigene
-Empfehlung, die der User verworfen hat, und der Grund dafür.
-
-
 AUFBAU EINER PD.txt
 ===================
 Task_<DateTime>_<Name>.txt
@@ -277,97 +132,9 @@ ist (Auslöser: Grenze aus GRÖSSE DER PFLICHTLEKTÜRE), wird sie mit <DATUM>-Su
 bereinigte Fassung angelegt, die nur noch offene TODOs und Aufgaben enthält.
 Eine veraltete Datei behält NIE ihren Originalnamen.
 
-Die bereinigte Fassung übernimmt den STARTBLOCK (nächster Abschnitt) wörtlich.
-
 In der WEITERMACHEN_PROMPT.txt steht immer, in welcher PD.txt wir gerade sind.
-
-
-DER STARTBLOCK IM KOPF DER WEITERMACHEN_PROMPT.txt (BESTELLT AM 2026-10-05)
-==========================================================================
-Jede WEITERMACHEN_PROMPT.txt beginnt — direkt nach ihrem Titel- und
-Stand-Kopf — mit dem STARTBLOCK. Er ist der Wiedereinstieg nach "/clear":
-der User kopiert den Block (oder sagt nur "lies WEITERMACHEN_PROMPT.txt und
-führe den Startblock aus"), und das Modell weiß, was es in welcher
-Reihenfolge lesen muss. Ohne den Block wird die Reihenfolge jedes Mal von
-Hand getippt — und dabei vergessen.
-
-DIE FORM:
-  - Wortlaut wie unten, Zeichen für Zeichen. Angepasst werden NUR:
-    <Projektpfad>, der Dateiname der Universal-Datei
-    (WEB_GUIDELINES_UNIVERSAL.md oder JAVA_GUIDELINES_UNIVERSAL.md).
-  - Im Block stehen KEINE Metadaten: kein Datum, kein "NEU seit …", kein
-    Aufgabenstand. Die gehören darunter. Der Block ändert sich nur, wenn sich
-    diese Vorlage ändert.
-  - Wird die WEITERMACHEN_PROMPT.txt archiviert und neu angelegt, wandert der
-    Block unverändert mit.
-  - Vorbild: Schnittmuster\WEITERMACHEN_PROMPT.txt (2026-10-03).
-
-DER WORTLAUT:
-
->>>>>>>>>>>>>>>>>>>>>>>>>>>> BLOCK ANFANG >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-LIES IN DIESER REIHENFOLGE — DIE ERSTEN ZWEI SIND DIE QUELLE DER WAHRHEIT:
-
-  1. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\<WEB|JAVA>_GUIDELINES_UNIVERSAL.md
-     Die allgemeinen Regeln. Gelten für ALLE Projekte.
-     Sie werden NUR im Repo CLAUDE_CODE_GUIDELINES geändert, nie hier.
-     — NICHT am Stück lesen. Zuerst nur die Überschriften holen
-       (grep -n "^## " <diese Datei>), dann §0 und ausschließlich
-       die Paragraphen, die die Aufgabe berührt.
-
-  2. C:\Users\pc\Documents\CLAUDE_CODE_GUIDELINES\universal\Prompt_Handling.txt
-     Wie Aufgaben zerlegt, protokolliert und abgeschlossen werden.
-     Enthält das Frage-/Anweisungs-Format und den Abschluss-Block. Ganz lesen.
-
-  3. <Projektpfad>\doc\GUIDELINES.md
-     Die Regeln DIESES Projekts. Besetzt die Rollen aus Datei 1 im
-     Projekt-Steckbrief und ergänzt projektspezifische Paragraphen ab §20.
-     — NICHT am Stück lesen. Zuerst nur die Überschriften holen
-       (grep -n "^## §" doc/GUIDELINES.md), dann ausschließlich
-       die Paragraphen, die die Aufgabe berührt, plus IMMER den
-       Projekt-Steckbrief ganz oben.
-
-  4. <Projektpfad>\WEITERMACHEN_PROMPT.txt
-     Wo wir stehen, welche PD aktiv ist, was offen ist. Ganz lesen.
-
-  5. Die aktive Task_*.txt in <Projektpfad>\doc\,
-     die in Datei 4 genannt ist.
-
-REGELN ZU DIESER REIHENFOLGE:
-  - Bei Konflikt gewinnt die projektnähere Regel: 3 schlägt 1.
-    Eine Abweichung von 1 wird im Projekt-Steckbrief oder im betreffenden
-    Paragraphen von 3 NAMENTLICH begründet. Stillschweigend abweichen gilt
-    nicht.
-  - Dateien 1 und 2 werden NICHT ins Projekt kopiert. Es gibt genau eine
-    Fassung, und sie liegt im Repo. Eine Kopie im Projekt wäre eine zweite
-    Wahrheit, die niemand nachzieht.
-  - Der Lesezugriff auf das Repo ist die EINZIGE erlaubte Ausnahme von der
-    Regel "der Arbeitsbereich endet am Projektordner".
-
-<<<<<<<<<<<<<<<<<<<<<<<<<<<< BLOCK ENDE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-Nach jedem Schritt [n/m] und nach Abschluss jeder Aufgabe wird angegeben, ob
-und unter welchem Namen PD.txt und WEITERMACHEN_PROMPT.txt gespeichert wurden.
-
-
-WIE DIE LESEREIHENFOLGE GELESEN WIRD (nicht nur WAS)
-====================================================
-Die Pflichtdateien sind zusammen groß. Sie werden deshalb NICHT am Stück
-gelesen:
-- Die projektspezifische doc/GUIDELINES.md wird ABSCHNITTSWEISE über ihre
-  "## §"-Überschriften angesteuert: erst die Überschriftenliste holen
-  (grep -n "^## §" …), dann nur die einschlägigen Paragraphen lesen, plus
-  IMMER den Projekt-Steckbrief. Wer sie ganz liest, verbraucht den Kontext,
-  den die Aufgabe selbst braucht.
-- Die UNIVERSAL-Guidelines werden genauso ABSCHNITTSWEISE gelesen: erst die
-  Überschriften (grep -n "^## " …), dann §0 und die Paragraphen, die die Aufgabe
-  berührt (bestellt vom User am 2026-11-06; die Datei hat 60 KB). Es gelten
-  weiter ALLE Regeln. Wer eine Oberfläche, einen Dialog oder ein Mockup baut,
-  liest deren Paragraphen, bevor er anfängt. Die Überschrift entscheidet:
-  im Zweifel wird der Paragraph gelesen.
-  Steht in einer älteren Kopie des Startblocks noch "Ganz lesen", gilt diese Regel.
-- Diese Datei wird ganz gelesen, solange sie unter etwa 30 KB bleibt.
-- Die WEITERMACHEN_PROMPT.txt wird ganz gelesen, solange sie bereinigt ist.
-Diese Regel KÜRZT die Guidelines nicht — sie regelt nur den Zugriff.
+Nach jedem Schritt [n/m] und nach Abschluss jeder Aufgabe wird angegeben, ob und unter welchem
+Namen PD.txt und WEITERMACHEN_PROMPT.txt gespeichert wurden.
 
 
 MASSENÄNDERUNG: ERST TROCKENLAUF
@@ -389,7 +156,7 @@ genau deshalb ist die Sperrliste Pflicht. Der Benutzerordner ist nie ein Repo.
 GRÖSSE DER PFLICHTLEKTÜRE
 =========================
 Was in jeder Sitzung geladen oder immer gelesen wird, hat eine Obergrenze:
-  CLAUDE.md 4 KB · Projekt-Steckbrief 8 KB · WEITERMACHEN_PROMPT.txt 6 KB
+  KERN.md 4 KB · CLAUDE.md 4 KB · Projekt-Steckbrief 8 KB · WEITERMACHEN_PROMPT.txt 6 KB
 Was abschnittsweise gelesen wird (doc/GUIDELINES.md ohne Steckbrief), hat keine.
 Gemessen wird von bin/check-projects.sh im Guidelines-Repo, weil nicht jedes Projekt einen
 Prüfstand hat. Über der Grenze: Inhalt in Karten oder Fachdateien verlegen, die nach Bedarf
