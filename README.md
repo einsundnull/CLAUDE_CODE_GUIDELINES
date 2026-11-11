@@ -81,7 +81,9 @@ bin/
                                  Regel: Prompt_Handling.txt, „EIN SKRIPT
                                  SCHLIESST SICH NICHT SELBST"
   hooks/session-start.mjs        warnt, wenn eine Sitzung oberhalb eines Projektordners startet
-                                 (eingetragen in ~/.claude/settings.json)
+                                 und wenn auf C: weniger als 20 GB frei sind (seit 2026-11-11)
+  hook-eintragen.mjs             trägt den Start-Hook in die settings.json aller Konten ein
+                                 (startet der User; am 2026-11-11 war er nirgends eingetragen)
 CLAUDE.md                        Einstieg für Sitzungen in diesem Repo (seit 2026-11-08; vorher
                                  stand der Text als BESONDERS im Startprompt-Erzeuger des Hubs)
 START_TEMPLATE.txt               abgelöst: nur noch ein Verweis

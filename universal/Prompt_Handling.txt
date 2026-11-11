@@ -196,6 +196,9 @@ berührt hat, untersucht auf:
   - Sperren und Reservierungen ohne Ende
   - Endlosschleifen und sich selbst auslösende Ereignisse
   - Redundanz und veraltete Implementierungen
+  - Reste auf der Platte (seit 2026-11-11): Kopien, scratchpad-Dateien über 50 MB,
+    alte Werkzeug-Versionen, Ausgaben ohne Obergrenze, Test-Profile
+    (Regeln: AUFRAEUMEN_UNIVERSAL.md §A0)
 
 Die Befunde stehen in der progress-Datei, sortiert nach HOCH / MITTEL / NIEDRIG,
 je mit Datei:Zeile und einem Satz, was schiefgehen kann. Behoben wird NICHT

@@ -113,3 +113,24 @@ Hinweis für [4/5]:
     A6 Android-/Gradle-Projekt bauen -> läuft (benutzte Gradle-Versionen sind geblieben).
 
 Hinweis für [4/5]: Documents\Phoenix Code enthält "German - Kopie" bis "(15)" — Größe noch nicht gemessen.
+
+[6.1/6] Vorbeuge-Regeln 2026-11-11 abends
+  universal/AUFRAEUMEN_UNIVERSAL.md §A0 NEU (9 Regeln: scratchpad, keine Projektkopie, Git-Altlast,
+    Werkzeuge einmal, Test-Profile, Ausgaben-Obergrenze, Downloads, Großes melden, Prüfen).
+  KERN.md: Verweis auf §A0; dafür die Zeile zum alten Startblock entfernt (in keinem Projekt mehr
+    "BLOCK ANFANG" gefunden). KERN 4070 Bytes, Grenze 4096.
+  Prompt_Handling.txt: Audit nach jeder PD prüft auch Reste auf der Platte.
+  bin/hooks/session-start.mjs: warnt bei weniger als 20 GB frei. Rot-Probe: Kopie mit Grenze 1000 GB
+    meldete "Nur noch 59.1 GB frei"; echte Grenze 20: still.
+  Befund: Der Start-Hook war in KEINER settings.json eingetragen (.claude, -konto2, -konto3), obwohl die
+    README das sagte. Neu: bin/hook-eintragen.mjs (Trockenlauf / --schreiben, Sicherung, kein Doppel).
+    An Kopie der drei settings.json geprüft: eingetragen, zweiter Lauf "schon da", Rest unverändert.
+[6.2/6] Messung bin/laptop-messen.ps1 (neu, nur lesen). C: frei 59.12 GB.
+  Gelöscht durch Claude: java_error_in_studio64.hprof (2022) 0.73, Claude-Versionen 2.1.319/2.1.321 0.64
+    -> frei 60.49 GB. claude.exe.old.* (0.64) gesperrt = laufende Sitzung, bleiben.
+  Ins Aufräum-Skript aufgenommen: *.hprof, CrashDumps, alte Claude-Versionen. Trockenlauf ok.
+  Offen beim User (Frage): hiberfil.sys 7.95 GB, GoogleEarth-Cache 1.96, Projektkopien + build ca. 1.5.
+  Nicht angefasst: WSL 15.3 (bleibt), .m2 4.16, .gradle\caches 2.6, whisper 1.64, Pictures 18, Desktop 4.3.
+  Zu prüfen am Gerät:
+    A7 Neue Claude-Sitzung nach "node …hook-eintragen.mjs --schreiben" in einem Ordner über einem Projekt
+       -> Hinweis "Diese Sitzung läuft außerhalb eines Projekts" erscheint.

@@ -41,4 +41,13 @@ Fortschritt:
 [4/5] abgeschlossen — Löschlauf durch Claude auf Auftrag, C: frei 59.13 GB
 [5/5] abgeschlossen — Vorher 1.71 GB / nachher 59.13 GB frei; Audit: 1 MITTEL, 3 NIEDRIG (progress)
 Offen beim User: Python 3.13 (Store) über Einstellungen; 2 McAfee-Aufgaben als Administrator.
+
+Zwischenschritt (Prompt 2026-11-11 abends):
+  "Kannst du das mal in die projects.easylang pushen und dann bei den universellen Guidelines Regeln
+   einfügen, die dafür sorgen, dass ... die Festplatte gar nicht erst zugemüllt wird. Kannst du auch noch
+   andere bekannte Problemordner und Problemdateien aufspüren und listen und gegebenenfalls löschen?"
+[6.1/6] [B] Vorbeuge-Regeln: AUFRAEUMEN §A0, Verweis in KERN, Audit-Punkt in Prompt_Handling,
+            Platz-Warnung im Start-Hook, bin/hook-eintragen.mjs.
+[6.2/6] [A] Weitere Problemorte messen (nur lesen), listen, Freigabe fragen.
+[6.3/6] [B] Push des Guidelines-Repos (die Hub-Karte "GuideLines" zeigt auf dieses Repo).
 }

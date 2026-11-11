@@ -85,6 +85,16 @@ Wegraeumen "$U\.gradle\daemon"
 "--- Weitere Zwischenspeicher im Benutzerordner"
 Wegraeumen "$U\.cache\puppeteer"
 
+"--- Speicherabzuege nach Abstuerzen (*.hprof, Java/Android Studio) im Benutzerordner"
+Get-ChildItem -LiteralPath $U -File -Force -Filter "*.hprof" -ErrorAction SilentlyContinue | ForEach-Object { Wegraeumen $_.FullName }
+Wegraeumen "$L\CrashDumps"
+
+"--- Alte Claude-Programmversionen (die neueste bleibt; gesperrte = laufende Sitzung, bleiben)"
+$cv = Get-ChildItem -LiteralPath "$U\.local\share\claude\versions" -File -ErrorAction SilentlyContinue |
+  Where-Object { $_.Name -match '^\d+\.\d+\.\d+$' } | Sort-Object { [version]$_.Name }
+if ($cv.Count -gt 1) { $cv | Select-Object -SkipLast 1 | ForEach-Object { Wegraeumen $_.FullName }; "   bleibt: $($cv[-1].Name)" }
+Get-ChildItem -LiteralPath "$U\.local\bin" -File -Filter "claude.exe.old.*" -ErrorAction SilentlyContinue | ForEach-Object { Wegraeumen $_.FullName }
+
 "--- Papierkorb"
 # Nur der eigene Papierkorb (Ordner der eigenen SID). Clear-RecycleBin und SHEmptyRecycleBin
 # scheitern ohne Desktop-Sitzung still (2026-11-11 gemessen), deshalb direkt loeschen.

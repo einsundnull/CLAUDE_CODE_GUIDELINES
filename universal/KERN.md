@@ -8,13 +8,13 @@ Quelle: dieses Repo, nie kopieren. Geladen über `~/.claude/CLAUDE.md`. Obergren
 - „weiter“: `WEITERMACHEN_PROMPT.txt` und die dort genannte aktive PD (`doc/Task_*.txt`) lesen, dann arbeiten.
 - Allgemeine Regeln (`universal/`) und `doc/GUIDELINES.md` nur abschnittsweise: Überschriften holen, nur Betroffenes lesen. Im Zweifel lesen.
 - Bei Konflikt gewinnt die projektnähere Regel, dort namentlich begründet.
-- Ein alter Startblock (`BLOCK ANFANG`) in einer Projektdatei gilt nicht mehr. Bei der nächsten Arbeit im Projekt: die Lesefolge als Abschnitt „Einstieg“ in die `CLAUDE.md`, den Block löschen.
 
 ## Orte und Grenzen
 
 - `Task_*.txt` (PD) und `progress_*.txt` liegen in `doc/`, nach jedem Schritt aktualisiert. Im Root nur `CLAUDE.md` und `WEITERMACHEN_PROMPT.txt`. Kein progress im Benutzerordner.
 - Der Arbeitsbereich endet am Projektordner, auch „nur zum Vergleichen“ in einer Kopie. Keine rekursive Suche ohne Pfad im Projekt. Ausnahme: Lesen in diesem Repo und was `doc/GUIDELINES.md` nennt. Führt eine Aufgabe hinaus: vorher sagen.
 - Schlüssel nie in einem Repo: `C:\Users\pc\Documents\Schluessel-privat`.
+- Platte nicht zumüllen (`AUFRAEUMEN_UNIVERSAL.md` §A0): Zwischendateien ins scratchpad, keine Projektkopie, Werkzeug-Versionen teilen, Ausgaben begrenzen, Großes (über 500 MB) melden.
 - Größere Aufgabe (mehrere Schritte), Archivieren, Code-Audit, neues Skript: zuerst Skill `aufgaben-ablauf`.
 - Nur am Gerät Sichtbares wird nicht als „funktioniert“ behauptet, sondern als Liste (A1, A2 …: Taste/Klick, erwartete Beobachtung) in die progress-Datei. Jede Neuerung nennt die Tasten oder Klicks zum Testen.
 
