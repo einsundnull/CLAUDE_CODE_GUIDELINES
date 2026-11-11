@@ -74,6 +74,9 @@ nennt den Müll, den sie verhindert hätte.
 | Autostart: Skype deinstallieren, Skype/Messenger/Edge-Autostart aus, verwaiste Aufgaben (Programm fehlt) | `-Autostart` | 2026-11-11: ja |
 | `.cache\whisper` (Spracherkennung) | keiner | 2026-11-11: nicht gefragt, bleibt |
 | WSL-Ubuntu (`wsl\{…}`, 15 GB) | keiner | 2026-11-11: wird gebraucht, bleibt. Nie per Skript; nur `wsl --unregister` durch den User |
+| Ruhezustand (`hiberfil.sys`, 8 GB) | keiner | 2026-11-11: wird gebraucht, bleibt |
+| `LocalLow\Google\GoogleEarth\Cache` | keiner | 2026-11-11: löschen (lädt neu) |
+| Projektkopien („… - Kopie“, `Backup*`) und `app\build` | keiner | 2026-11-11: löschen. Vorher: Kopien mit nicht committeten Änderungen ohne build/node_modules/.git als ZIP nach `Documents\Archiv-Projektkopien-<Datum>` mit LIESMICH.txt |
 
 ## §A4 Nie oder nur selbst durch den User
 

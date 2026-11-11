@@ -134,3 +134,12 @@ Hinweis für [4/5]: Documents\Phoenix Code enthält "German - Kopie" bis "(15)" 
   Zu prüfen am Gerät:
     A7 Neue Claude-Sitzung nach "node …hook-eintragen.mjs --schreiben" in einem Ordner über einem Projekt
        -> Hinweis "Diese Sitzung läuft außerhalb eines Projekts" erscheint.
+  Antworten (Telefon, Spracheingabe "Eins Jahr, zwei Jahr, drei Jahr" = 1 ja, 2 ja, 3 ja; "Du darfst das
+    alles machen"): 1 Ruhezustand bleibt, 2 GoogleEarth-Cache weg, 3 Projektkopien + build weg.
+  Gegenprobe vor dem Löschen: alle Kopien ohne ungepushte Commits; ungespeicherte Änderungen in catalog-Kopie(2)
+    (5), German-Kopie (12) (3), (13) (1), BT-Kopie und BT-Kopie (2) (je ~80, Java-Quelltext); promo\Backup II ohne
+    eigenes Git. Diese sechs als ZIP (ohne build/.gradle/node_modules/.git/.idea, 42 MB) nach
+    Documents\Archiv-Projektkopien-2026-11-11 mit LIESMICH.txt.
+  Gelöscht durch Claude: 10 Kopien, Backup II, 3x app\build, GoogleEarth\Cache -> +3.59 GB, frei 64.04 GB.
+  hook-eintragen.mjs --schreiben durch Claude: vom Sicherheitsfilter blockiert (Self-Modification), nicht
+    umgangen. Startet der User am Laptop.
