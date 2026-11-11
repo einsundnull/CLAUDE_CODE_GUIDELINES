@@ -143,3 +143,29 @@ Hinweis für [4/5]: Documents\Phoenix Code enthält "German - Kopie" bis "(15)" 
   Gelöscht durch Claude: 10 Kopien, Backup II, 3x app\build, GoogleEarth\Cache -> +3.59 GB, frei 64.04 GB.
   hook-eintragen.mjs --schreiben durch Claude: vom Sicherheitsfilter blockiert (Self-Modification), nicht
     umgangen. Startet der User am Laptop.
+
+[6.3/6] 2026-11-11 abends: User meldet "Erledigt, alles hat geklappt" zu den Laptop-Schritten
+  (Desktop-Datei "Löschanweisung claude.txt": Python 3.13 weg, McAfee-Aufgaben als Admin, Neustart,
+  Gradle-Bau, Android Studio, hook-eintragen.mjs --schreiben, Hinweis außerhalb eines Projekts).
+[7] Eclipse- und Java-Reste gemessen (nur lesen, nichts gelöscht)
+  Eclipse 2024-09 in ~\eclipse wird benutzt (eclipse.exe heute gestartet), läuft mit eigenem Java 21
+    (JustJ aus ~\.p2\pool 0.40). Bleibt.
+  JDKs: 1.8 (0.29), 17 (0.28, JAVA_HOME), 22 (0.30, javapath). Alle drei von Workspace-Projekten genannt
+    (.classpath JavaSE-1.8/11/17/22), BT nutzt 1.8. Bleiben.
+  Kandidaten: ~\.m2\.lemminx-maven 1.44 (Maven-Suchindex des XML-Editors, Stand 2026-04-04, baut sich neu);
+    C:\eclipse-workspace 0.02 (zweiter Workspace: apache-maven-3.9.9, ASCIIGrid-Doppel, log4j-src.zip);
+    leere Altordner ~\.sts4, ~\.lemminx (2022), AppData\Local\Eclipse, LocalLow\Sun, LocalLow\Oracle (je ~0).
+  Nicht vorgeschlagen: ~\.m2epository 2.72 (Maven braucht es), GameLoop2in 0.70 (Eclipse baut es sofort neu),
+    jdt.core-Indexe ~0.15 (bauen sich neu), Downloads\JAVA_PointClickAdventureEditor-main 0.02 (persönlich).
+  Offen beim User (Frage): Freigabe .lemminx-maven und C:\eclipse-workspace.
+  Antwort User: "1 ja, 2 ja".
+  Gegenprobe C:\eclipse-workspace\ASCIIGrid: älterer Stand (Jan 2026), aber "AsciiGridEditor - Kopie (2).java"
+    nur dort und 3 Commits, die im ~\eclipse-workspace\ASCIIGrid fehlen. Gesichert nach
+    Documents\Archiv-Projektkopien-2026-11-11: ASCIIGrid-C-eclipse-workspace.zip (40 KB, ohne target/.git)
+    und .bundle (49 KB, git bundle verify ok); LIESMICH.txt ergänzt.
+  Gelöscht durch Claude: .m2\.lemminx-maven, C:\eclipse-workspace, .sts4, .lemminx, Local\Eclipse,
+    LocalLow\Sun, LocalLow\Oracle -> +1.47 GB, C: frei 65.73 GB.
+  AUFRAEUMEN_UNIVERSAL.md §A3: Zeile Eclipse-Reste neu; Projektkopien-Zeile: git bundle für Commits nur dort.
+  Zu prüfen am Gerät:
+    A8 Eclipse starten, eine pom.xml öffnen -> Editor arbeitet, Maven-Vorschläge kommen (Index baut sich neu,
+       der erste Start kann etwas dauern).
