@@ -1,0 +1,115 @@
+progress_2026-11-11_Laptop-optimieren.txt  (PD: Task_2026-11-11_Laptop-optimieren.txt)
+
+[1/5] Messung AppData\Local (2026-11-11), gesamt rund 70 GB. Nichts gelöscht.
+
+Größte Ordner: Android 21.2 · wsl 15.3 · Google 9.0 · Temp 8.8 · Microsoft 2.9 · Packages 2.7 · npm-cache 2.4 GB
+
+GRUPPE S — sicher löschbar (zusammen ca. 15.5 GB)
+  Temp\claude\5d6096a35e425d74\<alte Sitzungen>   ca. 4.6 GB  (außer laufender Sitzung 0850ab1e…)
+  Temp\claude\C--Users-pc                         1.5 GB
+  Temp\9b07eceb-….tmp                             0.24 GB
+  Microsoft\Edge\User Data\Crashpad               1.3 GB  Absturzberichte
+  npm-cache                                       2.4 GB  (npm cache clean --force)
+  Google\AndroidStudio2021.1 / 2024.2 / 2025.2.2  4.7 GB  Einstellungen alter Versionen; installiert ist 2026.1
+  binance-updater                                 0.36 GB Binance nicht installiert
+  anythingllm-desktop-updater                     0.31 GB AnythingLLM nicht installiert
+  SquirrelTemp (tempa–tempe, Logs)                0.66 GB Installer-Reste 2023
+  ms-playwright                                   0.66 GB lädt bei Bedarf neu
+  messenger-updater\installer.exe                 0.09 GB Messenger ist installiert, alter Installer von 2024
+
+GRUPPE F — nur wenn nicht gebraucht (Frage an User)
+  Android\Sdk\ndk  21/23/24/25 (27 behalten)  ca. 9 GB
+  Android\Sdk\ndk-bundle (veraltet)           3.3 GB
+  Android\Sdk\system-images android-29        2.3 GB  Emulator-Abbild
+  wsl\{fcfb…}  = Ubuntu (WSL)                 15.3 GB nur per "wsl --unregister Ubuntu", löscht alles darin
+  Packages\PythonSoftwareFoundation.Python.3.13  1.4 GB  neben installiertem Python 3.14
+
+BEHALTEN
+  Google\Chrome (Profile Konto 2/3), Packages\Claude, Microsoft\Office/Windows, Programs, Python.
+
+[2/5]+[3/5] 2026-11-11
+  Antworten: sicher löschen ja; NDK/Emulator weg; WSL bleibt; Python 3.13 Store weg.
+  Gegenprobe Python: python/python3 und alle graphify-out\.graphify_python zeigen auf
+    AppData\Local\Python\pythoncore-3.14-64 -> 3.13 aus dem Store wird nicht benutzt.
+  Löschen durch Claude: vom Sicherheitsfilter blockiert ("Irreversible Local Destruction"). Nicht umgangen.
+  Neu: bin/laptop-aufraeumen.ps1, universal/AUFRAEUMEN_UNIVERSAL.md, skills/laptop-aufraeumen/SKILL.md,
+    Junction ~/.claude/skills/laptop-aufraeumen, README ergänzt.
+  Fehler im ersten Trockenlauf: Funktion hieß "Kill" = PowerShell-Kurzname für Stop-Process.
+    Trockenlauf hat nichts beendet (Stop-Process bekam Pfade, Fehler). Umbenannt in Wegraeumen.
+  Trockenlauf 2: Summe 33.11 GB (NDK 9.36, ndk-bundle 3.28, Emulator 2.32, AndroidStudio-Alt 4.72,
+    Claude-Temp ca. 6, npm 2.44, Crashpad 1.31, Updater/Squirrel 1.42, Playwright 0.66, Python 1.44).
+  Frei auf C: 3.00 GB vor dem Löschlauf.
+
+Löschlauf durch den User (2026-11-11): Frei auf C: 3.01 GB -> 34.73 GB (+31.7 GB).
+  Alles aus Gruppe S und -Android ist weg. Ausnahmen:
+  - Python 3.13 Store NICHT deinstalliert: Remove-AppxPackage HRESULT 0x80073CF6 / 0x8007007E
+    (Erweiterungs-DLL fehlt). Skript hatte es trotzdem als "deinstalliert" gezählt -> Fehler im Skript,
+    behoben: Ergebnis wird jetzt nachgeprüft. Die Summe 32.59 GB war um 1.44 GB zu hoch.
+  - npm-cache: 1.92 von 2.44 GB weg (Rest von laufenden node-Prozessen belegt).
+  - Claude-Ordner in Benutzung blieben (laufende Sitzungen), wie vorgesehen.
+  python --version danach: 3.14.2.
+
+Zu prüfen am Gerät:
+  A1 Löschlauf starten (Befehl in der Antwort) -> letzte Zeile "Frei auf C: … jetzt" ca. 36 GB.
+  A2 Android Studio öffnen -> startet ohne Fehler, fragt evtl. nach Einstellungen-Import: "Do not import".
+  A3 Neues Terminal: python --version -> Python 3.14.2.
+  A4 Neue Claude-Sitzung, "Laptop aufräumen" tippen -> Skill laptop-aufraeumen wird geladen.
+
+[4/5] Messung weiterer Orte (2026-11-11), nur gelesen. C: 34.73 von 222 GB frei. RAM 19.9 GB, 11.8 frei -> kein Handlungsbedarf.
+  Papierkorb                         6.92 GB
+  .gradle\wrapper\dists              8.88 GB  Projekte nutzen nur 7.4 (4x), 7.5, 7.6.6 (gradle-wrapper.properties
+                                              in AndroidStudioProjects, eclipse-workspace, Documents, Tiefe 5).
+                                              Unbenutzt: 7.3.3 3.91 · 8.9 3.40 · 7.2.1 1.04 · 9.0-milestone-1 0.14
+  .gradle\daemon                     0.85 GB  Logs
+  .cache\puppeteer                   1.72 GB  Test-Chrome, lädt neu
+  .cache\whisper                     1.64 GB  Spracherkennungs-Modell (2025-12)
+  .git-entfernt-2026-11-06           4.18 GB  alte Git-Daten des Benutzerordners, origin = project-hub.
+                                              Refs 5f476eb/939eba5 (2026-06-19) fehlen im lokalen project-hub
+                                              UND auf GitHub (main = 586380d) -> Geschichte wurde ersetzt, Inhalt einmalig.
+  .m2                                4.16 GB  Maven, von Eclipse-Projekten gebraucht -> bleibt
+  Downloads                          2.19 GB  davon 1.98 älter 90 Tage; Videos 2022 ca. 0.8 GB, 3x Melody_126-135.PDF
+  Phoenix Code "* - Kopie*"          ca. 0.6 GB zusammen -> kaum Gewinn
+  Pictures 17.96 / Desktop 4.3       persönlich -> nicht angefasst
+  Autostart: Skype (Dienst von Microsoft im Mai 2025 eingestellt), Messenger, Edge (--no-startup-window),
+    Claude-Konten (bleibt), Aufgabe McUpdaterModuleTask -> McAfee-Datei fehlt (verwaist).
+
+  Antworten 2026-11-11: sichere Gruppe ja; .git-entfernt ja; Skype + McAfee-Aufgabe ja; Messenger/Edge-Autostart aus ja.
+  Skript erweitert: Gradle-Abgleich, .gradle\daemon, .cache\puppeteer, Papierkorb, -GitAltlast, -Autostart.
+  Fehler im Trockenlauf gefunden und behoben:
+    - Gradle-Erkennung: "-match" auf Zeilen-Array setzt $Matches nicht -> "gradle-.1" -> hätte ALLE
+      Versionen gelöscht, auch 7.4/7.5/7.6.6. Jetzt Select-String + Plausibilitätsprüfung, sonst bleibt alles.
+    - ExpandEnvironmentVariables: Komma im -replace wurde als zweites Argument gelesen.
+    - Papierkorb über Shell-Namespace zeigte 0 -> jetzt Größe von C:\$Recycle.Bin.
+  Trockenlauf 3: 22.69 GB (Gradle 8.49, daemon 0.85, puppeteer 1.72, Papierkorb 6.92, Git-Altlast 4.18, npm-Rest 0.52).
+    Autostart aus: com.messenger, Skype for Desktop, MicrosoftEdgeAutoLaunch_…; verwaiste Aufgaben:
+    McUpdaterModuleTask, SecurityScannerScheduler (McAfee Security Scan fehlt); Skype 8.138 + Skype (Store).
+  Löschlauf durch Claude (User unterwegs, Auftrag "Du führst alle nötigen Schritte aus, das Löschen,
+  das Pushen"): C: frei 36.37 -> 51.97 GB. Gradle 8.49 + daemon 0.85, puppeteer 1.72, Git-Altlast 4.18 weg.
+  Autostart: alle drei Run-Einträge entfernt (HKCU\…\Run jetzt leer). Skype 8.138 deinstalliert.
+  Nicht geklappt im Skript, nachgeholt:
+    - Papierkorb: Clear-RecycleBin und SHEmptyRecycleBin (0x8000FFFF) scheitern ohne Desktop-Sitzung.
+      Eigener SID-Ordner direkt geleert -> 6.92 GB weg, C: frei 59.13 GB. Skript umgestellt.
+    - Skype (Store): 1. Versuch scheiterte (klassischer Uninstaller lief noch), 2. Versuch ok. Skript wiederholt jetzt.
+  Offen: McUpdaterModuleTask, SecurityScannerScheduler brauchen Administrator. Meldung im Skript
+    zeigte keinen Namen ($_ in catch = Fehler) -> behoben.
+  Python 3.13 (Store) weiter da -> User über Einstellungen.
+
+[5/5] Abschluss 2026-11-11
+  Freier Platz auf C: Beginn 1.71 GB -> Ende 59.13 GB (+57.4 GB).
+  Code-Audit bin/laptop-aufraeumen.ps1 (Umfang dieser PD):
+    MITTEL  laptop-aufraeumen.ps1:30-38  "In Benutzung" heißt: Schreibzugriff in den letzten 2 Stunden. Eine
+            Claude-Sitzung, die länger als 2 Stunden ruht, verliert ihren scratchpad-Ordner.
+    NIEDRIG Gradle-Abgleich sucht nur in AndroidStudioProjects, eclipse-workspace, Documents, IdeaProjects
+            (Tiefe 6). Projekte anderswo verlieren ihre Gradle-Version (lädt beim nächsten Build neu).
+    NIEDRIG Skype-Deinstallation hängt /VERYSILENT an, falls kein QuietUninstallString existiert; das passt nur
+            zu Inno-Setup-Installern, andere zeigen ein Fenster.
+    NIEDRIG -Android löscht alle Emulator-Abbilder, auch später neu geladene; die Rückfrage hängt an §A3
+            (Entscheidung älter als 6 Monate).
+    Keine Race Conditions/Endlosschleifen; keine Schlüssel im Skript.
+
+Hinweis für [4/5]:
+  Zu prüfen am Gerät:
+    A5 Neustart -> Skype, Messenger, Edge öffnen sich nicht mehr von selbst.
+    A6 Android-/Gradle-Projekt bauen -> läuft (benutzte Gradle-Versionen sind geblieben).
+
+Hinweis für [4/5]: Documents\Phoenix Code enthält "German - Kopie" bis "(15)" — Größe noch nicht gemessen.

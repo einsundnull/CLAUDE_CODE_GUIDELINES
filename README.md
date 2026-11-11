@@ -48,6 +48,9 @@ universal/
   PRUEFSTAND_UNIVERSAL.md        §S1–§S3: Prüfungen, die wirklich etwas prüfen (war einmal rot,
                                  Verhalten statt Quelltext, Zusagen statt Bestand).
                                  Geladen über den Claude-Skill ~/.claude/skills/pruefstand/
+  AUFRAEUMEN_UNIVERSAL.md        §A1–§A5: Laptop aufräumen (AppData, Caches, Android-SDK);
+                                 sicher / nur nach Entscheidung / nie. Skript bin/laptop-aufraeumen.ps1.
+                                 Geladen über den Claude-Skill ~/.claude/skills/laptop-aufraeumen/
 skills/
   ai-training/SKILL.md           Claude-Skill, verweist nur auf AI_TRAINING_UNIVERSAL.md.
                                  ~/.claude/skills/ai-training ist eine Junction auf diesen
@@ -58,6 +61,7 @@ skills/
                                  ~/.claude/skills/pruefstand ist ebenso eine Junction.
   aufgaben-ablauf/SKILL.md       verweist nur auf Prompt_Handling.txt; ebenso eine Junction.
   konto-wechseln/SKILL.md        verweist nur auf ARBEITSPLATZ_UNIVERSAL.md; ebenso eine Junction.
+  laptop-aufraeumen/SKILL.md     verweist nur auf AUFRAEUMEN_UNIVERSAL.md; ebenso eine Junction.
 templates/
   Task_TEMPLATE.txt              Kopiervorlage für eine PD (Task_*.txt)
                                  CLAUDE.md, doc/GUIDELINES.md und
@@ -67,6 +71,7 @@ templates/
                                  dieselbe Sache würden driften.
 bin/
   push.sh                        schreibt Änderungen in dieses Repo (commit + push)
+  laptop-aufraeumen.ps1          Trockenlauf; mit -Loeschen [-Android] [-PythonStore] [-GitAltlast] [-Autostart] wird gelöscht
   new-project.sh                 richtet ein NEUES Projekt nach diesem Modell ein
   check-projects.sh              prüft, ob alle Projekte richtig angebunden sind
   _wait.sh                       die Warte-Zeile am Ende jedes Skripts

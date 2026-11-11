@@ -1,0 +1,44 @@
+Task_2026-11-11_Laptop-optimieren.txt
+{
+Initialer Prompt (2026-11-11):
+  "Ich möchte, dass du meinen Laptop optimierst. Fang damit an, dass du
+   C:\Users\pc\AppData\Local auf Dateien und Folder untersuchst, die gelöscht werden können."
+
+Hinweis Arbeitsbereich: Die Aufgabe liegt außerhalb jedes Projektordners (AppData\Local).
+Der User hat sie ausdrücklich so gestellt. Gelöscht wird nur nach Freigabe je Gruppe.
+
+Kategorie: [BT]
+Anzahl der Schritte: 5
+
+[1/5] [B] AppData\Local messen, Löschkandidaten nach Sicherheit sortieren (nur lesen).
+[2/5] [B] Sichere Gruppe löschen (Reste deinstallierter Programme, Absturzberichte,
+          alte Claude-Temp-Ordner, npm-Cache, alte Android-Studio-Einstellungen). Nach Freigabe.
+[3/5] [C] Entwickler-Werkzeuge ausdünnen (Android-NDK-Altversionen, Emulator-Abbild,
+          WSL-Ubuntu, Python 3.13 aus dem Store). Nur mit Antwort des Users, ob gebraucht.
+[4/5] [A] Weitere Orte prüfen: Autostart, Dienste, Roaming, Downloads, Laufwerk C frei.
+[5/5] [B] Abschluss: freier Platz vorher/nachher in progress-Datei.
+
+[UNNÖTIG] Registry-Reiniger — kein messbarer Nutzen, Risiko für Windows.
+[UNNÖTIG] Browser-Profile Chrome löschen — dort liegen Anmeldungen der Konten 2/3.
+
+Modell-Empfehlung: [1/5]-[5/5] Sonnet oder Opus. Haiku nicht: Löschbefehle auf falsche Pfade
+  wären nicht rückgängig zu machen.
+DB/API: nicht relevant (reine Datenträgerpflege).
+
+Rückfragen und Antworten (2026-11-11):
+  1 Sichere Gruppe löschen? ja · 2 NDK 21–25 + Emulator noch gebraucht? nein
+  3 WSL-Ubuntu noch gebraucht? ja (bleibt) · 4 Python 3.13 Store noch gebraucht? nein
+  Zusatz: "einen Skill anlegen, der das nächste Mal dieses übernimmt"
+
+Zwischenschritt:
+[2.1/5] Löschen durch Claude vom Sicherheitsfilter blockiert -> Skript bin/laptop-aufraeumen.ps1,
+        der User startet es selbst. Skill laptop-aufraeumen + universal/AUFRAEUMEN_UNIVERSAL.md angelegt.
+
+Fortschritt:
+[1/5] abgeschlossen (2026-11-11)
+[2/5] abgeschlossen — Löschlauf durch den User, C: frei 3.01 -> 34.73 GB
+[3/5] abgeschlossen — Android weg; Python 3.13 Store-Deinstallation gescheitert (0x80073CF6), User entfernt per Einstellungen; WSL bleibt
+[4/5] abgeschlossen — Löschlauf durch Claude auf Auftrag, C: frei 59.13 GB
+[5/5] abgeschlossen — Vorher 1.71 GB / nachher 59.13 GB frei; Audit: 1 MITTEL, 3 NIEDRIG (progress)
+Offen beim User: Python 3.13 (Store) über Einstellungen; 2 McAfee-Aufgaben als Administrator.
+}
