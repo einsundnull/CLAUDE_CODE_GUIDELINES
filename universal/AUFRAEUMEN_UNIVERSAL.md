@@ -77,6 +77,7 @@ nennt den Müll, den sie verhindert hätte.
 | Ruhezustand (`hiberfil.sys`, 8 GB) | keiner | 2026-11-11: wird gebraucht, bleibt |
 | `LocalLow\Google\GoogleEarth\Cache` | keiner | 2026-11-11: löschen (lädt neu) |
 | Projektkopien („… - Kopie“, `Backup*`) und `app\build` | keiner | 2026-11-11: löschen. Vorher: Kopien mit nicht committeten Änderungen ohne build/node_modules/.git als ZIP nach `Documents\Archiv-Projektkopien-<Datum>` mit LIESMICH.txt; Commits, die nur dort liegen, als `git bundle` dazu |
+| Leistung: Energie-Schieber „Beste Leistung“ am Netz, visuelle Effekte „Leistung“ (Schriftglättung bleibt), Transparenz, Game-DVR und Tipps aus, Lenovo Service Bridge weg | keiner | 2026-11-11: ja. Nein: Defender-Ausnahmen, Suchindex einschränken, DiagTrack, Intel-Grafikdienste, Treiber/BIOS. `sshd` bleibt (Fernsteuerung). Hitze-Test: keine Drosselung |
 | Eclipse-Reste: `.m2\.lemminx-maven` (Suchindex des XML-Editors, baut sich neu), zweiter Workspace `C:\eclipse-workspace`, leere Altordner `.sts4`, `.lemminx`, `Local\Eclipse`, `LocalLow\Sun`, `LocalLow\Oracle` | keiner | 2026-11-11: löschen (1.5 GB). Bleiben: Eclipse in `~\eclipse` mit `.p2` (in Gebrauch), JDK 1.8/17/22 (von Projekten genannt), `.m2\repository` |
 
 ## §A4 Nie oder nur selbst durch den User

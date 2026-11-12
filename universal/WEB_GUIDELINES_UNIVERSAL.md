@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-11-06 (§10 Lesefolge in der CLAUDE.md statt Startblock, §14 Findbares entfällt, §16 Wortlaut in KERN.md); 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-11-11 (§30 NEU: was andere ändern können, erscheint live); davor 2026-11-06 (§10 Lesefolge in der CLAUDE.md statt Startblock, §14 Findbares entfällt, §16 Wortlaut in KERN.md); 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -1023,6 +1023,43 @@ kommen aus der App und passen zu ihrem Thema.
 **Warum:** Eine Systemliste oder ein grauer Browser-Kasten reißt den Benutzer aus der App — er sieht für einen
 Moment ein anderes Programm. Was app-spezifisch aussieht und spricht, fühlt sich fertig an; was generisch ist,
 sieht aus wie eine Baustelle, auch wenn es funktioniert.
+
+---
+
+## §30 Was andere ändern können, erscheint live  [A/B]
+
+> **Verbindlich ab 2026-11-11**, bestellt vom User im Projekt myLangSite: *„immer alles. In die spezifischen und
+> allgemeinen guidelines aufnehmen und das Projekt prüfen, an welchen Stellen ein mögliches live Update fehlt.“*
+> Anlass: Die Schülerliste der Lehrkraft zeigte eine angenommene Stunde erst nach dem Neuladen der Seite.
+
+**Begriff:** *Live* heißt: Ändert sich eine angezeigte Angabe in der Datenquelle — durch einen anderen Benutzer,
+den Server, einen Zeitablauf oder dasselbe Konto in einem anderen Fenster —, zeigt die offene Seite den neuen Stand
+ohne Neuladen. *Einmal laden* (eine Abfrage beim Öffnen, danach nichts mehr) ist das Gegenteil.
+
+**Die Regel:**
+1. **Alles, was sich ohne Zutun dieser Seite ändern kann, wird belauscht**, nicht einmal geladen: Listen, Zähler,
+   Abzeichen, Status, Preise, Guthaben, „nächster Termin“, Übersichten. Das gilt für jede Seite und jede Rolle.
+2. **Der erste Stand des Listeners ersetzt das Einmal-Laden.** Keine zweite Abfrage für dieselben Daten; die Seite
+   wartet auf den ersten Stand wie vorher auf das Laden.
+3. **Ein Listener je Seite und Datenquelle.** Neuladen eines Seitenteils startet keinen zweiten. Beim Verlassen
+   (`pagehide`) und beim Wechsel des Kontos wird er beendet.
+4. **Der Abgleich ändert das Stehende, statt neu zu bauen**, wo der Benutzer gerade handelt: eine aufgeklappte
+   Übersicht bleibt offen, Fokus, Eingaben und Bildlage bleiben; nichts springt (§27). Mehrere Änderungen kurz
+   hintereinander werden gebündelt (wenige hundert Millisekunden), damit nichts flackert.
+5. **Kosten bleiben begrenzt:** belauscht wird nur, was auf den Benutzer eingeschränkt ist (die Abfrage-Grenze des
+   Projekts gilt unverändert). Große öffentliche Listen ohne Anmeldung dürfen stattdessen in festen Abständen oder
+   bei Rückkehr auf die Seite (`visibilitychange`) frisch laden — das ist dann im Projekt-Dokument benannt.
+6. **Ausnahmen nur benannt:** was bewusst einmal lädt, steht mit Grund in einer Liste im Projekt-Dokument
+   (z. B. abgeschlossene Berichte, die sich nicht mehr ändern). Ohne Eintrag gilt Regel 1.
+7. **Fällt der Listener aus**, bleibt der letzte Stand stehen und die Seite sagt es dem Benutzer (§22), statt still
+   veraltet zu sein.
+8. **Prüfung:** jede neue Leseabfrage, die einmal lädt, ist im Audit nach der Aufgabe ein Befund, sofern sie nicht in
+   der Ausnahmeliste steht. Was am Gerät zu sehen ist, steht als Verify-Zeile mit zwei Fenstern (Handelnder und
+   Zuschauer) in der progress-Datei.
+
+**Warum:** Eine Seite, die veraltet stehen bleibt, lügt den Benutzer an — er sieht eine Stunde nicht, die gebucht
+ist, oder ein Guthaben, das nicht mehr stimmt, und handelt danach. Neuladen ist keine Bedienung, sondern ein
+Fehler, den der Benutzer ausgleichen muss.
 
 ---
 

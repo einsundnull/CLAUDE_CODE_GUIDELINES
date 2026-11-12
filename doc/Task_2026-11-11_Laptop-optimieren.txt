@@ -50,4 +50,10 @@ Zwischenschritt (Prompt 2026-11-11 abends):
             Platz-Warnung im Start-Hook, bin/hook-eintragen.mjs.
 [6.2/6] [A] Weitere Problemorte messen (nur lesen), listen, Freigabe fragen.
 [6.3/6] [B] Push des Guidelines-Repos (die Hub-Karte "GuideLines" zeigt auf dieses Repo).
+
+Zwischenschritt (Prompt 2026-11-11): "Prüfe jetzt, wie wir die Performance meines Laptops weiter verbessern
+  können: Autostart, Hintergrunddienste, Arbeitsspeicher, Energieplan, Virenscanner, Windows-Einstellungen,
+  Treiber, Festplatte. Erst nur messen ... nichts ändern ohne meine Freigabe."
+[8.1/2] [A] Messen, Liste mit Nutzen und Risiko — abgeschlossen (progress [8]).
+[8.2/2] [B] Freigegebene Punkte umsetzen — abgeschlossen bis auf 2 Admin-Einträge und Neustart (User).
 }

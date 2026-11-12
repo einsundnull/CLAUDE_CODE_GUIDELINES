@@ -169,3 +169,57 @@ Hinweis für [4/5]: Documents\Phoenix Code enthält "German - Kopie" bis "(15)" 
   Zu prüfen am Gerät:
     A8 Eclipse starten, eine pom.xml öffnen -> Editor arbeitet, Maven-Vorschläge kommen (Index baut sich neu,
        der erste Start kann etwas dauern).
+
+[8] 2026-11-11 Performance gemessen (nur lesen, nichts geändert). Prompt: "Prüfe jetzt, wie wir die Performance
+    meines Laptops weiter verbessern können ... Erst nur messen ... nichts ändern ohne meine Freigabe."
+  Skript + Rohausgabe im scratchpad (perf-messen.ps1, perf-ergebnis.txt), nicht im Repo.
+  Gerät: Acer Aspire A517-51G, i3-6006U (2 Kerne/4 Threads, kein Turbo), 20 GB RAM, SSD ADATA SU635 SATA 224 GB
+    (gesund, TRIM an, Optimierung geplant), C: 65.7 GB frei, Win10 Home 19045, BIOS V1.15 (2018-01-08).
+  Engpass: der Prozessor. RAM: 11.3 GB frei, Auslagerung Spitze 318 MB -> kein Bedarf.
+  Laufzeit seit Neustart 3.4 Tage. Explorer: 4 h Rechenzeit seit Start, Stichprobe 1x 100 % eines Threads,
+    danach 1 %. Größte Verbraucher: claude (5 Prozesse, 1.6 GB), Edge 0.7 GB, Defender 0.36 GB, Suche 0.33 GB.
+  Autostart: schon sauber (alles AUS bis auf Claude-Konten.lnk). Verwaiste Einträge "an": Firefox, AVGUI
+    (Programme fehlen, wirkungslos).
+  Geplante Aufgaben aktiv: McAfee McUpdaterModuleTask + SecurityScannerScheduler (Programm fehlt, verwaist, Admin),
+    Lenovo Service Bridge (Lenovo-Programm auf Acer-Gerät), Messenger-Helper täglich, Realtek 2x, WLAN-Watchdog,
+    msfeedssync.
+  Dienste (nicht MS, laufend): NVIDIA Display Container, Intel Graphics Command Center, Intel HD-Systemsteuerung,
+    Intel HDCP, AtherosSvc, sshd (Auto), CoworkVMService (Claude). Windows: SysMain, WSearch, DiagTrack laufen;
+    vmcompute läuft (WSL).
+  Energie: "Ausbalanciert", Prozessor min 5 % / max 100 %, Schnellstart aus.
+  Virenschutz: nur Defender (gut), Echtzeit an, Scan-Grenze 50 % CPU. Ausschlüsse nur als Admin lesbar.
+    McAfee-Reste in ProgramData (4 Ordner, klein).
+  Windows: Visuelle Effekte "automatisch", Transparenz an, Game DVR an, Tipps an. Letztes Update 2026-09-10.
+  Treiber: NVIDIA MX130 436.51 (2019-10), Intel HD 520 (2022-07), Bluetooth 2017, Realtek 2020.
+    Gerät "Detection Verification" Fehlerstatus (Software-Gerät ohne Hersteller, ohne Wirkung).
+  Nicht gemessen: Prozessortakt unter Last / Drosselung durch Wärme (Leistungszähler auf diesem System
+    nicht abrufbar), SMART-Werte und Start-Dauer (brauchen Admin).
+  Offen beim User (Frage): Freigabe je Punkt der Liste.
+  Antwort User: "1 3 4 6 7 12 ja, 2 ja, 3 ja; sshd evtl für Claude remote control"
+    -> Liste 1,3,4,6,7,12 umsetzen; sshd bleibt; Hitze-Test ja. Liste 2 (Defender-Ausnahmen), 5, 8-11, 13 nein.
+
+[8.2] 2026-11-11 Umsetzung
+  Hitze-Test (scratchpad hitze-test.ps1, 4 Threads voll, 45 s): Takt durchgehend 1992 MHz (= Nenntakt,
+    i3-6006U ohne Turbo), % Leistungslimit 100, Last 98-100 %. Keine Drosselung durch Wärme -> Punkt 13
+    (Lüfter/Paste) derzeit unnötig. Temperatur nur als Admin lesbar.
+  Alte Werte (zum Zurücksetzen):
+    VisualFXSetting 0; UserPreferencesMask 9E 1E 07 80 12 00 00 00; DragFullWindows 1; MinAnimate 1;
+    TaskbarAnimations 1; ListviewAlphaSelect 1; ListviewShadow 1; EnableAeroPeek 1; FontSmoothing 2; IconsOnly 0;
+    EnableTransparency 1; GameDVR_Enabled 1; AppCaptureEnabled 1; SubscribedContent-338388/338389 1;
+    SystemPaneSuggestionsEnabled 1; SoftLandingEnabled 1; Energie-Overlay Netz: leer (= ausbalanciert).
+  Gesetzt:
+    1 Energie-Overlay Netz = ded574b5-… (Beste Leistung), per PowerSetActiveOverlayScheme. OK.
+    3 VisualFXSetting 3, Mask 90 12 03 80 10 00 00 00, DragFullWindows 0, MinAnimate 0, TaskbarAnimations 0,
+      ListviewAlphaSelect 0, ListviewShadow 0, EnableAeroPeek 0; Schriftglättung (2) und Vorschaubilder bleiben. OK.
+    4 Transparenz 0, GameDVR 0, AppCapture 0, Tipps 0. OK.
+    6 Firefox-Eintrag (HKCU StartupApproved) entfernt. OK.
+      AVG-Eintrag (HKLM) und McAfee-Aufgaben McUpdaterModuleTask, SecurityScannerScheduler: Zugriff verweigert,
+      brauchen Admin -> User. (Die McAfee-Aufgaben waren laut [6.3] schon als erledigt gemeldet, sind aber noch da.)
+    7 Lenovo Service Bridge still deinstalliert (Rückgabe 0), Aufgabe weg, leerer Ordner entfernt. OK.
+    12 Neustart: macht der User (beendet laufende Sitzungen). Kein automatischer Neustart angelegt.
+  Zu prüfen am Gerät:
+    A9 Nach dem Neustart ein Fenster verschieben -> nur der Rahmen bewegt sich, kein Einblend-Effekt beim
+       Minimieren; Startmenü und Taskleiste ohne Transparenz; Schrift weiterhin glatt.
+    A10 Akkusymbol in der Taskleiste anklicken (Netzteil steckt) -> Schieber steht ganz rechts "Beste Leistung".
+    A11 Task-Manager (Strg+Umschalt+Esc) > Autostart -> kein Eintrag Firefox, nach dem Admin-Befehl auch kein AVGUI.
+    A12 Win+G -> Xbox Game Bar zeigt "Aufnahme im Hintergrund" aus.
