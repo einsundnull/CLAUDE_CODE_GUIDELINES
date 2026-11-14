@@ -686,6 +686,18 @@ etwas anderes, als ausgeliefert wird.
      der User zurück; Claude baut sie ein, ohne nachzufragen, was gemeint war.
      Laden einer solchen Datei ins Mockup gehört dazu, damit ein Stand
      weiterbearbeitet werden kann.
+   - **Der Weg zurück bleibt sichtbar** (User 2026-11-14: *„vom eingeblendeten
+     Modus der Editor-Buttons … diesen Button wieder sichtbar zu machen, dass
+     ich auch wieder zurück kann“*). Ein Knopf, der andere Knöpfe ausblendet,
+     blendet sich nie selbst aus. Er steht in beiden Zuständen an derselben
+     Stelle, ist gut erkennbar (nicht blass) und zeigt, welcher Zustand gilt.
+     Das gilt im Mockup (Editor aus/ein) und genauso in der App, wenn sie
+     einen Knopf „alle Knöpfe ausblenden“ hat.
+   - **Der Editor gilt für jede anordenbare Leiste der Seite** (User
+     2026-11-14: *„den gleichen Editor für den Trainer und nicht nur für den
+     Editor“*). Hat eine Seite mehrere Leisten oder Zustände (z. B. Üben und
+     Bearbeiten), lässt derselbe Editor alle anordnen. Eine Datei enthält alle
+     Anordnungen.
    Gefragt wird nicht, ob ein Editor gewünscht ist; das sagt der User selbst.
 
 **Ausnahme:** ein Mockup, das nur eine IDEE skizziert (Varianten
