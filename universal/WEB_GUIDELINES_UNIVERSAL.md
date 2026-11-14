@@ -367,6 +367,7 @@ im Code zu sehen, entfällt seine Zeile. Sonst stünde er doppelt und driftet.
 | God-Datei(en) (§5) | | |
 | Persistenz-Schlüssel + Paare (§6) | | |
 | Format-Verträge nach außen (§7) | | |
+| **Lesbarkeit je Sammlung (§31)**: Sammlung → wer liest → Erlaubt-Liste der Felder → Test | | ab der ersten Sammlung, die ein anderer als der Eigentümer liest |
 | Einstellungs-Ablage (§12) | | |
 | Shortcut-Register + Hilfe-Taste (§11) | | |
 | Mess-Anzeige + Ablesen (§13) | | |
@@ -669,6 +670,23 @@ etwas anderes, als ausgeliefert wird.
    eine geprüfte Testseite beweisen nicht, dass etwas zu sehen ist.
    „Nur lokal ansehbar“ gibt es nicht; ein
    Artifact oder localhost-Link ist höchstens Zusatz, nie Ersatz.
+8. **Ein Mockup mit Editor hat zwei feste Knöpfe** (User 2026-11-14, myLangSite
+   Trainer: *„bei Mockups, wenn ich um einen Editor bitte, immer einen Knopf,
+   der die Editor-Buttons versteckt, sodass ich ein nahezu originalgetreues
+   Abbild des Mockups ansehen kann“* und *„einen Button, der es erlaubt, die
+   Anordnung als eine Datei zu speichern, zum Beispiel als JSON oder als Text,
+   sodass ich es dir schicken und du es einbauen kannst“*). Editor heißt: der
+   User kann im Mockup etwas anordnen, verschieben oder einstellen.
+   - **Editor aus/ein:** ein Knopf blendet ALLE Bedienelemente des Editors
+     aus (Griffe, Raster, Rahmen, Werkzeugleiste des Editors) und wieder ein.
+     Ausgeblendet sieht das Mockup aus wie die App; nur dieser eine kleine Knopf
+     bleibt sichtbar. Vorbild: WingsOfFury.
+   - **Anordnung speichern:** ein Knopf lädt den aktuellen Stand als Datei
+     herunter (JSON oder Text, lesbar, mit Datum im Namen). Diese Datei schickt
+     der User zurück; Claude baut sie ein, ohne nachzufragen, was gemeint war.
+     Laden einer solchen Datei ins Mockup gehört dazu, damit ein Stand
+     weiterbearbeitet werden kann.
+   Gefragt wird nicht, ob ein Editor gewünscht ist; das sagt der User selbst.
 
 **Ausnahme:** ein Mockup, das nur eine IDEE skizziert (Varianten
 vergleichen, noch keine Gestalt), darf frei gezeichnet sein — dann steht im
@@ -1060,6 +1078,35 @@ ohne Neuladen. *Einmal laden* (eine Abfrage beim Öffnen, danach nichts mehr) is
 **Warum:** Eine Seite, die veraltet stehen bleibt, lügt den Benutzer an — er sieht eine Stunde nicht, die gebucht
 ist, oder ein Guthaben, das nicht mehr stimmt, und handelt danach. Neuladen ist keine Bedienung, sondern ein
 Fehler, den der Benutzer ausgleichen muss.
+
+---
+
+## §31 Lesbar ist das ganze Dokument: Öffentliches und Privates liegen getrennt  [A/B]
+
+> **Verbindlich ab 2026-11-14**, bestellt vom User im Projekt myLangSite nach einem Datenleck: E-Mail, Guthaben und
+> Stripe-Kundennummer aller Lehrkräfte waren ohne Anmeldung abrufbar, weil sie im öffentlichen Profil-Dokument lagen.
+> Ursachenkette: myLangSite `doc/progress/progress_2026-11-14_datenleck-ursache.txt`.
+
+**Begriff:** Eine *Leseregel* (Firestore-Rules, Supabase-Policy, Storage-Ordner-Regel) gibt immer ein ganzes
+Dokument oder eine ganze Zeile frei — nie einzelne Felder. Was im Dokument steht, sieht jeder, der es lesen darf.
+
+**Die Regel:**
+1. **Ein Dokument, das andere lesen dürfen, enthält nur Felder, die alle diese Leser sehen dürfen.** Privates —
+   Geld, Kontaktdaten, Zahlungs-Kennungen, Sperrgründe, Verwaltungsnotizen — liegt in einem eigenen Dokument mit
+   eigener, engerer Regel (z. B. `profil/{uid}/private/wallet`).
+2. **Jede lesbare Sammlung hat eine Erlaubt-Liste (Positivliste) ihrer Felder**, im Steckbrief (§14, Zeile
+   „Lesbarkeit je Sammlung“). Sie wird ausgefüllt, bevor das erste Dokument dieser Sammlung geschrieben wird.
+   Ein neues Feld kommt nur über diese Liste dazu; wer es anlegt, beantwortet: *Wer kann dieses Dokument lesen?*
+3. **Ein Test liest als Fremder und als Abgemeldeter** und schlägt fehl, sobald ein Feld außerhalb der Erlaubt-Liste
+   ankommt (PRUEFSTAND §S4). Eine Sperrliste bekannter Felder reicht nicht: ein neues privates Feld rutscht durch.
+4. **Eine Umstellung ist erst fertig, wenn der alte Ort leer ist.** Kopieren ohne Löschen ist ein offener
+   Sicherheitsbefund, kein Zustand. Im Steckbrief steht er als „OFFEN, Risiko“, nie als Beschreibung.
+5. **Lese-Audit aller Regeln** vor dem Start mit echten Nutzern und danach alle 10 abgeschlossenen PDs — auch der
+   Regeln, die keine PD berührt hat (Prompt_Handling „Code-Audit“).
+
+**Warum:** Die Leseregel selbst war richtig („Profil ist öffentlich“). Falsch war, was im Dokument lag. Kein Test
+konnte das melden, und das Audit nach jeder PD sah die nie geänderte Regel nie an. Bemerkt wurde es im Mai, notiert
+in einem Fachdokument — und dort vergessen.
 
 ---
 

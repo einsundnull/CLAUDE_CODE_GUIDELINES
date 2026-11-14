@@ -151,6 +151,8 @@ SCHLÜSSEL UND SPERRLISTE
 Jedes Repo hat in seiner .gitignore eine Sperrliste für Schlüssel. Geheimnisse liegen nur in
 ignorierten Dateien oder außerhalb des Repos. "git add -A" in den Push-Skripten bleibt erlaubt;
 genau deshalb ist die Sperrliste Pflicht. Der Benutzerordner ist nie ein Repo.
+Ein Schlüssel, der je in einem Commit lag, gilt als verbrannt: er wird erneuert. Die Sperrliste
+entfernt ihn nicht aus der Historie (seit 2026-11-14; Beleg myLangSite, OAuth- und Mailgun-Schlüssel).
 
 
 GRÖSSE DER PFLICHTLEKTÜRE
@@ -199,6 +201,18 @@ berührt hat, untersucht auf:
   - Reste auf der Platte (seit 2026-11-11): Kopien, scratchpad-Dateien über 50 MB,
     alte Werkzeug-Versionen, Ausgaben ohne Obergrenze, Test-Profile
     (Regeln: AUFRAEUMEN_UNIVERSAL.md §A0)
+  - Neue oder verschobene Felder (seit 2026-11-14, WEB §31): in welchem Dokument liegt das
+    Feld, wer kann dieses Dokument lesen? Gilt auch, wenn die PD die Leseregel nicht berührt.
+    Steht das Feld nicht in der Erlaubt-Liste der Sammlung: Befund HOCH.
+
+LESE-AUDIT ALLER REGELN (seit 2026-11-14, WEB §31 Nr. 5): vor dem Start mit echten Nutzern
+und danach alle 10 abgeschlossenen PDs werden ALLE Lese- und Schreibregeln geprüft, nicht nur
+die berührten. Grund: das Audit nach der PD sieht eine nie geänderte Regel nie an.
+
+EIN SICHERHEITSBEFUND WIRD SOFORT EIN TODO (seit 2026-11-14): Ein Befund zu Sicherheit oder
+Datenschutz steht noch in derselben Sitzung in der WEITERMACHEN_PROMPT.txt (oder wird eine PD),
+nie nur als Satz in einem Fachdokument. Beleg: myLangSite, Leck bemerkt im Mai in
+FIREBASE_FELDER_TEACHER_PROFIL.md, sechs Monate ohne Aufgabe.
 
 Die Befunde stehen in der progress-Datei, sortiert nach HOCH / MITTEL / NIEDRIG,
 je mit Datei:Zeile und einem Satz, was schiefgehen kann. Behoben wird NICHT

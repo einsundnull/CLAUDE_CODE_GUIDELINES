@@ -49,6 +49,18 @@ Produktivcode änderte.
 
 ---
 
+## §S4 Lesen wird als Fremder geprüft, gegen eine Erlaubt-Liste  [A]
+
+Für jede Sammlung, die ein anderer als der Eigentümer lesen darf, gibt es einen Test: als Fremder
+und als Abgemeldeter lesen. Jedes Feld außerhalb der Erlaubt-Liste (WEB §31) macht ihn rot. Geprüft
+wird die echte Regel im Emulator, nicht der Text der Regeldatei (§S2). Rechte-Tests prüfen Schreiben
+UND Lesen.
+
+Beleg: myLangSite 2026-11-14. Die Regel-Tests prüften nur Schreiben; die Prüfung H2 kannte nur eine
+Sperrliste von Geldfeldern. E-Mail und Guthaben lagen sechs Monate offen, kein Test war je rot.
+
+---
+
 ## Anhang — Herkunft und Pflege
 
 - Entstanden am 2026-11-06 aus der Auswertung der Fehler von zwei Tagen in WingsOfFury und dem
