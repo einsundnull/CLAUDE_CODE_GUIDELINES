@@ -1,7 +1,7 @@
 # WEB_GUIDELINES_UNIVERSAL — verbindliche Standards für ALLE Web-Projekte
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/WEB_GUIDELINES_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-11-11 (§30 NEU: was andere ändern können, erscheint live); davor 2026-11-06 (§10 Lesefolge in der CLAUDE.md statt Startblock, §14 Findbares entfällt, §16 Wortlaut in KERN.md); 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
+> **STAND:** 2026-11-15 (§32 NEU: Speichern im Hintergrund, Löschen fragt, Medien vorladen, nie still kappen); davor 2026-11-11 (§30 NEU: was andere ändern können, erscheint live); davor 2026-11-06 (§10 Lesefolge in der CLAUDE.md statt Startblock, §14 Findbares entfällt, §16 Wortlaut in KERN.md); 2026-11-06 (Regeln aus der Fehler-Auswertung WingsOfFury: §0, §1, §5, §6, §8, §13, §15, §21; Anhang berichtigt); davor 2026-10-30 (§13 + §14: Verweis auf PERFORMANCE_UNIVERSAL.md, Leistungs-Zeilen im Steckbrief); davor 2026-10-29 (§29 NEU: Dialoge sind app-spezifisch, nie generisch); davor 2026-10-28 (§21 Regel 7 NEU: jedes Mockup ist über den Project Hub erreichbar); davor 2026-10-24 (§28 NEU: Auth Guard — Seiten mit Anmeldepflicht sind ohne Anmeldung gesperrt); davor 2026-10-23 (§27 NEU: kein Layout Shift — Layout springt nicht durch kleine Änderungen); davor 2026-10-14 (Memo: Wertschätzung und Umgang); davor 2026-10-11 (§26 NEU: Chat-Nachrichten in Spalten, Häkchen nur wo nötig); davor 2026-10-11 (§25 NEU: Bot-Kontrolle — der Benutzer wird gerufen, nie umgangen); davor 2026-10-09 (§24 NEU: Dialog hochkant im Goldenen Schnitt, nutzt seine Höhe); davor 2026-10-08 (§23 NEU: ein Dialog passt ohne Scrollen auf den Bildschirm); davor 2026-10-06 (§22 NEU: Fehlermeldungen schließt der Benutzer — nie die Zeit); davor 2026-10-05 (§10: Kopf der WEITERMACHEN_PROMPT.txt ist der Startblock); davor 2026-10-04 (§21 NEU: ein Mockup ist Single Source of Truth — es lädt die Bausteine der App); davor 2026-09-29 (§20 NEU: Tooltips sprechen zum Benutzer und verdecken kein offenes Fenster); davor 2026-09-28 (§19 NEU: Kennung jedes Bedienelements; §18 NEU: Quick Buttons); davor 2026-09-27 (§17 NEU: Text-Werkstatt); davor 2026-09-22 (§2: Stufenziffer an mehrstufigen Schaltern); davor 2026-09-05
 >
 > **Status: VERBINDLICH** für jedes HTML/CSS/JS-Projekt, dessen `CLAUDE.md`
 > auf diese Datei zeigt. Abgeleitet aus `JAVA_GUIDELINES_UNIVERSAL.md`
@@ -1119,6 +1119,31 @@ Dokument oder eine ganze Zeile frei — nie einzelne Felder. Was im Dokument ste
 **Warum:** Die Leseregel selbst war richtig („Profil ist öffentlich“). Falsch war, was im Dokument lag. Kein Test
 konnte das melden, und das Audit nach jeder PD sah die nie geänderte Regel nie an. Bemerkt wurde es im Mai, notiert
 in einem Fachdokument — und dort vergessen.
+
+---
+
+## §32 Speichern, Löschen, Medien, Abschneiden: vier kleine Pflichten  [B]
+
+> **Verbindlich ab 2026-11-15**, bestellt vom User im Projekt myLangSite nach dem Audit des Vokabeltrainers
+> (Kandidaten U1, U2, U3, U5; `doc/progress/progress_2026-11-15_trainer-audit-niedrig.txt`).
+
+1. **Gespeichert wird, wenn die Seite in den Hintergrund geht** (`visibilitychange` → `hidden`), nicht erst beim
+   Verlassen. Beim Verlassen (`pagehide`, `beforeunload`) kann das Programm nicht mehr auf das Speichern warten —
+   besonders am Telefon, wo der Benutzer nur die App wechselt.
+2. **Löschen, das auch Dateien entfernt (Bild, Ton, Anhang), fragt vorher — in der App selbst**, nie mit dem grauen
+   Browser-Fenster (kein `confirm`). Form zum Beispiel: erstes Tippen färbt den Knopf rot und zeigt „Noch einmal
+   tippen …“, das zweite löscht; nach wenigen Sekunden ohne zweites Tippen ist der Knopf wieder normal.
+   Rückgängig, das die Datei nicht zurückholt, ersetzt die Frage nicht.
+3. **Ton und Video werden nie erst nach dem Antippen geladen, wenn danach sofort abgespielt wird.** Safari (iPhone)
+   spielt nur ab, was im selben Tipp startet; ein Laden dazwischen bricht das ab. Darum vorher laden, im
+   Hintergrund und nach dem Sichtbaren. Ob etwas *von selbst* abspielt (ohne Tipp), ist eine Einstellung des
+   Benutzers (UNIVERSAL §12), nie fest eingebaut.
+4. **Abgeschnittener Inhalt zeigt, dass er weitergeht, und wird nie still gekappt.** Passt Text nicht in seinen
+   Platz: er beginnt oben (der Anfang bleibt lesbar), und das Ende blendet sichtbar aus oder zeigt „…“; besser
+   noch passt sich die Größe an. Ein Text, der ohne Zeichen endet, lässt den Benutzer glauben, er sei vollständig.
+
+**Warum:** Alle vier Fehler waren unsichtbar, bis Daten fehlten: verlorene Änderungen nach dem App-Wechsel, ein
+gelöschtes Bild ohne Rückweg, ein Lautsprecher, der am iPhone stumm blieb, ein Satz, dem das Ende fehlte.
 
 ---
 
