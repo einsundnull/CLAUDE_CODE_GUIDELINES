@@ -85,6 +85,8 @@ bin/
                                  → „gefunden wo / im Code benutzt / nicht auf diesem Rechner“. Enthält keinen Schlüssel.
                                  Eigene Ordner hinzufügen/entfernen, andere ausblenden; gemerkt in
                                  bin/schluessel-pruefen.orte.json (gitignored, nur Pfade). Ladeanzeige während der Suche.
+                                 Orte-Liste als aufklappbare Auswahl. „Rotieren“ je Schlüssel: neuen Wert einfügen,
+                                 Trockenlauf zeigt alle Stellen, dann ersetzen mit Nachprüfung und Rückgängig.
   hooks/session-start.mjs        warnt, wenn eine Sitzung oberhalb eines Projektordners startet
                                  und wenn auf C: weniger als 20 GB frei sind (seit 2026-11-11)
   hook-eintragen.mjs             trägt den Start-Hook in die settings.json aller Konten ein
