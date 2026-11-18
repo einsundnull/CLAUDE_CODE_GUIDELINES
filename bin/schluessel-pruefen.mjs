@@ -37,7 +37,8 @@ const HOME = os.homedir();
 const TOKEN = crypto.randomBytes(24).toString('hex');
 const MAX_BYTES = 256 * 1024;
 const CODE_MAX_BYTES = 1024 * 1024;
-const IDLE_MS = 2 * 60 * 1000;
+const IDLE_MS = Number(process.env.SP_IDLE_MS) || 2 * 60 * 1000;   // SP_IDLE_MS nur für den Test
+const TEST_SCAN_MS = Number(process.env.SP_TEST_SCAN_MS) || 0;      // Test: lange Suche nachstellen
 const SKIP_DIR = /^(node_modules|\.git|\.svn|graphify-out|\.cache|\.next|dist|build|target|\.gradle|\.idea|AppData|\$Recycle\.Bin|bower_components|vendor)$/i;
 const SECRET_DIR = /^(key|keys|jaas|geheim|secret|secrets|credentials|private-keys|Schluessel-privat)$/i;
 const CODE_EXT = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.jsx', '.py', '.java', '.kt', '.html', '.yml', '.yaml', '.json', '.sh', '.ps1', '.bat', '.rules', '.toml', '.gradle', '.xml']);
@@ -207,6 +208,7 @@ function standardOrte() {
     ];
 }
 function durchsuchen(auswahl) {
+    if (TEST_SCAN_MS) { const bis = Date.now() + TEST_SCAN_MS; while (Date.now() < bis) { /* Test: blockiert wie eine lange Suche */ } }
     funde = []; dateien = []; gelesen = 0; codeCache.clear();
     projekte = ladeProjekte();
     const gewaehlt = projekte.filter((p) => (auswahl.projekte || []).includes(p.name));
@@ -335,7 +337,7 @@ ul.res ul{margin:4px 0 0 18px;padding:0}
 <div class="grid" id="orte"></div>
 <label for="ordner" class="muted">Weitere Ordner (je Zeile ein Pfad)</label>
 <textarea id="ordner" spellcheck="false"></textarea>
-<div class="row"><button class="pri" id="los" type="button">Durchsuchen</button><span class="status" id="st1"></span></div>
+<div class="row"><button class="pri" id="los" type="button">Durchsuchen</button><span class="status" id="st1">Große Ordner können einige Minuten dauern.</span></div>
 </section>
 
 <section class="card"><h2>2. Bekannte Schlüssel vergleichen</h2>
@@ -356,7 +358,8 @@ ul.res ul{margin:4px 0 0 18px;padding:0}
 <script nonce="${nonce}">
 (function(){
 var T=new URLSearchParams(location.search).get('t')||'';
-function api(p,b){return fetch(p,{method:'POST',headers:{'Content-Type':'application/json','X-Token':T},body:JSON.stringify(b||{})}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}
+var WEG='Das Werkzeug läuft nicht mehr (Fenster geschlossen, Taste gedrückt oder beendet). Bitte schluessel-pruefen.bat neu starten — diese Seite gehört zum alten Start.';
+function api(p,b){return fetch(p,{method:'POST',headers:{'Content-Type':'application/json','X-Token':T},body:JSON.stringify(b||{})}).catch(function(){throw new Error(WEG);}).then(function(r){if(!r.ok)throw new Error(r.status===403?WEG:'HTTP '+r.status);return r.json();});}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
 setInterval(function(){api('/api/ping').catch(function(){});},20000);
@@ -378,7 +381,7 @@ document.getElementById('los').addEventListener('click',function(){
   store('sp.auswahl',save); store('sp.ordner',ord);
   b.disabled=true; document.getElementById('st1').textContent='Suche läuft …';
   api('/api/suche',sel).then(function(d){
-    document.getElementById('st1').textContent=d.gelesen+' Dateien gelesen · '+d.funde.length+' Einträge';
+    document.getElementById('st1').textContent=d.gelesen+' Dateien gelesen · '+d.funde.length+' Einträge · '+d.sek+' s';
     document.getElementById('suchen').disabled=false; document.getElementById('st2').textContent='';
     zeichne(d);
   }).catch(function(e){document.getElementById('st1').textContent='Fehler: '+e.message;}).then(function(){b.disabled=false;});
@@ -443,6 +446,7 @@ document.getElementById('ende').addEventListener('click',function(){
 // ---------------------------------------------------------------- Server
 let port = 0;
 let letzterPing = Date.now();
+let beschaeftigt = 0;   // laufende Anfragen: solange > 0 nie wegen Leerlauf beenden
 function ende(grund) {
     console.log('\n' + grund + ' Server beendet.');
     process.exit(0);
@@ -476,6 +480,7 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
         let d = {}; try { d = body ? JSON.parse(body) : {}; } catch (e) { return antwort(res, 400, 'text/plain', 'JSON kaputt'); }
         letzterPing = Date.now();
+        beschaeftigt++;
         try {
             switch (url.pathname) {
                 case '/api/ping': return json(res, { ok: true });
@@ -488,10 +493,12 @@ const server = http.createServer((req, res) => {
                 }
                 case '/api/suche': {
                     const arr = (v) => (Array.isArray(v) ? v.filter((s) => typeof s === 'string').slice(0, 50) : []);
+                    const t0 = Date.now();
                     durchsuchen({ projekte: arr(d.projekte), orte: arr(d.orte), ordner: arr(d.ordner) });
-                    console.log(`Durchsucht: ${gelesen} Dateien, ${funde.length} Einträge.`);
+                    const sek = Math.round((Date.now() - t0) / 1000);
+                    console.log(`Durchsucht: ${gelesen} Dateien, ${funde.length} Einträge, ${sek} s.`);
                     return json(res, {
-                        gelesen,
+                        gelesen, sek,
                         funde: funde.map((x) => ({ id: x.id, projekt: x.projekt, name: x.name, art: x.art, maske: mask(x.wert), fp: x.fp,
                             keyId: x.keyId, hinweis: x.hinweis, ort: x.ort, code: x.codeTreffer })),
                         dateien,
@@ -508,6 +515,11 @@ const server = http.createServer((req, res) => {
         } catch (e) {
             console.error('Fehler:', e && e.message);
             return antwort(res, 500, 'text/plain', 'Fehler im Werkzeug');
+        } finally {
+            // Eine lange Suche blockiert das Programm; die Zeit zählt ab ENDE der Arbeit (Fehler 2026-11-18:
+            // Suche > 2 min → Server beendete sich direkt nach der Antwort → „Failed to fetch“ beim Vergleich).
+            beschaeftigt--;
+            letzterPing = Date.now();
         }
     });
 });
@@ -536,7 +548,7 @@ server.listen(0, '127.0.0.1', () => {
     if (process.argv.includes('--kein-browser')) { /* Test: Browser nicht öffnen */ }
     else if (process.platform === 'win32') execFile('cmd', ['/c', 'start', '', adresse]);
     else execFile(process.platform === 'darwin' ? 'open' : 'xdg-open', [adresse]);
-    setInterval(() => { if (Date.now() - letzterPing > IDLE_MS) ende('2 Minuten keine offene Seite.'); }, 15000);
+    setInterval(() => { if (!beschaeftigt && Date.now() - letzterPing > IDLE_MS) ende('2 Minuten keine offene Seite.'); }, Math.min(15000, IDLE_MS / 4));
     if (process.stdin.isTTY) {
         console.log('\nFertig gestartet. Taste drücken zum Beenden.');
         process.stdin.setRawMode(true);
