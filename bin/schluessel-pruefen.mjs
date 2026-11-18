@@ -8,14 +8,17 @@
  *   und öffnet den Browser. Taste im Fenster, Knopf „Beenden“ oder 2 Minuten ohne offene Seite → Ende.
  *
  * Was die Seite kann:
- *   1. Durchsuchen: die Projekte aus PROJECTS.txt (anklickbar), Schluessel-privat, Downloads, Desktop,
- *      gcloud, weitere Ordner. Zeigt je Schlüssel: Art, Name, gekürzten Wert, Fingerabdruck, Datei,
+ *   1. Durchsuchen: Liste der Orte = Projekte aus PROJECTS.txt + Standard-Orte (Schluessel-privat, Downloads,
+ *      Desktop, gcloud) + eigene Ordner. Eigene hinzufügen/entfernen, die übrigen ausblenden/wieder zeigen.
+ *      Liste und Häkchen bleiben dauerhaft in bin/schluessel-pruefen.orte.json (gitignored, nur Pfade).
+ *      Während der Suche: Ladeanzeige mit gelesenen Dateien, aktuellem Ordner und Sekunden.
+ *      Zeigt je Schlüssel: Art, Name, gekürzten Wert, Fingerabdruck, Datei,
  *      ob der Name im Code des Projekts vorkommt. Voller Wert nur nach Klick auf „Zeigen“.
  *   2. Vergleichen: bekannte Schlüssel einfügen (voll, gekürzt wie „sk_live_…4f2a“ oder nur die
  *      Schlüssel-ID aus der Google-Konsole) → je Zeile: gefunden wo / Teiltreffer / nicht auf diesem Rechner.
  *
  * Sicher zum Hochladen: Die Datei enthält keinen Schlüssel. Werte bleiben im Speicher des laufenden
- *   Programms; nichts wird auf die Platte geschrieben, nichts ins Terminal, nichts ins Netz.
+ *   Programms; auf die Platte kommt nur die Orte-Liste (Pfade, keine Werte), nichts ins Terminal, nichts ins Netz.
  * Schutz des Servers: nur 127.0.0.1, Host-Prüfung (gegen DNS-Rebinding), Zugangswort bei jeder Anfrage,
  *   nur JSON-POST (keine Formular-Angriffe fremder Seiten), CSP mit Nonce.
  * Tut NICHT: Schlüssel ändern, löschen, senden; .odt/.docx/.pdf öffnen (nur aufgelistet);
@@ -178,14 +181,21 @@ function scanProjektDatei(file, inSecretDir) {
         || /^(client_secret.*|.*adminsdk.*|serviceaccount.*|credentials.*|.*-key)\.json$/.test(base)) return scanFile(file);
     if (ext === '.json' && base !== 'package.json' && base !== 'package-lock.json') scanJson(file, true);
 }
-function walk(dir, fn, tiefe, inSecret) {
+// Stand der laufenden Suche (für die Ladeanzeige). Die Suche gibt alle 100 Einträge die Kontrolle ab,
+// damit der Server währenddessen antwortet (Anzeige, Ping).
+const stand = { laeuft: false, fertig: false, start: 0, ende: 0, phase: '', ordner: '', fehler: '' };
+let schritte = 0;
+const pause = () => new Promise((r) => setImmediate(r));
+async function walk(dir, fn, tiefe, inSecret) {
     if (tiefe < 0) return;
+    stand.ordner = dir;
     let list; try { list = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { return; }
     for (const d of list) {
+        if (++schritte % 100 === 0) await pause();
         const p = path.join(dir, d.name);
         if (d.isDirectory()) {
             if (SKIP_DIR.test(d.name)) continue;
-            walk(p, fn, tiefe - 1, inSecret || SECRET_DIR.test(d.name));
+            await walk(p, fn, tiefe - 1, inSecret || SECRET_DIR.test(d.name));
         } else if (d.isFile()) fn(p, inSecret);
     }
 }
@@ -207,36 +217,69 @@ function standardOrte() {
         { id: 'gcloud', name: 'gcloud-Anmeldung (%APPDATA%\\gcloud)', pfad: path.join(process.env.APPDATA || path.join(HOME, 'AppData', 'Roaming'), 'gcloud'), art: 'download' },
     ];
 }
-function durchsuchen(auswahl) {
-    if (TEST_SCAN_MS) { const bis = Date.now() + TEST_SCAN_MS; while (Date.now() < bis) { /* Test: blockiert wie eine lange Suche */ } }
-    funde = []; dateien = []; gelesen = 0; codeCache.clear();
-    projekte = ladeProjekte();
-    const gewaehlt = projekte.filter((p) => (auswahl.projekte || []).includes(p.name));
-    for (const extra of (auswahl.ordner || [])) {
-        if (extra && fs.existsSync(extra)) gewaehlt.push({ name: path.basename(extra), pfad: path.resolve(extra) });
+// ---------------------------------------------------------------- Orte-Liste (dauerhaft)
+// Datei neben dem Programm, gitignored (das Repo ist öffentlich): nur Pfade und Häkchen, nie Werte.
+const ORTE_DATEI = process.env.SP_ORTE_DATEI || path.join(REPO, 'bin', 'schluessel-pruefen.orte.json');
+function ladeEinstellungen() {
+    try {
+        const j = JSON.parse(fs.readFileSync(ORTE_DATEI, 'utf8'));
+        return {
+            eigene: Array.isArray(j.eigene) ? j.eigene.filter((e) => e && typeof e.pfad === 'string').slice(0, 200) : [],
+            ausgeblendet: Array.isArray(j.ausgeblendet) ? j.ausgeblendet.filter((s) => typeof s === 'string') : [],
+            an: j.an && typeof j.an === 'object' ? j.an : {},
+        };
+    } catch (e) { return { eigene: [], ausgeblendet: [], an: {} }; }
+}
+function speichereEinstellungen(e) {
+    const tmp = ORTE_DATEI + '.tmp';
+    fs.writeFileSync(tmp, JSON.stringify(e, null, 2), 'utf8');
+    fs.renameSync(tmp, ORTE_DATEI);   // erst ganz schreiben, dann ersetzen: nie eine halbe Datei
+}
+/** Rolle: alle Orte mit Kennung, Quelle, Häkchen; ausgeblendete getrennt. */
+function orteListe() {
+    const e = ladeEinstellungen();
+    const alle = [];
+    for (const p of ladeProjekte()) alle.push({ id: 'p:' + p.name, name: p.name, pfad: p.pfad, quelle: 'PROJECTS.txt', art: 'projekt', vorgabe: true });
+    for (const o of standardOrte()) alle.push({ id: 'o:' + o.id, name: o.name, pfad: o.pfad, quelle: 'Standard', art: o.art, vorgabe: true });
+    for (const x of e.eigene) alle.push({ id: 'e:' + x.pfad, name: x.name || path.basename(x.pfad), pfad: x.pfad, quelle: 'eigener Ordner', art: 'projekt', vorgabe: true });
+    for (const o of alle) {
+        o.da = fs.existsSync(o.pfad);
+        o.an = e.an[o.id] != null ? !!e.an[o.id] : (o.vorgabe && o.da);
+        o.aus = e.ausgeblendet.includes(o.id);
     }
-    projekte = gewaehlt.concat(projekte.filter((p) => !gewaehlt.includes(p)));
-    for (const p of gewaehlt) walk(p.pfad, scanProjektDatei, 10, false);
-    for (const o of standardOrte()) {
-        if (!(auswahl.orte || []).includes(o.id)) continue;
-        if (o.art === 'alles') walk(o.pfad, (f) => scanFile(f), 5, true);
-        else walk(o.pfad, (f) => {
+    return alle;
+}
+
+async function durchsuchen(ids) {
+    if (TEST_SCAN_MS) await new Promise((r) => setTimeout(r, TEST_SCAN_MS));   // Test: lange Suche nachstellen
+    funde = []; dateien = []; gelesen = 0; codeCache.clear(); schritte = 0;
+    const alle = orteListe();
+    const gewaehlt = alle.filter((o) => ids.includes(o.id) && !o.aus && o.da);
+    // Für „welches Projekt?“ zählen alle Projekt-Orte, die gewählten zuerst.
+    projekte = gewaehlt.filter((o) => o.art === 'projekt').concat(alle.filter((o) => o.art === 'projekt' && !gewaehlt.includes(o)))
+        .map((o) => ({ name: o.name, pfad: o.pfad }));
+    for (const o of gewaehlt) {
+        stand.phase = 'Suche in ' + o.name;
+        if (o.art === 'projekt') await walk(o.pfad, scanProjektDatei, 10, false);
+        else if (o.art === 'alles') await walk(o.pfad, (f) => scanFile(f), 5, true);
+        else await walk(o.pfad, (f) => {
             const b = path.basename(f).toLowerCase();
             if (b.startsWith('.env')) scanFile(f); else if (b.endsWith('.json')) scanJson(f, true);
-        }, o.id === 'gcloud' ? 2 : 4, false);
+        }, o.id === 'o:gcloud' ? 2 : 4, false);
     }
-    // Dubletten derselben Datei (z. B. Projekt-Ordner doppelt gewählt) entfernen.
+    // Dubletten derselben Datei (z. B. Ordner doppelt gewählt) entfernen.
     const seen = new Set();
     funde = funde.filter((x) => { const k = x.ort + '|' + x.name + '|' + x.fp; if (seen.has(k)) return false; seen.add(k); return true; });
     funde.forEach((x, i) => { x.id = i; });
-    for (const x of funde) x.codeTreffer = codeTreffer(x);
+    stand.phase = 'Prüfe, ob der Code die Schlüssel benutzt';
+    for (const x of funde) x.codeTreffer = await codeTreffer(x);
 }
 
 // ---------------------------------------------------------------- Im Code benutzt?
-function codeDateien(pfad) {
+async function codeDateien(pfad) {
     if (codeCache.has(pfad)) return codeCache.get(pfad);
     const list = [];
-    walk(pfad, (f, inSecret) => {
+    await walk(pfad, (f, inSecret) => {
         if (inSecret) return;
         const base = path.basename(f).toLowerCase();
         if (base.startsWith('.env') || base === 'package-lock.json') return;
@@ -248,7 +291,7 @@ function codeDateien(pfad) {
     return list;
 }
 /** Rolle: in wie vielen Code-Dateien des Projekts kommt der Name (Variable) vor? null = nicht prüfbar. */
-function codeTreffer(x) {
+async function codeTreffer(x) {
     const pr = projekte.find((p) => p.name === x.projekt);
     if (!pr) return null;
     let suche = null;
@@ -257,7 +300,7 @@ function codeTreffer(x) {
     else if (x.name === 'Google OAuth client_secret') suche = [path.basename(x.ort), 'client_secret'];
     else if (/\.(pk|pem|key|p8)$/i.test(x.ort)) suche = [path.basename(x.ort)];
     if (!suche) return null;
-    const files = codeDateien(pr.pfad).filter((c) => suche.some((s) => c.text.includes(s))).map((c) => c.datei);
+    const files = (await codeDateien(pr.pfad)).filter((c) => suche.some((s) => c.text.includes(s))).map((c) => c.datei);
     return { suche, files: files.slice(0, 12), anzahl: files.length };
 }
 
@@ -312,8 +355,6 @@ function seite(nonce) {
 main{max-width:1280px;margin:0 auto;padding:16px}
 h1{font-size:20px;margin:0 0 2px} h2{font-size:16px;margin:0 0 8px} p.sub{margin:0 0 14px;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0 0 14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 14px;margin:0 0 10px}
-label.chk{display:flex;gap:8px;align-items:flex-start} label.chk small{display:block;color:var(--muted);word-break:break-all}
 textarea{width:100%;min-height:84px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--field);color:var(--fg);font:13px/1.4 ui-monospace,Consolas,monospace;resize:vertical}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
 button{font:inherit;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
@@ -329,15 +370,32 @@ pre.val{white-space:pre-wrap;word-break:break-all;margin:6px 0 0;font-size:12px;
 .ok{color:var(--ok);font-weight:600} .no{color:var(--warn);font-weight:600} .muted{color:var(--muted)}
 ul.res{list-style:none;margin:0;padding:0} ul.res>li{border-bottom:1px solid var(--line);padding:8px 0}
 ul.res ul{margin:4px 0 0 18px;padding:0}
+ul.orte{list-style:none;margin:0 0 10px;padding:0}
+ul.orte li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line)}
+ul.orte li .txt{flex:1;min-width:0} ul.orte li small{display:block;color:var(--muted);word-break:break-all}
+ul.orte li.fehlt .txt{opacity:.6} .tag2{font-size:11px;border:1px solid var(--line);border-radius:10px;padding:0 7px;margin-left:6px;color:var(--muted);white-space:nowrap}
+input[type=text]{flex:1;min-width:200px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--field);color:var(--fg);font:13px ui-monospace,Consolas,monospace}
+input[type=text].kurz{flex:0 1 180px;min-width:120px;font-family:inherit}
+.lade{display:none;align-items:center;gap:12px;margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.lade.an{display:flex} .lade .txt{min-width:0} .lade small{display:block;color:var(--muted);word-break:break-all}
+.spin{flex:0 0 22px;width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:dreh .8s linear infinite}
+@keyframes dreh{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none;border-top-color:var(--line);background:var(--acc);opacity:.6}}
+.msg{margin-top:6px;min-height:1.2em} .msg.no{font-weight:400}
 </style></head><body><main>
 <h1>Schlüssel prüfen</h1>
-<p class="sub">Läuft nur auf diesem Rechner (127.0.0.1). Werte bleiben im Speicher des Programms und werden nirgends gespeichert.</p>
+<p class="sub">Läuft nur auf diesem Rechner (127.0.0.1). Schlüssel bleiben im Speicher des Programms; gespeichert wird nur die Liste der Orte.</p>
 
 <section class="card"><h2>1. Wo suchen?</h2>
-<div class="grid" id="orte"></div>
-<label for="ordner" class="muted">Weitere Ordner (je Zeile ein Pfad)</label>
-<textarea id="ordner" spellcheck="false"></textarea>
+<ul class="orte" id="orte"><li><span class="spin" aria-hidden="true"></span><span class="txt">Liste wird geladen …</span></li></ul>
+<div class="row" id="ausRow"></div>
+<div class="row"><input type="text" id="neuPfad" placeholder="Ordner hinzufügen, z. B. C:\\Pfad\\zum\\Projekt" spellcheck="false" aria-label="Pfad des neuen Ordners">
+<input type="text" class="kurz" id="neuName" placeholder="Name (optional)" aria-label="Name des neuen Ordners">
+<button type="button" id="neuLos">Hinzufügen</button></div>
+<div class="msg" id="neuMsg" role="status"></div>
 <div class="row"><button class="pri" id="los" type="button">Durchsuchen</button><span class="status" id="st1">Große Ordner können einige Minuten dauern.</span></div>
+<div class="lade" id="lade" role="status" aria-live="polite"><span class="spin" aria-hidden="true"></span>
+<span class="txt"><b id="ladeKopf">Suche läuft …</b><small id="ladeOrt"></small></span></div>
 </section>
 
 <section class="card"><h2>2. Bekannte Schlüssel vergleichen</h2>
@@ -361,30 +419,64 @@ var T=new URLSearchParams(location.search).get('t')||'';
 var WEG='Das Werkzeug läuft nicht mehr (Fenster geschlossen, Taste gedrückt oder beendet). Bitte schluessel-pruefen.bat neu starten — diese Seite gehört zum alten Start.';
 function api(p,b){return fetch(p,{method:'POST',headers:{'Content-Type':'application/json','X-Token':T},body:JSON.stringify(b||{})}).catch(function(){throw new Error(WEG);}).then(function(r){if(!r.ok)throw new Error(r.status===403?WEG:'HTTP '+r.status);return r.json();});}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
-function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+function $(id){return document.getElementById(id);}
 setInterval(function(){api('/api/ping').catch(function(){});},20000);
 
-api('/api/orte').then(function(d){
-  var box=document.getElementById('orte'); var saved=store('sp.auswahl')||{};
-  function chk(id,name,pfad,def){var l=el('label','chk');var c=document.createElement('input');c.type='checkbox';c.value=id;c.checked=saved[id]!=null?saved[id]:def;
-    var s=el('span',null,name);var sm=el('small',null,pfad);s.appendChild(sm);l.appendChild(c);l.appendChild(s);box.appendChild(l);}
-  d.projekte.forEach(function(p){chk('p:'+p.name,p.name,p.pfad+(p.da?'':'  (Ordner fehlt)'),p.da);});
-  d.orte.forEach(function(o){chk('o:'+o.id,o.name,o.pfad,o.da);});
-  document.getElementById('ordner').value=store('sp.ordner')||'';
-});
+// ---- Orte-Liste: Häkchen, Entfernen/Ausblenden, Hinzufügen (alles wird am Server gespeichert)
+var zeigeAus=false;
+function zeichneOrte(liste){
+  var ul=$('orte'); ul.textContent='';
+  var sichtbar=liste.filter(function(o){return !o.aus;}); var aus=liste.filter(function(o){return o.aus;});
+  if(!sichtbar.length)ul.appendChild(el('li','muted','Keine Orte. Unten einen Ordner hinzufügen.'));
+  sichtbar.concat(zeigeAus?aus:[]).forEach(function(o){
+    var li=el('li',o.da?'':'fehlt'); var c=document.createElement('input'); c.type='checkbox'; c.checked=o.an&&o.da; c.disabled=!o.da||o.aus;
+    c.setAttribute('aria-label',o.name); c.addEventListener('change',function(){api('/api/ort-an',{id:o.id,an:c.checked}).catch(fehlerOrte);});
+    var t=el('span','txt'); t.appendChild(el('b',null,o.name)); t.appendChild(el('span','tag2',o.quelle));
+    if(!o.da)t.appendChild(el('span','tag2','Ordner fehlt')); if(o.aus)t.appendChild(el('span','tag2','ausgeblendet'));
+    t.appendChild(el('small',null,o.pfad));
+    var b=el('button','sm',o.aus?'Wieder zeigen':(o.quelle==='eigener Ordner'?'Entfernen':'Ausblenden')); b.type='button';
+    b.title=o.quelle==='eigener Ordner'?'Aus der Liste löschen':'Nur hier ausblenden (PROJECTS.txt bleibt unverändert)';
+    b.addEventListener('click',function(){b.disabled=true;api(o.aus?'/api/ort-zeigen':'/api/ort-weg',{id:o.id}).then(function(d){zeichneOrte(d.liste);}).catch(fehlerOrte);});
+    li.appendChild(c); li.appendChild(t); li.appendChild(b); ul.appendChild(li);
+  });
+  var r=$('ausRow'); r.textContent='';
+  if(aus.length){var a=el('button','sm',zeigeAus?'Ausgeblendete verbergen':('Ausgeblendete zeigen ('+aus.length+')'));a.type='button';
+    a.addEventListener('click',function(){zeigeAus=!zeigeAus;zeichneOrte(liste);}); r.appendChild(a);}
+}
+function fehlerOrte(e){var m=$('neuMsg');m.className='msg no';m.textContent=e.message;}
+function ladeOrte(){api('/api/liste').then(function(d){zeichneOrte(d.liste);}).catch(fehlerOrte);}
+ladeOrte();
 
-document.getElementById('los').addEventListener('click',function(){
-  var b=this; var sel={projekte:[],orte:[],ordner:[]}; var save={};
-  document.querySelectorAll('#orte input').forEach(function(c){save[c.value]=c.checked;if(!c.checked)return;
-    if(c.value.indexOf('p:')===0)sel.projekte.push(c.value.slice(2));else sel.orte.push(c.value.slice(2));});
-  var ord=document.getElementById('ordner').value; sel.ordner=ord.split(/\\r?\\n/).map(function(s){return s.trim();}).filter(Boolean);
-  store('sp.auswahl',save); store('sp.ordner',ord);
-  b.disabled=true; document.getElementById('st1').textContent='Suche läuft …';
-  api('/api/suche',sel).then(function(d){
-    document.getElementById('st1').textContent=d.gelesen+' Dateien gelesen · '+d.funde.length+' Einträge · '+d.sek+' s';
-    document.getElementById('suchen').disabled=false; document.getElementById('st2').textContent='';
-    zeichne(d);
-  }).catch(function(e){document.getElementById('st1').textContent='Fehler: '+e.message;}).then(function(){b.disabled=false;});
+$('neuLos').addEventListener('click',function(){
+  var b=this,m=$('neuMsg'); var p=$('neuPfad').value.trim(); if(!p){m.className='msg no';m.textContent='Bitte einen Pfad eingeben.';return;}
+  b.disabled=true; m.className='msg muted'; m.textContent='Prüfe Ordner …';
+  api('/api/ort-neu',{pfad:p,name:$('neuName').value.trim()}).then(function(d){
+    if(d.fehler){m.className='msg no';m.textContent=d.fehler;return;}
+    m.className='msg ok';m.textContent='Hinzugefügt und gespeichert.'; $('neuPfad').value=''; $('neuName').value=''; zeichneOrte(d.liste);
+  }).catch(fehlerOrte).then(function(){b.disabled=false;});
+});
+$('neuPfad').addEventListener('keydown',function(e){if(e.key==='Enter')$('neuLos').click();});
+
+// ---- Suche mit Ladeanzeige: Server sucht im Hintergrund, die Seite fragt alle 0,5 s nach dem Stand
+function zeigeLade(an){$('lade').className='lade'+(an?' an':'');}
+$('los').addEventListener('click',function(){
+  var b=this; b.disabled=true; $('suchen').disabled=true; zeigeLade(true);
+  $('ladeKopf').textContent='Suche startet …'; $('ladeOrt').textContent=''; $('st1').textContent='';
+  api('/api/suche',{}).then(function(){
+    var t=setInterval(function(){
+      api('/api/stand').then(function(s){
+        $('ladeKopf').textContent=(s.phase||'Suche läuft')+' … '+s.gelesen+' Dateien gelesen · '+s.funde+' Funde · '+s.sek+' s';
+        $('ladeOrt').textContent=s.ordner||'';
+        if(s.laeuft)return;
+        clearInterval(t); zeigeLade(false); b.disabled=false;
+        if(s.fehler){$('st1').textContent='Fehler: '+s.fehler;return;}
+        api('/api/ergebnis').then(function(d){
+          $('st1').textContent='Fertig: '+d.gelesen+' Dateien gelesen · '+d.funde.length+' Einträge · '+d.sek+' s';
+          $('suchen').disabled=false; $('st2').textContent=''; zeichne(d);
+        }).catch(function(e){$('st1').textContent='Fehler: '+e.message;});
+      }).catch(function(e){clearInterval(t);zeigeLade(false);b.disabled=false;$('st1').textContent='Fehler: '+e.message;});
+    },500);
+  }).catch(function(e){zeigeLade(false);b.disabled=false;$('st1').textContent='Fehler: '+e.message;});
 });
 
 function codeZelle(c){ if(!c)return el('span','muted','—');
@@ -418,7 +510,9 @@ function zeichne(d){
 
 document.getElementById('suchen').addEventListener('click',function(){
   var b=this; b.disabled=true; var out=document.getElementById('ergebnis'); out.textContent='';
+  var w=el('li'); w.appendChild(el('span','spin')); w.appendChild(document.createTextNode(' Vergleiche …')); out.appendChild(w);
   api('/api/vergleich',{text:document.getElementById('eingabe').value}).then(function(d){
+    out.textContent='';
     if(!d.zeilen.length){out.appendChild(el('li','muted','Kein Schlüssel eingegeben.'));}
     d.zeilen.forEach(function(z){
       var li=el('li'); li.appendChild(el('code',null,z.eingabe)); li.appendChild(document.createTextNode('  '));
@@ -433,7 +527,7 @@ document.getElementById('suchen').addEventListener('click',function(){
       }
       out.appendChild(li);
     });
-  }).catch(function(e){out.appendChild(el('li','no','Fehler: '+e.message));}).then(function(){b.disabled=false;});
+  }).catch(function(e){out.textContent='';out.appendChild(el('li','no','Fehler: '+e.message));}).then(function(){b.disabled=false;});
 });
 
 document.getElementById('ende').addEventListener('click',function(){
@@ -484,21 +578,62 @@ const server = http.createServer((req, res) => {
         try {
             switch (url.pathname) {
                 case '/api/ping': return json(res, { ok: true });
-                case '/api/orte': {
-                    projekte = ladeProjekte();
-                    return json(res, {
-                        projekte: projekte.map((p) => ({ name: p.name, pfad: p.pfad, da: fs.existsSync(p.pfad) })),
-                        orte: standardOrte().map((o) => ({ id: o.id, name: o.name, pfad: o.pfad, da: fs.existsSync(o.pfad) })),
-                    });
+                case '/api/liste': return json(res, { liste: orteListe() });
+                case '/api/ort-an': {
+                    const e = ladeEinstellungen();
+                    if (typeof d.id !== 'string' || d.id.length > 600) return antwort(res, 400, 'text/plain', 'id fehlt');
+                    e.an[d.id] = !!d.an; speichereEinstellungen(e);
+                    return json(res, { ok: true });
+                }
+                case '/api/ort-neu': {
+                    const roh = typeof d.pfad === 'string' ? d.pfad.trim().replace(/^"|"$/g, '') : '';
+                    if (!roh || roh.length > 500) return json(res, { fehler: 'Bitte einen Pfad eingeben (höchstens 500 Zeichen).' });
+                    const pfad = path.resolve(roh);
+                    let ist = false; try { ist = fs.statSync(pfad).isDirectory(); } catch (e) { /* fehlt */ }
+                    if (!ist) return json(res, { fehler: 'Diesen Ordner gibt es nicht: ' + pfad });
+                    if (pfad === path.parse(pfad).root) return json(res, { fehler: 'Ein ganzes Laufwerk ist zu groß. Bitte einen Ordner wählen.' });
+                    if (orteListe().some((o) => path.resolve(o.pfad).toLowerCase() === pfad.toLowerCase())) return json(res, { fehler: 'Dieser Ordner steht schon in der Liste (vielleicht ausgeblendet).' });
+                    const e = ladeEinstellungen();
+                    const name = typeof d.name === 'string' && d.name.trim() ? d.name.trim().slice(0, 80) : path.basename(pfad);
+                    e.eigene.push({ name, pfad }); e.an['e:' + pfad] = true; speichereEinstellungen(e);
+                    return json(res, { liste: orteListe() });
+                }
+                case '/api/ort-weg': {
+                    const e = ladeEinstellungen();
+                    const id = typeof d.id === 'string' ? d.id : '';
+                    if (id.startsWith('e:')) e.eigene = e.eigene.filter((x) => 'e:' + x.pfad !== id);   // eigener Ordner: löschen
+                    else if (id && !e.ausgeblendet.includes(id)) e.ausgeblendet.push(id);              // sonst: nur ausblenden
+                    // Häkchen AUS merken (nicht löschen): sonst wäre ein wieder gezeigter Ort sofort angehakt.
+                    if (id.startsWith('e:')) delete e.an[id]; else e.an[id] = false;
+                    speichereEinstellungen(e);
+                    return json(res, { liste: orteListe() });
+                }
+                case '/api/ort-zeigen': {
+                    const e = ladeEinstellungen();
+                    e.ausgeblendet = e.ausgeblendet.filter((x) => x !== d.id); speichereEinstellungen(e);
+                    return json(res, { liste: orteListe() });
                 }
                 case '/api/suche': {
-                    const arr = (v) => (Array.isArray(v) ? v.filter((s) => typeof s === 'string').slice(0, 50) : []);
-                    const t0 = Date.now();
-                    durchsuchen({ projekte: arr(d.projekte), orte: arr(d.orte), ordner: arr(d.ordner) });
-                    const sek = Math.round((Date.now() - t0) / 1000);
-                    console.log(`Durchsucht: ${gelesen} Dateien, ${funde.length} Einträge, ${sek} s.`);
+                    if (stand.laeuft) return json(res, { laeuft: true });
+                    const ids = orteListe().filter((o) => o.an && !o.aus && o.da).map((o) => o.id);
+                    Object.assign(stand, { laeuft: true, fertig: false, start: Date.now(), ende: 0, phase: 'Suche startet', ordner: '', fehler: '' });
+                    funde = []; gelesen = 0;
+                    durchsuchen(ids).then(() => {
+                        console.log(`Durchsucht: ${gelesen} Dateien, ${funde.length} Einträge, ${Math.round((Date.now() - stand.start) / 1000)} s.`);
+                    }).catch((e) => {
+                        console.error('Fehler bei der Suche:', e && e.message);
+                        stand.fehler = 'Die Suche ist abgebrochen (Fehler im Werkzeug).';
+                    }).finally(() => { stand.laeuft = false; stand.fertig = true; stand.ende = Date.now(); letzterPing = Date.now(); });
+                    return json(res, { gestartet: true, orte: ids.length });
+                }
+                case '/api/stand': return json(res, {
+                    laeuft: stand.laeuft, fertig: stand.fertig, phase: stand.phase, ordner: stand.ordner, fehler: stand.fehler,
+                    gelesen, funde: funde.length, sek: Math.round(((stand.ende || Date.now()) - stand.start) / 1000),
+                });
+                case '/api/ergebnis': {
+                    if (!stand.fertig) return antwort(res, 409, 'text/plain', 'Suche nicht fertig');
                     return json(res, {
-                        gelesen, sek,
+                        gelesen, sek: Math.round((stand.ende - stand.start) / 1000),
                         funde: funde.map((x) => ({ id: x.id, projekt: x.projekt, name: x.name, art: x.art, maske: mask(x.wert), fp: x.fp,
                             keyId: x.keyId, hinweis: x.hinweis, ort: x.ort, code: x.codeTreffer })),
                         dateien,
@@ -529,8 +664,8 @@ if (process.argv[2] === '--selbsttest') {
     const ordner = path.resolve(process.argv[3] || '.');
     projekte = [{ name: 'test', pfad: ordner }];
     funde = []; dateien = []; gelesen = 0;
-    walk(ordner, scanProjektDatei, 10, false);
-    funde.forEach((x) => { x.codeTreffer = codeTreffer(x); });
+    await walk(ordner, scanProjektDatei, 10, false);
+    for (const x of funde) x.codeTreffer = await codeTreffer(x);
     const eingabe = fs.existsSync(path.join(ordner, 'vergleich.txt')) ? fs.readFileSync(path.join(ordner, 'vergleich.txt'), 'utf8') : '';
     console.log(JSON.stringify({
         funde: funde.map((x) => ({ art: x.art, name: x.name, maske: mask(x.wert), fp: x.fp, keyId: x.keyId, code: x.codeTreffer && x.codeTreffer.anzahl })),
@@ -548,7 +683,7 @@ server.listen(0, '127.0.0.1', () => {
     if (process.argv.includes('--kein-browser')) { /* Test: Browser nicht öffnen */ }
     else if (process.platform === 'win32') execFile('cmd', ['/c', 'start', '', adresse]);
     else execFile(process.platform === 'darwin' ? 'open' : 'xdg-open', [adresse]);
-    setInterval(() => { if (!beschaeftigt && Date.now() - letzterPing > IDLE_MS) ende('2 Minuten keine offene Seite.'); }, Math.min(15000, IDLE_MS / 4));
+    setInterval(() => { if (!beschaeftigt && !stand.laeuft && Date.now() - letzterPing > IDLE_MS) ende('2 Minuten keine offene Seite.'); }, Math.min(15000, IDLE_MS / 4));
     if (process.stdin.isTTY) {
         console.log('\nFertig gestartet. Taste drücken zum Beenden.');
         process.stdin.setRawMode(true);

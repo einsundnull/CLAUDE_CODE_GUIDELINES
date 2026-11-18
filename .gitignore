@@ -23,3 +23,7 @@ API Key*.txt
 
 # WLAN-Protokolle des Watchdogs: entstehen am Laptop, die Skripte legen den Ordner selbst an
 watchdog/logs/
+
+# Orte-Liste des Werkzeugs bin/schluessel-pruefen (eigene Pfade, je Rechner)
+bin/schluessel-pruefen.orte.json
+bin/schluessel-pruefen.orte.json.tmp
