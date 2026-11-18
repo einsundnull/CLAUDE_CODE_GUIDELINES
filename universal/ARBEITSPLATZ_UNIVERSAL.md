@@ -24,8 +24,10 @@
 |---|---|
 | **Konten-Register (eine Quelle)** | `C:\Users\pc\Documents\Phoenix Code\project-hub\projects.json` → `accounts` (Nummer, E-Mail, Chrome-Profil, Konfigurationsordner, aktiv) |
 | **Projekt-Register** | dieselbe Datei → `projects` (id, Name, Ordner, Startprompt) |
+| Eigenes Projekt (seit 2026-11-18) | id `konten` im Projekt-Register, Ordner `project-hub\bin\konten` mit CLAUDE.md |
 | **Wechsel-Werkzeug** | `C:\Users\pc\Documents\Phoenix Code\project-hub\bin\konten\konto.ps1` |
 | Autostart ein / aus | `…\project-hub\bin\konten\autostart-ein.ps1` / `autostart-aus.ps1` |
+| Wächter (seit 2026-11-18) | `…\project-hub\bin\konten\waechter.ps1 ein / aus / status` — geplante Aufgabe „Claude-Konten-Waechter“, alle 10 min und bei der Anmeldung `konto.ps1 alle`: startet jeden fehlenden Server neu. Fängt keinen Server, dessen Prozess lebt, aber die Verbindung verloren hat. |
 | **Fenster für den User** (statt Befehle) | `…\project-hub\bin\konten\konto-ui.ps1`, Verknüpfung „Claude-Konten“ auf dem Desktop. Am Laptop verweist Claude auf das Fenster, nicht auf Befehle. |
 | Konto-Seite für das Telefon | project-hub-Website https://project.easy-lang.com (Abschnitt „Account wechseln“), Quelle `project-hub/index.html` + `js/app.js` |
 | Startprompts je Projekt | dieselbe Website, Knopf auf der Projektkarte; erzeugt von `project-hub/bin/startprompts.mjs` aus dem Register, nie von Hand ändern |
@@ -80,6 +82,7 @@ Claude handelt **ohne Rückfrage** (vom User so bestellt) und erklärt nichts, w
 | „nicht angemeldet“ / „FALSCH: …“ | Konto N hat keine Anmeldung | Ohne Laptop nicht lösbar. Sagen: „Konto N ist noch nicht eingerichtet; am Laptop einmal `konto.ps1 anmelden N`.“ Ein anderes angemeldetes Konto anbieten (aus `status`). |
 | „vertraut dem Ordner … noch nicht“ | Sicherheitsfrage nie beantwortet | Ohne Laptop nicht lösbar (Claude umgeht sie nie). Am Laptop: `konto.ps1 vertrauen N <projekt>`. Anderes Projekt oder Konto anbieten. |
 | „läuft schon“ | Server ist da | Nur Punkt 3 ausgeben. |
+| Server „läuft“, am Telefon unsichtbar | Er wartet auf „Enable Remote Control? (y/n)“ (Befund 2026-11-18) | `konto.ps1 stop N`, dann `start N <projekt>`: Das Skript setzt seit 2026-11-18 `remoteDialogSeen` und `--spawn=same-dir`, das Fenster startet minimiert. Prüfen per Bildschirmfoto (System.Drawing), „Connected“ muss im Fenster stehen. |
 | „Chrome-Profil … fehlt“ (status) | Profil nie angelegt | Wechsel geht trotzdem; Chrome-Werkzeuge fehlen bis zur Einrichtung (§A4). |
 
 ---
