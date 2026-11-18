@@ -80,6 +80,9 @@ bin/
                                  damit die fünf Zeilen nicht dreimal dastehen.
                                  Regel: Prompt_Handling.txt, „EIN SKRIPT
                                  SCHLIESST SICH NICHT SELBST"
+  schluessel-pruefen.bat/.mjs    Schlüssel auf diesem Rechner finden und vergleichen: eigener Server nur auf
+                                 127.0.0.1, Projekte aus PROJECTS.txt anklickbar, bekannte Schlüssel einfügen
+                                 → „gefunden wo / im Code benutzt / nicht auf diesem Rechner“. Enthält keinen Schlüssel.
   hooks/session-start.mjs        warnt, wenn eine Sitzung oberhalb eines Projektordners startet
                                  und wenn auf C: weniger als 20 GB frei sind (seit 2026-11-11)
   hook-eintragen.mjs             trägt den Start-Hook in die settings.json aller Konten ein

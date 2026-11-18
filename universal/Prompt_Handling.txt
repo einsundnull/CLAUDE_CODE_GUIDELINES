@@ -153,6 +153,9 @@ ignorierten Dateien oder außerhalb des Repos. "git add -A" in den Push-Skripten
 genau deshalb ist die Sperrliste Pflicht. Der Benutzerordner ist nie ein Repo.
 Ein Schlüssel, der je in einem Commit lag, gilt als verbrannt: er wird erneuert. Die Sperrliste
 entfernt ihn nicht aus der Historie (seit 2026-11-14; Beleg myLangSite, OAuth- und Mailgun-Schlüssel).
+Welche Schlüssel wo liegen und ob sie benutzt werden: bin/schluessel-pruefen.bat in diesem Repo
+(Doppelklick; Projekte aus PROJECTS.txt, Vergleich mit Schlüsseln aus der Konsole eines Anbieters).
+Claude startet es nie auf echten Orten und liest keine Werte; es ist ein Werkzeug für den User.
 
 
 GRÖSSE DER PFLICHTLEKTÜRE
