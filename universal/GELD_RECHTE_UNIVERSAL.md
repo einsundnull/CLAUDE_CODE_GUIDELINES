@@ -1,7 +1,7 @@
 # GELD_RECHTE_UNIVERSAL — Geld, Buchungen und Rechte am Server
 
 > **QUELLE:** `CLAUDE_CODE_GUIDELINES/universal/GELD_RECHTE_UNIVERSAL.md` (DIES IST DIE QUELLE)
-> **STAND:** 2026-11-18 (Erstfassung)
+> **STAND:** 2026-11-25 (§G17 Wer Kosten verursacht, zahlt; §G16 Rest beim Löschen; Erstfassung 2026-11-18)
 >
 > **Gilt für jedes Projekt, in dem Geld, Guthaben, Buchungen oder Rechte über einen Server laufen**
 > (Web und Java). Ein Projekt ohne Server oder ohne Geld bekommt durch diese Datei keinen Auftrag.
@@ -138,6 +138,60 @@ falscher Zustand, doppelter Aufruf, Zeitüberschreitung beim Anbieter. Jeder war
 „Nur der Server schreibt“, „mit Wartezeit“, „wird nicht aufgerufen“ sind Behauptungen. Sie bekommen
 einen Test oder fliegen raus (Beleg: „additiv, solange der Browser sie nicht aufruft“ stand über einer
 deployten, öffentlich aufrufbaren Funktion).
+
+## §G16 Konto löschen hinterlässt einen Rest; eine Sperre überlebt das Löschen  [A]
+
+Wer sein Konto löscht, darf sich danach nicht als „neu“ oder „nie gesperrt“ wieder anmelden. Darum:
+
+1. **Ein Rest je Person**, gespeichert BEVOR das Profil gelöscht wird (fehlt er, wird nicht gelöscht).
+   Schlüssel: HMAC (geheimer Schlüssel am Server) der normierten E-Mail. Normiert heißt: klein, ohne
+   Leerzeichen, ohne `+zusatz`, bei Gmail ohne Punkte. Ein einfacher SHA-256 reicht nicht, denn er lässt
+   sich per Wörterbuch zurückrechnen.
+   Inhalt nur: Rollen je gehabt, gesperrt ja/nein mit Zeitraum, Anzahl der Löschungen, Daten, alte
+   Kennungen. Kein Name, keine Adresse, kein Freitext.
+2. **Die Anmeldung prüft den Rest am Server**, vor dem Anlegen des Kontos und für jeden Anbieter
+   (E-Mail, Google …). Ist der Rest gesperrt, wird die Anmeldung abgelehnt. Sonst wird die neue Kennung
+   mit den früheren Rollen verknüpft, damit Vorteile für „neu“ nicht ein zweites Mal greifen.
+3. **Eine Lösch-Tabelle steht in der Projekt-Doku.** Sie nennt für jede Datenart: gelöscht oder bleibt,
+   Frist, Grund. Belege mit Geld bleiben nach Steuer- und Handelsrecht und hängen an der alten Kennung.
+4. **Transparenz:** Der Lösch-Dialog und die Datenschutzerklärung nennen den Rest, den Zweck und die Frist.
+5. **Weitere Merkmale nur als Hinweis**, nie als harte Sperre: Zahlkarten-Fingerabdruck, Gerät, IP.
+   Grund: Karten und Geräte werden geteilt.
+6. **Test:** gesperrt → löschen → mit derselben Adresse neu anmelden. Das muss abgelehnt werden, auch mit
+   `+zusatz` und über Google. Der Test war einmal rot.
+
+Grund: Die Sperre hing nur am Profil. Ein gesperrter Nutzer löschte sich und registrierte sich mit
+derselben Adresse neu; die Sperre war weg (Beleg: myLangSite TC4-1, 2026-11-25).
+Quelle: Art. 6 Abs. 1 lit. f und Art. 17 Abs. 3 DSGVO. Irische Datenschutzbehörde, Entscheidung Apple
+(2024): einen Prüfwert der E-Mail zu behalten ist zulässig, aber der Nutzer muss beim Löschen davon
+erfahren. Stripe „detect duplicate cards“ (Fingerabdruck nur als Merkmal). OWASP ASVS V2
+(Account lifecycle).
+
+## §G17 Wer Kosten verursacht, zahlt — jede kostenpflichtige Leistung hat einen Zahler und eine Grenze  [A]
+
+Jede Leistung, die beim Anbieter Geld kostet (Video-Minuten, Speicher, Mails, Datenbank, Aufrufe, Zahlungs-
+gebühren), hat in der Projekt-Doku eine Zeile: **Leistung → Kosten beim Anbieter → wer sie auslöst → wer sie
+bezahlt → Grenze am Server → Beleg Datei:Zeile.** Darum:
+
+1. **Der Zahler ist eine bezahlte Handlung, kein Zustand.** Ein Vorteil (kommissionsfrei, Raum offen, mehr
+   Speicher) hängt an einem bezahlten Beleg für genau diesen Zeitraum, nie an einem Feld, das der Nutzer setzen,
+   löschen oder im richtigen Moment umschalten kann (Modell wechseln, Profil verbergen, Feld entfernen).
+2. **Die Leistung endet mit der Bezahlung.** Dauer, Menge und Größe kommen aus dem bezahlten Objekt (§G4), nie
+   aus einem Feld, das der Browser schreibt. Nachlauf ist kurz und benannt.
+3. **Ein Mindestbetrag je Einheit** deckt die Stückkosten (z. B. Mindestprovision je Stunde): ein Preis von
+   1 Cent darf die volle Leistung nicht freischalten.
+4. **Was niemand bezahlt, hat eine Mengengrenze** (§G10): Mails, Dateien, Nachrichten, Aufrufe je Nutzer und
+   Zeitraum. Dazu eine Notbremse für das ganze Projekt (Budget-Alarm, der abschaltet).
+5. **Was außerhalb der Plattform bezahlt wird, nutzt die Plattform nicht umsonst:** kostenpflichtige Teile
+   (Raum, Speicher) nur mit Beleg; Kontakt außerhalb wird nicht verboten, aber offen benannt (Fairness-Hinweis).
+6. **Eine neue Leistung ohne Zeile in der Tabelle ist ein Audit-Befund HOCH.** Das Audit prüft je Zeile: Kann
+   ein Nutzer die Leistung bekommen, ohne den Zahler auszulösen?
+
+Grund: 14 Wege, die Plattform fast umsonst zu nutzen, fanden sich in EINER Suche — jeder hing an einem Zustand
+statt an einem bezahlten Beleg (Modell im Tagestakt wechseln, Abo + verborgen, Feld löschen, 1-Cent-Preis,
+Raumdauer aus einem Browser-Feld, Raum bleibt nach dem Ende offen; Beleg: myLangSite L1–L14, 2026-11-25).
+Quelle: OWASP API4:2023 (Unrestricted Resource Consumption, „Denial of Wallet“), API6:2023 (Unrestricted Access
+to Sensitive Business Flows), OWASP WSTG-BUSL-05 (Function usage limits), FinOps Foundation „Unit Economics“.
 
 ---
 

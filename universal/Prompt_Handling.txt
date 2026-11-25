@@ -208,8 +208,10 @@ berührt hat, untersucht auf:
     Feld, wer kann dieses Dokument lesen? Gilt auch, wenn die PD die Leseregel nicht berührt.
     Steht das Feld nicht in der Erlaubt-Liste der Sammlung: Befund HOCH.
   - Geld, Buchungen, Rechte am Server (seit 2026-11-18): jede berührte Server-Funktion gegen
-    GELD_RECHTE_UNIVERSAL.md §G1–§G15 prüfen (ein Eingang, Rechte je Objekt, Erlaubt-Liste,
-    Server rechnet, Zustände, unklarer Ausgang, Abgleich, Beleg, Transaktion, Grenzen, Inventar).
+    GELD_RECHTE_UNIVERSAL.md §G1–§G17 prüfen (ein Eingang, Rechte je Objekt, Erlaubt-Liste,
+    Server rechnet, Zustände, unklarer Ausgang, Abgleich, Beleg, Transaktion, Grenzen, Inventar,
+    seit 2026-11-25: Löschen hinterlässt einen Rest, Sperre überlebt das Löschen; jede
+    kostenpflichtige Leistung hat einen Zahler und eine Grenze).
 
 LESE-AUDIT ALLER REGELN (seit 2026-11-14, WEB §31 Nr. 5): vor dem Start mit echten Nutzern
 und danach alle 10 abgeschlossenen PDs werden ALLE Lese- und Schreibregeln geprüft, nicht nur
